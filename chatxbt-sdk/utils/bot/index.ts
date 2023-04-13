@@ -1,14 +1,9 @@
 export default () => {
     const botReplies = [
-        `Guy calm down we still dey build app`,
-        `Wetin you talk?`,
-        `No type nonsense here o, I dey quick vex`,
-        `How are you jare, you don chop today?`,
-        `Make I send my AZA abeg, e don red`,
-        `Ellu P!!!`,
-        `Correct Gee`,
-        `lol, shey you dey whyne me`,
-        `Dey play`
+        `Hello, I am Mark and I will be your companion on chatXBT. How may I help you?`,
+        `We still under development, you will be alerted when the app is completed.`,
+        `We will get back to you shortly...`,
+        `The ChatGPT for Defi. Experience the fusion of decentralized finance and AI.`
     ];
 
     const randomIndex = Math.floor((Math.random() * botReplies.length));
