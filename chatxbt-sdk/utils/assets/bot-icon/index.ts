@@ -1,0 +1,1 @@
+export default 'https://www.linkpicture.com/q/bot_10.png';
