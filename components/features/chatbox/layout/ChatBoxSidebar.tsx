@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
 import style from "@styles/chat/layout.module.scss";
 import { chatLinks, socials } from "./data";
 import LogoTwo from "@components/shared/logo/LogoTwo";
@@ -15,10 +14,10 @@ const ChatBoxSidebar = () => {
           <LogoTwo />
         </div>
         <ul className={`navbar-nav`}>
-          {chatLinks.map((data: any, index: any) => {
+          {chatLinks.map((data: any) => {
             const active = router.asPath === data.href;
             return (
-              <li className={`nav-item`} key={index}>
+              <li className={`nav-item`} key={data.title}>
                 <button
                   onClick={() => handleClick(data.href)}
                   className={active ? style.active : ""}

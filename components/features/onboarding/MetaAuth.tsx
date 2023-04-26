@@ -1,13 +1,21 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import style from "@styles/get-started/index.module.scss";
 import { motion } from "framer-motion";
-import Logo from "../../shared/logo/Logo";
+// import Logo from "../../shared/logo/Logo";
 import Link from "next/link";
 import * as BsIcons from "react-icons/bs";
+import { useConnection } from "@chatxbt-sdk/services/hooks";
+import { useConnectionStore } from "@chatxbt-sdk/store/zustand/connection";
 
 const MetaAuth = ({ handleStart }: any) => {
   const [step, setStep] = useState<number>(0);
-  const nextStep = () => {
+  const { connectMetamask } = useConnection();
+  const { visibleAddress } = useConnectionStore();
+
+  const nextStep = async () => {
+    if (step === 0) {
+      await connectMetamask();
+    }
     setStep((i: any) => i + 1);
   };
 
@@ -26,13 +34,13 @@ const MetaAuth = ({ handleStart }: any) => {
             />
             <img src="/images/get-started/meta1.png" alt="" />
 
-            <form action="">
+            <form onSubmit={(e) => e.preventDefault()}>
               <div className={style.formGroup}>
                 <label htmlFor="">Enter password to unlock wallet</label>
-                <input type={"password"} placeholder="Password" />
+                {/* <input type={"password"} placeholder="Password" /> */}
               </div>
               <button onClick={nextStep}>Unlock</button>
-              <button id={style.unlock}>Restore</button>
+              {/* <button id={style.unlock}>Restore</button> */}
             </form>
           </motion.div>
         );
@@ -57,7 +65,7 @@ const MetaAuth = ({ handleStart }: any) => {
                     <div id={style.dp}></div>
                     <div id={style.details}>
                       <h3>Account 1</h3>
-                      <small>0xHhbskey***kjsdb</small>
+                      <small>{visibleAddress}</small>
                     </div>
                   </div>
 
@@ -100,34 +108,34 @@ const MetaAuth = ({ handleStart }: any) => {
           </motion.div>
         );
 
-      case 3:
-        return (
-          <motion.div className={style.fourth}>
-            <div id={style.logo}>
-              <div id={style.span}></div>
-              <Link href={"#"}>https://chatgpt.io</Link>
-            </div>
+      // case 3:
+      //   return (
+      //     <motion.div className={style.fourth}>
+      //       <div id={style.logo}>
+      //         <div id={style.span}></div>
+      //         <Link href={"#"}>https://chatgpt.io</Link>
+      //       </div>
 
-            <h3>Account 1</h3>
-            <h1>Your signature is requested</h1>
+      //       <h3>Account 1</h3>
+      //       <h1>Your signature is requested</h1>
 
-            <h4>Message</h4>
+      //       <h4>Message</h4>
 
-            <div id={style.hr}></div>
+      //       <div id={style.hr}></div>
 
-            <input
-              type="text"
-              value={`Login for chatXBT guild: 77d92704-3f5e-6645-b250-2e5g7af8n565`}
-            />
+      //       <input
+      //         type="text"
+      //         value={`Login for chatXBT guild: 77d92704-3f5e-6645-b250-2e5g7af8n565`}
+      //       />
 
-            <div id={style.btns}>
-              <button onClick={goBack}>Cancel</button>
-              <button onClick={nextStep} id={style.n}>
-                Sign
-              </button>
-            </div>
-          </motion.div>
-        );
+      //       <div id={style.btns}>
+      //         <button onClick={goBack}>Cancel</button>
+      //         <button onClick={nextStep} id={style.n}>
+      //           Sign
+      //         </button>
+      //       </div>
+      //     </motion.div>
+      //   );
 
       default:
         return (

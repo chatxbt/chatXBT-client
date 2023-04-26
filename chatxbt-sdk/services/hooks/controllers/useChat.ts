@@ -7,14 +7,14 @@ const useChat = () => {
 
     const {
         constants: { status, ref },
-        functions: { botResponse }
+        functions: { botResponse, resetMessage }
     } = chatServices;
 
     useEffect(() => {
         if (status === 'Done') {
             scrollToNewChat.default(ref);
             let func = setTimeout(() => {
-                botResponse();
+                resetMessage()
             }, 2000);
 
             return () => clearTimeout(func);

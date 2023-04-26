@@ -22,19 +22,18 @@ export const useChatStore = create<ChatStore>((set) => ({
 
         set((state) => ({
             messages: [...state.messages,
-            { dp: userDp, from: 'user', id: chatId, message: chatMessage }]
+            { dp: userDp, from: 'user', id: chatId, message: chatMessage }], chatMessage: '', status: 'Done'
         }));
-        set({ chatMessage: '' });
-        set({ status: 'Done' });
     },
-    generateResponse: () => {
-        let response = botInit.default();
+    generateResponse: (message: string) => {
         let chatId = generateId.default();
         set((state) => ({
             messages: [...state.messages,
-            { dp: botDisplayImage.default, from: 'bot', id: chatId, message: response }]
+            { dp: botDisplayImage.default, from: 'bot', id: chatId, message }], status: ''
         }));
-        set(() => ({ status: '' }));
-        response = '';
+    },
+
+    resetMessage: () => {
+        set({ status: '' })
     }
 })); 

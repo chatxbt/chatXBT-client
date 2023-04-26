@@ -11,5 +11,6 @@ export type ChatStore = {
     botReply: any;
     updateMessage: (chatMessage: userState['message']) => void;
     sendMessage: (chatMessage: userState['message']) => void;
-    generateResponse: () => void;
+    generateResponse: (message: string) => void;
+    resetMessage: () => void;
 }
