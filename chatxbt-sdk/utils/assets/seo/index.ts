@@ -1,1 +1,1 @@
-export default 'https://www.linkpicture.com/q/seo_3.png';
+export default 'https://www.linkpicture.com/q/SEO-IMAGE5.png';
