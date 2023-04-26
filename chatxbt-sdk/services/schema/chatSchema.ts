@@ -1,7 +1,7 @@
 import { useChatStore } from "@chatxbt-sdk/store/zustand/chat";
 import { useRef } from "react";
 
-export default () => {
+const useChatSchema = () => {
     const [message, setMessage] = useChatStore((state) => [state.chatMessage, state.updateMessage]);
     const preview = useChatStore((state) => state.preview);
     const submit = useChatStore((state) => state.sendMessage);
@@ -9,12 +9,17 @@ export default () => {
     const botResponse = useChatStore((state) => state.generateResponse);
     const status = useChatStore((state) => state.status);
     const botReply = useChatStore((state) => state.botReply);
+    const resetMessage = useChatStore((state) => state.resetMessage);
 
     const sendMessage = (e: { preventDefault: () => void }) => {
         e.preventDefault();
         if (!message.length) return;
         submit(message);
     };
+
+    const sendResponse = (message: string) => {
+        botResponse(message)
+    }
 
     const ref = useRef<null | HTMLDivElement>(null);
 
@@ -31,7 +36,11 @@ export default () => {
         functions: {
             setMessage,
             sendMessage,
-            botResponse
+            sendResponse,
+            botResponse,
+            resetMessage
         }
     }
 }
+
+export default useChatSchema;

@@ -1,4 +1,3 @@
-import React from "react";
 import style from "@styles/chat/layout.module.scss";
 import ChatBoxFooterNav from "./ChatBoxFooterNav";
 import ChatBoxHeader from "./ChatBoxHeader";

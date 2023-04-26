@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import style from "@styles/get-started/index.module.scss";
 import { motion } from "framer-motion";
 import EmailAuth from "./EmailAuth";
