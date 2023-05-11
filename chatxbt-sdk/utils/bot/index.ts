@@ -10,7 +10,7 @@ export default () => {
         "Unfortunately, I don't know how to respond to that yet",
     ];
 
-    const randomIndex = Math.floor((Math.random() * botReplies.length));;
+    const randomIndex = Math.floor((Math.random() * botReplies.length));
 
     const reply = botReplies[randomIndex];
 

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import GetStarted from "./get-started";
 import { useConnectionStore } from "@chatxbt-sdk/store/zustand/connection";
-import ChatPage from "./chat";
+import ChatPage from "./dashboard/chat";
 import dynamic from "next/dynamic";
 
-const ChatPageView = dynamic(() => import("./chat"), {
+const ChatPageView = dynamic(() => import("./dashboard/chat"), {
   loading: () => <ChatPage />,
 });
 

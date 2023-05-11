@@ -1,5 +1,5 @@
 import React from 'react'
-import SettingsComponent from '../../components/features/chatbox/components/settings'
+import SettingsComponent from '../../../components/features/chatbox/components/settings'
 
 const SettingsPage = () => {
   return (

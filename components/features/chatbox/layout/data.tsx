@@ -10,22 +10,22 @@ import * as IoIcons from "react-icons/io5";
 
 export const chatLinks = [
     {
-        href: '/chat',
+        href: '/dashboard/chat',
         title: 'Chat',
         icon: <IoIcons.IoStatsChart/>
     },
     {
-        href: '/wallet',
+        href: '/dashboard/wallet',
         title: 'Wallet',
         icon: <BiIcons.BiWallet/>
     },
     {
-        href: '/activity',
+        href: '/dashboard/activity',
         title: 'Activity',
         icon: <BsIcons.BsHourglassSplit/>
     },
     {
-        href: '/settings',
+        href: '/dashboard/settings',
         title: 'Settings',
         icon: <RiIcons.RiSettingsLine/>
     },

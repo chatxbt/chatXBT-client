@@ -78,7 +78,7 @@ const EmailAuth = ({ handleStart }: any) => {
               <AiIcons.AiOutlineCheck />
             </div>
             <h2>Your wallet has been generated</h2>
-            <button onClick={() => router.push('/chat')}>Continue to chatboard</button>
+            <button onClick={() => router.push('/dashboard/chat')}>Continue to chatboard</button>
           </motion.div>
         );
 
