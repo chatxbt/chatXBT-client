@@ -16,7 +16,7 @@ const Main = () => {
       <div className={style.actBox}>
         {activityData.map((data: any, index: any) => {
           return (
-            <div id={style.section}>
+            <div id={style.section} key={index}>
               <h2>{data.timeStamp}</h2>
               {data.data.map((actData: any, index: any) => (
                 <div id={style.card} key={index}>
