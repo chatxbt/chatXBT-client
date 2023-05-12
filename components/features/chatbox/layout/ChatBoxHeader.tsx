@@ -46,16 +46,17 @@ const ChatBoxHeader = () => {
             ))}
           </div>
           <div className={style.buttons}>
-            <button id={style.first}>Integrate protocol</button>
-            <div id={style.second}>
+            <button id={style.first}>Integrate protocolly</button>
+            {visibleAddress && (
               <button
+                id={style.second}
                 onClick={disconnect}
                 onMouseEnter={startDisconnect}
                 onMouseLeave={stopDisconnect}
               >
                 {visibleAddress}
               </button>
-            </div>
+            )}
           </div>
         </div>
       </div>

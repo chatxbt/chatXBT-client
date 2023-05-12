@@ -10,8 +10,8 @@ const ChatBoxLayoutV1 = ({ children }: any) => {
   return (
     <>
       <AppSeo
-        title="The ChatGPT for Defi."
-        description={`Experience the fusion of decentralized finance and AI.`}
+        title="Unlock a new experience with the power of AI and DeFi."
+        description={`Trade, lend, stake, transfer, create multisigs, wallet, interact with protocols...Not with clicks, but with chat.`}
         image={seoImage.default}
       />
       <div className={style.chatLayoutV1}>

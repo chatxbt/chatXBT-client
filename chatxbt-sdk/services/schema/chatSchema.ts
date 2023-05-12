@@ -1,5 +1,6 @@
 import { useChatStore } from "@chatxbt-sdk/store/zustand/chat";
 import { useRef } from "react";
+import { useChatResolver } from "../hooks";
 
 const useChatSchema = () => {
     const [message, setMessage] = useChatStore((state) => [state.chatMessage, state.updateMessage]);
@@ -11,15 +12,19 @@ const useChatSchema = () => {
     const botReply = useChatStore((state) => state.botReply);
     const resetMessage = useChatStore((state) => state.resetMessage);
 
-    const sendMessage = (e: { preventDefault: () => void }) => {
-        e.preventDefault();
-        if (!message.length) return;
-        submit(message);
-    };
+    const { xbtResolve } = useChatResolver();
 
     const sendResponse = (message: string) => {
         botResponse(message)
     }
+
+    const sendMessage = async (e: { preventDefault: () => void }) => {
+        e.preventDefault();
+        if (!message.length) return;
+        submit(message);
+        const result = await xbtResolve(message);
+        sendResponse(result);
+    };
 
     const ref = useRef<null | HTMLDivElement>(null);
 

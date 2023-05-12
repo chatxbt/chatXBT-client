@@ -7,7 +7,7 @@ const useChat = () => {
 
     const {
         constants: { status, ref },
-        functions: { botResponse, resetMessage }
+        functions: { resetMessage }
     } = chatServices;
 
     useEffect(() => {
