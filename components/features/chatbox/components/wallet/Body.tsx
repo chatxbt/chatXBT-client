@@ -8,7 +8,8 @@ import Collections from "./Collections";
 import useWalletTabControl from "@chatxbt-sdk/services/hooks/ui-behaviour/useWalletTabControl";
 
 const Body = () => {
-  const { handleSelect, selected } = useWalletTabControl();
+  let page = "wallet";
+  const { handleSelect, selected } = useWalletTabControl(page, tabLinks);
 
   return (
     <>
