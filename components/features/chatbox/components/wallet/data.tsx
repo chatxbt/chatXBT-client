@@ -14,7 +14,8 @@ export const userWalletData = [
     },
     {
         title: 'Chains',
-        data: ''
+        data: '',
+        address: '0x1e2a...1cd3'
     }
 ];
 

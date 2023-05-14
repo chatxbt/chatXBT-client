@@ -26,49 +26,116 @@
             border-radius: 10px;
             padding: 20px;
 
-            @include responsivePro(mobile){
+            @include responsivePro(mobile) {
                 width: 100%;
             }
 
-            @include responsivePro(exception){
+            @include responsivePro(exception) {
                 width: 100%;
             }
 
-            #cards,
-            #cardLast {
-                width: 30%;
+            #desktop {
+                width: 100%;
                 height: 100%;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: flex-start;
-            }
 
-            #cards {
-                h3 {
-                    font-weight: 400;
-                    font-size: 14px;
-                    line-height: 139.52%;
-                    color: rgba(255, 255, 255, 0.6);
+                @include responsivePro(mobile) {
+                    display: none;
                 }
 
-                p {
-                    font-weight: 400;
-                    font-size: 20px;
-                    line-height: 139.52%;
+                @include responsivePro(mobile) {
+                    display: none;
+                }
+
+                #cards,
+                #cardLast {
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: flex-start;
+                }
+    
+                #cards {
+                    h3 {
+                        font-weight: 400;
+                        font-size: 14px;
+                        line-height: 139.52%;
+                        color: rgba(255, 255, 255, 0.6);
+                    }
+    
+                    p {
+                        font-weight: 400;
+                        font-size: 20px;
+                        line-height: 139.52%;
+                    }
+                }
+    
+                #cardLast {
+                    button {
+                        width: 98px;
+                        height: 28px;
+                        background: #FFFFFF;
+                        border: 1px solid transparent;
+                        border-radius: 30px;
+                        margin: auto;
+                    }
                 }
             }
 
-            #cardLast {
-                button {
-                    width: 98px;
-                    height: 28px;
-                    background: #FFFFFF;
-                    border: 1px solid transparent;
-                    border-radius: 30px;
-                    margin: auto;
+            #mobile{
+                display: none;
+                width: 50%;
+                height: 100%;
+
+                @include responsivePro(mobile) {
+                    display: block;
+                }
+
+                @include responsivePro(mobile) {
+                    display: block;
+                }
+
+                #cards,
+                #cardLast {
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: flex-start;
+                }
+    
+                #cards {
+                    h3 {
+                        font-weight: 400;
+                        font-size: 14px;
+                        line-height: 139.52%;
+                        color: rgba(255, 255, 255, 0.6);
+                    }
+    
+                    p {
+                        font-weight: 400;
+                        font-size: 20px;
+                        line-height: 139.52%;
+                    }
+                }
+    
+                #cardLast {
+                    justify-content: right;
+                    align-items: flex-end;
+                    button {
+                        width: 98px;
+                        height: 28px;
+                        background: #FFFFFF;
+                        border: 1px solid transparent;
+                        border-radius: 30px;
+                        // margin: auto;
+                    }
                 }
             }
+
+
         }
 
         #buttons {
@@ -78,11 +145,11 @@
             width: 50%;
             margin: 20px auto;
 
-            @include responsivePro(mobile){
+            @include responsivePro(mobile) {
                 width: 100%;
             }
 
-            @include responsivePro(exception){
+            @include responsivePro(exception) {
                 width: 100%;
             }
 
@@ -315,12 +382,15 @@
 
     .assetConMobile {
         display: none;
-        @include responsivePro(mobile){
+
+        @include responsivePro(mobile) {
             display: block;
         }
-        @include responsivePro(exception){
+
+        @include responsivePro(exception) {
             display: block;
         }
+
         .card {
             padding: 19px 24px;
             width: 100%;

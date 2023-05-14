@@ -8,7 +8,12 @@ const Hero = () => {
     <div className={style.hero}>
       <div id={style.details}>
         {userWalletData.map((data: any, index: any) => (
-          <Card key={index} title={data.title} data={data.data} />
+          <Card
+            key={index}
+            title={data.title}
+            data={data.data}
+            address={data.address}
+          />
         ))}
       </div>
 
