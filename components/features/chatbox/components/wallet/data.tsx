@@ -1,5 +1,5 @@
 import * as BsIcons from "react-icons/bs";
-import * as RiIcons from "react-icons/ri";
+// import * as RiIcons from "react-icons/ri";
 import * as GiIcons from "react-icons/gi";
 import * as AiIcons from "react-icons/ai";
 
