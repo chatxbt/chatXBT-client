@@ -1,17 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import style from "@styles/chat/modal.module.scss";
-import * as MdIcons from "react-icons/md";
+import { multiStep } from "@chatxbt-sdk/utils";
+import SendSteps from "./steps/SendSteps";
 
 const SendAssetModal = ({ closeModal }: any) => {
+  const { step, nextStep, goBack } = multiStep.default();
+
   return (
-    <div className={style.modal}>
+    <div className={`container-fluid ${style.modal}`}>
       <div className={style.sendAssetModal}>
-        <div className={style.header}>
-          <h1>Select asset to send</h1>
-          <button className={style.close} onClick={closeModal}>
-            <MdIcons.MdOutlineClose />
-          </button>
-        </div>
+        <SendSteps
+          step={step}
+          nextStep={nextStep}
+          goBack={goBack}
+          closeModal={closeModal}
+        />
       </div>
     </div>
   );

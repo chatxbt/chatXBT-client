@@ -190,7 +190,6 @@
                         }
                     }
                 }
-
                 .socialCon {
                     padding: 10px;
                     position: absolute;
@@ -203,6 +202,10 @@
                         font-size: 16px;
                         line-height: 139.52%;
                         text-align: center;
+
+                        @include responsivePro(exception) {
+                            display: none;
+                        }
                     }
 
                     .icons {
@@ -212,13 +215,18 @@
                         margin: 5px auto 20px;
                         padding: 0px 5px;
 
+                        @include responsivePro(exception) {
+                            flex-direction: column;
+                        }
+
                         i {
                             font-size: 1.6rem;
                             cursor: pointer;
                             margin-right: 20px;
 
                             @include responsivePro(exception) {
-                                font-size: 1rem;
+                                font-size: 1.6rem;
+                                margin: 10px auto;
                             }
 
                             &:hover {
@@ -248,6 +256,10 @@
                             color: #fff;
                             background: #020611;
                             border-radius: 5px;
+
+                            @include responsivePro(exception) {
+                                font-size: .6rem;
+                            }
                         }
                     }
 
@@ -681,6 +693,10 @@
                         font-size: 16px;
                         line-height: 139.52%;
                         text-align: center;
+
+                        @include responsivePro(exception) {
+                            display: none;
+                        }
                     }
 
                     .icons {
@@ -690,13 +706,18 @@
                         margin: 5px auto 20px;
                         padding: 0px 5px;
 
+                        @include responsivePro(exception) {
+                            flex-direction: column;
+                        }
+
                         i {
                             font-size: 1.6rem;
                             cursor: pointer;
                             margin-right: 20px;
 
                             @include responsivePro(exception) {
-                                font-size: 1rem;
+                                font-size: 1.6rem;
+                                margin: 10px auto;
                             }
 
                             &:hover {
@@ -726,6 +747,10 @@
                             color: #fff;
                             background: #020611;
                             border-radius: 5px;
+
+                            @include responsivePro(exception) {
+                                font-size: .6rem;
+                            }
                         }
                     }
 
