@@ -21,7 +21,7 @@ const Buttons = () => {
   return (
     <>
       {send && <SendAssetModal closeModal={handleSendModal}/>}
-      {receive && <RecieveAssetModal />}
+      {receive && <RecieveAssetModal closeModal={handleReceiveModal}/>}
       {swap && <SwapModal />}
 
       <div id={style.buttons}>

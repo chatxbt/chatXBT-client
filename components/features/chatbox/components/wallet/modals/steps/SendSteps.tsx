@@ -32,7 +32,7 @@ const SendSteps = ({ step, nextStep, goBack, closeModal }: any) => {
         </>
       );
     case 1:
-      return <WalletAssets nextStep={nextStep} />;
+      return <WalletAssets nextStep={nextStep} closeModal={closeModal} title="Select asset"/>;
     case 2:
       return (
         <>
