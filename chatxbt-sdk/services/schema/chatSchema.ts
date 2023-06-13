@@ -1,7 +1,7 @@
 import { useChatStore } from "@chatxbt-sdk/store/zustand/chat";
 import { useRef } from "react";
 import { useChatResolver } from "../hooks";
-import { keywords } from "@chatxbt-sdk/utils";
+import { promptData } from "@chatxbt-sdk/utils";
 
 const useChatSchema = () => {
     const [message, setMessage] = useChatStore((state) => [state.chatMessage, state.updateMessage]);
@@ -13,6 +13,7 @@ const useChatSchema = () => {
     const botReply = useChatStore((state) => state.botReply);
     const resetMessage = useChatStore((state) => state.resetMessage);
     const setPreview = useChatStore((state) => state.setPreview);
+
 
     const { xbtResolve } = useChatResolver();
 
@@ -34,14 +35,12 @@ const useChatSchema = () => {
 
     const ref = useRef<null | HTMLDivElement>(null);
 
-    const hints = keywords.default
+    const hints = promptData.default.AIPrompts
         .filter((word) => {
             const typedCommand = message.toLowerCase();
-            const keyword = word.keyword.toLowerCase();
+            const keyword = word.prompt.toLowerCase();
             return typedCommand && keyword.startsWith(typedCommand) && keyword !== typedCommand;
         }).slice(0, 10);
-
-
 
     return {
         constants: {

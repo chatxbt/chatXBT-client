@@ -15,8 +15,10 @@ const ChatInput = () => {
       {hints.length > 0 && (
         <div className={style.hints}>
           {hints.map((data: any, index: any) => (
-              <p key={index} onClick={() => addHint(data.keyword)}>{data.keyword}</p>
-            ))}
+            <p key={index} onClick={() => addHint(data.prompt)}>
+              {data.prompt}
+            </p>
+          ))}
         </div>
       )}
 
@@ -24,6 +26,7 @@ const ChatInput = () => {
         <div className={classInit.addConClass(style.con)}>
           <input
             type="text"
+            placeholder="Type a message"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />

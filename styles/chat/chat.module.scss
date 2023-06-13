@@ -203,8 +203,9 @@
             text-align: left;
 
             p {
-                font-size: 16px;
+                font-size: 15px;
                 margin: 0px;
+                font-family: $primaryFontLight;
             }
         }
 
@@ -239,10 +240,9 @@
             text-align: left;
 
             p {
-                font-size: 16px;
+                font-size: 15px;
                 margin: 0px;
-                // inline-size: 70%;
-                // color: red;
+                font-family: $primaryFontLight;
             }
         }
 

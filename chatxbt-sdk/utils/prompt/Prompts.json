@@ -1,0 +1,9 @@
+{
+    "AIPrompts": [
+        {"prompt": "create wallet"},
+        {"prompt": "swap coin"},
+        {"prompt": "add #Value (eth|ethereum) liquidity to (usdt|dai) on (uniswap|pancake)"},
+        {"prompt": "give approval to (uniswap) to spend #Value of (usdt|dai)"},
+        {"prompt": "grant (#AtMention|#Noun) approval to spend up to #Value of (usdt|dai)"}
+    ]
+}
