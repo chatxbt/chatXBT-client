@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import style from "@styles/chat/chat.module.scss";
 import Preview from "./Preview";
 import { BotIndicator, UserChatCard } from "./ChatCard";
-import useChat from "@chatxbt-sdk/services/hooks/controllers/useChat";
+import useChat from "@chatxbt-sdk/services/hooks/schema-hooks/useChat";
 import * as MdIcons from "react-icons/md";
 
 const Main = () => {
