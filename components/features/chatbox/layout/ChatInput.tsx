@@ -2,8 +2,9 @@ import React from "react";
 import { classInit } from "@chatxbt-sdk/utils";
 import style from "@styles/chat/layout.module.scss";
 import * as IoIcons from "react-icons/io5";
-import useChat from "@chatxbt-sdk/services/hooks/controllers/useChat";
+import useChat from "@chatxbt-sdk/services/hooks/schema-hooks/useChat";
 import { motion } from "framer-motion";
+import * as BsIcons from "react-icons/bs";
 
 const ChatInput = () => {
   const {
@@ -21,9 +22,10 @@ const ChatInput = () => {
           exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
         >
           {hints.map((data: any, index: any) => (
-            <p key={index} onClick={() => addHint(data.prompt)}>
-              {data.prompt}
-            </p>
+            <div id={style.card} key={index}>
+              <BsIcons.BsRobot id={style.icon} />
+              <p onClick={() => addHint(data.prompt)}>{data.prompt}</p>
+            </div>
           ))}
         </motion.div>
       )}
