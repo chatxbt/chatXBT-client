@@ -46,7 +46,7 @@ const ChatBoxHeader = () => {
             ))}
           </div>
           <div className={style.buttons}>
-            <button id={style.first}>Integrate protocolly</button>
+            <button id={style.first}>Integrate protocol</button>
             {visibleAddress && (
               <button
                 id={style.second}
