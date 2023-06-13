@@ -5,6 +5,7 @@ import { handleRefs, promptData } from "@chatxbt-sdk/utils";
 
 const useChatSchema = () => {
     const [message, setMessage] = useChatStore((state) => [state.chatMessage, state.updateMessage]);
+    const messageHolder = useChatStore((state) => state.messageHolder);
     const preview = useChatStore((state) => state.preview);
     const submit = useChatStore((state) => state.sendMessage);
     const messages = useChatStore((state) => state.messages);
@@ -32,9 +33,12 @@ const useChatSchema = () => {
         e.preventDefault();
         if (!message.length) return;
         submit(message);
-        const result = await xbtResolve(message);
-        sendResponse(result);
     };
+
+    const connectResolver = async () => {
+        const result = await xbtResolve(messageHolder);
+        sendResponse(result);
+    }
 
     const hints = promptData.default.AIPrompts
         .filter((word) => {
@@ -62,7 +66,9 @@ const useChatSchema = () => {
             botResponse,
             resetMessage,
             setPreview,
-            addHint
+            addHint,
+            xbtResolve,
+            connectResolver
         }
     }
 }
