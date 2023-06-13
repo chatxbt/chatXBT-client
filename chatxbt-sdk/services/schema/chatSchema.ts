@@ -1,7 +1,7 @@
 import { useChatStore } from "@chatxbt-sdk/store/zustand/chat";
 import { useRef } from "react";
 import { useChatResolver } from "../hooks";
-import { promptData } from "@chatxbt-sdk/utils";
+import { handleRefs, promptData } from "@chatxbt-sdk/utils";
 
 const useChatSchema = () => {
     const [message, setMessage] = useChatStore((state) => [state.chatMessage, state.updateMessage]);
@@ -14,6 +14,8 @@ const useChatSchema = () => {
     const resetMessage = useChatStore((state) => state.resetMessage);
     const setPreview = useChatStore((state) => state.setPreview);
 
+    const ref = useRef<null | HTMLDivElement>(null);
+    const chatInputRef = useRef<null | HTMLInputElement>(null);
 
     const { xbtResolve } = useChatResolver();
 
@@ -23,6 +25,7 @@ const useChatSchema = () => {
 
     const addHint = (param: any) => {
         setMessage(param);
+        handleRefs.default().handleChatInputFocus(chatInputRef);
     }
 
     const sendMessage = async (e: { preventDefault: () => void }) => {
@@ -32,8 +35,6 @@ const useChatSchema = () => {
         const result = await xbtResolve(message);
         sendResponse(result);
     };
-
-    const ref = useRef<null | HTMLDivElement>(null);
 
     const hints = promptData.default.AIPrompts
         .filter((word) => {
@@ -49,6 +50,7 @@ const useChatSchema = () => {
             messages,
             status,
             ref,
+            chatInputRef,
             botReply,
             hints
         },

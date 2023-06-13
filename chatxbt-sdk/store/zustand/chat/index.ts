@@ -18,14 +18,13 @@ export const useChatStore = create<ChatStore>()(
                 chatData: null,
                 botReply: '',
                 updateMessage: (chatMessage) => {
-                    set({ preview: false });
                     set({ status: 'User typing...' });
                     set(() => ({ chatMessage: chatMessage }))
                 },
                 sendMessage: (chatMessage: any) => {
                     let chatId = generateId.default();
                     const userDp = '/images/chat/user.png';
-
+                    set({ preview: false });
                     set((state) => ({
                         messages: [...state.messages,
                         { dp: userDp, from: 'user', id: chatId, message: chatMessage }], chatMessage: '', status: 'Done'

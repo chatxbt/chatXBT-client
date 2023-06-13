@@ -1,4 +1,4 @@
-import { scrollToNewChat } from "@chatxbt-sdk/utils";
+import { handleRefs } from "@chatxbt-sdk/utils";
 import { useEffect } from "react";
 import { chatSchema } from "../../schema";
 
@@ -16,9 +16,9 @@ const useChat = () => {
 
     useEffect(() => {
         if (status === 'Done') {
-            scrollToNewChat.default(ref);
+            handleRefs.default().scrollToLastChat(ref);
             let func = setTimeout(() => {
-                resetMessage()
+                resetMessage();
             }, 2000);
 
             return () => clearTimeout(func);
@@ -26,7 +26,7 @@ const useChat = () => {
     }, [status]);
 
     useEffect(() => {
-        status === '' && scrollToNewChat.default(ref);
+        status === '' && handleRefs.default().scrollToLastChat(ref);
     }, [status]);
 
     return chatServices;
