@@ -27,7 +27,7 @@ const useChat = () => {
     }, [status]);
 
     useEffect(() => {
-        status === '' && handleRefs.default().scrollToLastChat(ref);
+        handleRefs.default().scrollToLastChat(ref);
     }, [status]);
 
     return chatServices;
