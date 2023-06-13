@@ -11,7 +11,7 @@
     bottom: 0;
     z-index: 5;
     display: flex;
-    background: linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 1));
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
 
     .liveSearchDiv {
 
@@ -208,7 +208,8 @@
     .sendAssetModal {
         width: 35%;
         max-height: 80%;
-        background: linear-gradient(180deg, rgba(205, 207, 255, 0.08) 0%, rgba(205, 207, 255, 0.05) 100%);
+        // background: linear-gradient(180deg, rgba(205, 207, 255, 0.08) 0%, rgba(205, 207, 255, 0.05) 100%);
+        background: #000;
         border: 0.5px solid rgba(255, 255, 255, 0.17);
         border-radius: 10px;
         margin: auto;
@@ -423,7 +424,8 @@
     .receiveAssetModal {
         width: 35%;
         max-height: 80%;
-        background: linear-gradient(180deg, rgba(205, 207, 255, 0.08) 0%, rgba(205, 207, 255, 0.05) 100%);
+        // background: linear-gradient(180deg, rgba(205, 207, 255, 0.08) 0%, rgba(205, 207, 255, 0.05) 100%);
+        background: #000;
         border: 0.5px solid rgba(255, 255, 255, 0.17);
         border-radius: 10px;
         margin: auto;
@@ -526,7 +528,8 @@
     .swapAssetModal {
         width: 35%;
         max-height: 80%;
-        background: linear-gradient(180deg, rgba(205, 207, 255, 0.08) 0%, rgba(205, 207, 255, 0.05) 100%);
+        // background: linear-gradient(180deg, rgba(205, 207, 255, 0.08) 0%, rgba(205, 207, 255, 0.05) 100%);
+        background: #000;
         border: 0.5px solid rgba(255, 255, 255, 0.17);
         border-radius: 10px;
         margin: auto;
