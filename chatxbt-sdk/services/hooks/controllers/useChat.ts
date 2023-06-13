@@ -6,9 +6,13 @@ const useChat = () => {
     const chatServices = chatSchema.default();
 
     const {
-        constants: { status, ref },
-        functions: { resetMessage }
+        constants: { status, ref, messages },
+        functions: { resetMessage, setPreview }
     } = chatServices;
+
+    useEffect(() => {
+        messages.length > 0 && setPreview(false);
+    }, [messages]);
 
     useEffect(() => {
         if (status === 'Done') {

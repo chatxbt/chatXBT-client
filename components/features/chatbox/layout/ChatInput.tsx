@@ -6,12 +6,20 @@ import useChat from "@chatxbt-sdk/services/hooks/controllers/useChat";
 
 const ChatInput = () => {
   const {
-    constants: { message },
-    functions: { setMessage, sendMessage },
+    constants: { message, hints },
+    functions: { setMessage, sendMessage, addHint },
   } = useChat();
 
   return (
     <div className={style.chatInput}>
+      {hints.length > 0 && (
+        <div className={style.hints}>
+          {hints.map((data: any, index: any) => (
+              <p key={index} onClick={() => addHint(data.keyword)}>{data.keyword}</p>
+            ))}
+        </div>
+      )}
+
       <form>
         <div className={classInit.addConClass(style.con)}>
           <input

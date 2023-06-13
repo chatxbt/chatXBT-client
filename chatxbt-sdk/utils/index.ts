@@ -9,3 +9,4 @@ export * as hideBalance from './hide-user-balance';
 export * as buttonHandler from './wallet-buttons-handler';
 export * as multiStep from './multi-step';
 export * as liveSearch from './live-search';
+export * as keywords from './keywords';
