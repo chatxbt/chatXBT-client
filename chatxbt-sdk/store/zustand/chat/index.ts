@@ -12,14 +12,15 @@ export const useChatStore = create<ChatStore>()(
         persist(
             (set) => ({
                 chatMessage: '',
+                messageHolder: '',
                 status: '',
                 messages: [],
                 preview: true,
                 chatData: null,
                 botReply: '',
                 updateMessage: (chatMessage) => {
-                    set({ status: 'User typing...' });
-                    set(() => ({ chatMessage: chatMessage }))
+                    set({ status: 'Updating' });
+                    set(() => ({ chatMessage: chatMessage, messageHolder: chatMessage }))
                 },
                 sendMessage: (chatMessage: any) => {
                     let chatId = generateId.default();
@@ -27,14 +28,14 @@ export const useChatStore = create<ChatStore>()(
                     set({ preview: false });
                     set((state) => ({
                         messages: [...state.messages,
-                        { dp: userDp, from: 'user', id: chatId, message: chatMessage }], chatMessage: '', status: 'Done'
+                        { dp: userDp, from: 'user', id: chatId, message: chatMessage }], chatMessage: '', status: 'Sent'
                     }));
                 },
                 generateResponse: (message: string) => {
                     let chatId = generateId.default();
                     set((state) => ({
                         messages: [...state.messages,
-                        { dp: botDisplayImage.default, from: 'bot', id: chatId, message }], status: ''
+                        { dp: botDisplayImage.default, from: 'bot', id: chatId, message }], status: 'Done', messageHolder: ''
                     }));
                 },
 

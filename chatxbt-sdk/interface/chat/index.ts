@@ -4,6 +4,7 @@ export type userState = {
 
 export type ChatStore = {
     chatMessage: any;
+    messageHolder: any;
     status: string;
     messages: any;
     chatData: any;

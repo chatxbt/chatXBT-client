@@ -7,7 +7,7 @@ const useChat = () => {
 
     const {
         constants: { status, ref, messages },
-        functions: { resetMessage, setPreview }
+        functions: { resetMessage, setPreview, connectResolver }
     } = chatServices;
 
     useEffect(() => {
@@ -15,9 +15,10 @@ const useChat = () => {
     }, [messages]);
 
     useEffect(() => {
-        if (status === 'Done') {
+        if (status === 'Sent') {
             handleRefs.default().scrollToLastChat(ref);
             let func = setTimeout(() => {
+                connectResolver();
                 resetMessage();
             }, 2000);
 
