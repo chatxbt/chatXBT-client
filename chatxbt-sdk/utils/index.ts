@@ -10,3 +10,4 @@ export * as multiStep from './multi-step';
 export * as liveSearch from './live-search';
 export * as promptData from './prompt';
 export * as handleRefs from './refs';
+export * as scrollToBottom from './scroll-to-bottom';

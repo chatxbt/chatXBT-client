@@ -46,6 +46,10 @@ const useChatSchema = () => {
             const keyword = word.prompt.toLowerCase();
             return typedCommand && keyword.startsWith(typedCommand) && keyword !== typedCommand;
         }).slice(0, 10);
+    
+    const scrollDown = () => {
+        handleRefs.default().scrollToLastChat(ref);
+    };
 
     return {
         constants: {
@@ -68,7 +72,8 @@ const useChatSchema = () => {
             setPreview,
             addHint,
             xbtResolve,
-            connectResolver
+            connectResolver,
+            scrollDown
         }
     }
 }

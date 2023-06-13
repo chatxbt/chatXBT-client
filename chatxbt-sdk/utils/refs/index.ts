@@ -2,7 +2,7 @@ export default () => {
 
     const scrollToLastChat = (ref: any) => {
         if (ref.current != null) {
-            ref.current?.lastElementChild?.scrollIntoView();
+            ref.current?.lastElementChild?.scrollIntoView({ behavior: 'smooth' });
         }
     };
 

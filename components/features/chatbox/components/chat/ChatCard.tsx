@@ -1,7 +1,6 @@
 import React from "react";
 import style from "@styles/chat/chat.module.scss";
 import { motion } from "framer-motion";
-import { botDisplayImage } from "@chatxbt-sdk/utils/assets";
 
 export const UserChatCard = ({ dp, from, id, message }: any) => {
   return (

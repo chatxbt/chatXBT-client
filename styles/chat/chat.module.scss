@@ -248,4 +248,26 @@
 
     }
 
+    .down{
+        position: fixed;
+        right: 20px;
+        bottom: 100px;
+        height: 40px;
+        width: 40px;
+        border-radius: 50%;
+        color: #fff;
+        background: transparent;
+        border: 1px solid #fff;
+        font-size: 1.5rem;
+
+        &:hover{
+            background: #fff;
+            color: #000;
+        }
+
+        @include responsivePro(mobile){
+            background: #263461;
+        }
+    }
+
 }
