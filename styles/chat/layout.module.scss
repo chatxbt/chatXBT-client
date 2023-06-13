@@ -461,7 +461,10 @@
                 height: auto;
                 width: 85%;
                 padding: 15px 30px;
-                background: linear-gradient(180deg, #263461 0%, #263461 100%);
+                // background: linear-gradient(180deg, #263461 0%, #263461 100%);
+                // background: #12397A;
+                background: #0e2053;
+                border: 2px solid rgba(18, 52, 121, 0.2);
                 border-radius: 8px;
                 display: flex;
                 flex-direction: column;
@@ -470,9 +473,10 @@
                 text-align: left;
 
                 p {
-                    font-size: 16px;
+                    font-size: 15px;
                     margin: 10px 0px 10px;
                     cursor: pointer;
+                    font-family: $primaryFontLight;
 
                     &:hover {
                         opacity: 0.7;
