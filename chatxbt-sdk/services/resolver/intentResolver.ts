@@ -6,13 +6,18 @@ export class IntentHandler {
   async handleWalletCreate(password = 'Password-From-User') {
     const wallet = ethers.Wallet.createRandom();
     return {
-      type: "",
+      type: "create-wallet",
       message: `
 address: ${wallet.address}\n\n\n\n
 mnemonic: ${wallet.mnemonic.phrase}\n\n\n\n\n
 \n\n\n
 Please keep these phrases safe, we cannot recover them for you if you lose them.
-`
+`,
+
+    metadata: {
+      ...wallet,
+      mnemonic: wallet.mnemonic.phrase
+    }
     }
 
   }
@@ -56,7 +61,13 @@ Please keep these phrases safe, we cannot recover them for you if you lose them.
       )
       await tx.wait();
     }
-    return { type: 'tx', message: tx.hash };
+    return { 
+      type: 'swap', 
+      message: tx.hash, 
+      metadata: {
+        ...tx
+      }
+    };
   }
   async sellTokenForEth(from: 'usdt', amountIn: string, dex: 'uniswap', provider: string) {
     const router = routers[dex]
@@ -85,13 +96,20 @@ Please keep these phrases safe, we cannot recover them for you if you lose them.
       )
       await tx.wait();
     }
-    return { type: 'tx', message: tx.hash };
+    return { 
+      type: 'swap', 
+      message: tx.hash,
+      metadata: {
+        ...tx
+      }
+    };
   }
 
   async giveTokenSpendApproval(account: string, token: 'usdt', provider: string) {
     let signer = null;
     let address = ""
     let value = "0";
+    let tx;
     if (provider === 'metamask') {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const accounts = await window.ethereum.request({
@@ -108,10 +126,16 @@ Please keep these phrases safe, we cannot recover them for you if you lose them.
       value = Number(ethers.utils.formatUnits(allowance, decimals)).toFixed(4);
       // value = Number(ethers.utils.formatUnits(allowance, decimals)).toFixed(4);
       if (value === "0") {
-        const tx = await contract.approve(account, ethers.constants.MaxUint256)
+        tx = await contract.approve(account, ethers.constants.MaxUint256)
         await tx.wait();
       }
     }
-    return { type: '', message: value };
+    return { 
+      type: 'approval', 
+      message: value,
+      metadata: {
+        ...tx
+      }
+    };
   }
 }

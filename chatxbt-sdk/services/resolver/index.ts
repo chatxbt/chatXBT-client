@@ -99,7 +99,7 @@ export class ChatXBTResolver {
       const response = await this.internalResolver.giveTokenSpendApproval(to, token, provider)
       return response;
     }
-    return { type: '', message: await this.useDefaultReply(message) };
+    return { type: 'default-text', message: await this.useDefaultReply(message) };
   }
 
   //   private async handleWalletCreate(password = 'Password-From-User') {
