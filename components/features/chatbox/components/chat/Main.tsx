@@ -30,7 +30,7 @@ const Main = () => {
             from={data.from}
           />
         ))}
-      {status === "Sent" && <BotIndicator />}
+      {status === "Pending" && <BotIndicator />}
     </div>
   );
 };

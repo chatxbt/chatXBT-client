@@ -7,24 +7,12 @@ const useChat = () => {
 
     const {
         constants: { status, ref, messages },
-        functions: { resetMessage, setPreview, connectResolver }
+        functions: { setPreview }
     } = chatServices;
 
     useEffect(() => {
         messages.length > 0 && setPreview(false);
     }, [messages]);
-
-    useEffect(() => {
-        if (status === 'Sent') {
-            handleRefs.default().scrollToLastChat(ref);
-            let func = setTimeout(() => {
-                connectResolver();
-                resetMessage();
-            }, 2000);
-
-            return () => clearTimeout(func);
-        };
-    }, [status]);
 
     useEffect(() => {
         handleRefs.default().scrollToLastChat(ref);

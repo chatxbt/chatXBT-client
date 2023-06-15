@@ -19,7 +19,6 @@ export const useChatStore = create<ChatStore>()(
                 chatData: null,
                 botReply: '',
                 updateMessage: (chatMessage) => {
-                    set({ status: 'Updating' });
                     set(() => ({ chatMessage: chatMessage, messageHolder: chatMessage }))
                 },
                 sendMessage: (chatMessage: any) => {
@@ -37,6 +36,10 @@ export const useChatStore = create<ChatStore>()(
                         messages: [...state.messages,
                         { dp: botDisplayImage.default, from: 'bot', id: chatId, message }], status: 'Done', messageHolder: ''
                     }));
+                },
+
+                awaitMessage: () => {
+                    set({ status: 'Pending' })
                 },
 
                 resetMessage: () => {

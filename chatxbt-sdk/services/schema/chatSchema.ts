@@ -14,6 +14,7 @@ const useChatSchema = () => {
     const botReply = useChatStore((state) => state.botReply);
     const resetMessage = useChatStore((state) => state.resetMessage);
     const setPreview = useChatStore((state) => state.setPreview);
+    const awaitMessage = useChatStore((state) => state.awaitMessage);
 
     const ref = useRef<null | HTMLDivElement>(null);
     const chatInputRef = useRef<null | HTMLInputElement>(null);
@@ -33,6 +34,8 @@ const useChatSchema = () => {
         e.preventDefault();
         if (!message.length) return;
         submit(message);
+        connectResolver();
+        awaitMessage();
     };
 
     const connectResolver = async () => {
