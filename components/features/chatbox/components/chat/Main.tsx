@@ -4,6 +4,7 @@ import Preview from "./Preview";
 import { BotIndicator, UserChatCard } from "./ChatCard";
 import useChat from "@chatxbt-sdk/services/hooks/schema-hooks/useChat";
 import * as MdIcons from "react-icons/md";
+import { actionTypes } from "@chatxbt-sdk/config/constants";
 
 const Main = () => {
   const {
@@ -22,15 +23,9 @@ const Main = () => {
       {!preview &&
         messages.length > 0 &&
         messages?.map((data: any, index: any) => (
-          <UserChatCard
-            key={index}
-            dp={data.dp}
-            id={data.id}
-            message={data.message}
-            from={data.from}
-          />
+          <UserChatCard key={index} {...data} />
         ))}
-      {status === "Pending" && <BotIndicator />}
+      {status === actionTypes.PENDING && <BotIndicator />}
     </div>
   );
 };

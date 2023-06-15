@@ -248,7 +248,86 @@
 
     }
 
-    .down{
+    .chatCardBotWallet {
+        margin-top: 10px;
+        width: 90%;
+        display: flex;
+        justify-content: left;
+        align-items: flex-start;
+
+        @include responsivePro(mobile) {
+            width: 100%;
+        }
+
+        img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .message {
+            width: 362px;
+            padding: 15px 14px;
+            background: linear-gradient(180deg, rgba(94, 148, 255, 0.16) 0%, rgba(84, 142, 254, 0.1) 100%);
+            border-radius: 8px;
+            padding: 15px 20px;
+
+            @include responsivePro(mobile) {
+                width: 89%;
+            }
+
+
+            #card {
+                background: linear-gradient(180deg, rgba(205, 207, 255, 0.08) 0%, rgba(205, 207, 255, 0.05) 100%);
+                border-radius: 3px;
+                font-family: $primaryFontLight;
+                width: 100%;
+                border-radius: 8px;
+                padding: 15px;
+                margin: 10px auto;
+
+                h4 {
+                    font-size: .9rem;
+                    font-weight: 700;
+                    margin-bottom: 10px;
+                }
+
+                p {
+                    font-size: .7rem;
+                    margin: 0px;
+                    @include responsivePro(mobile) {
+                        width: 100%;
+                        word-wrap : break-word;
+                    }
+                }
+
+                #mne {
+                    display: flex;
+                    flex-wrap: wrap;
+
+                    span {
+                        border: 0.5px solid #414044;
+                        margin-right: 3px;
+                        margin-bottom: 3px;
+                        font-size: .7rem;
+                        border-radius: 8px;
+                        padding: 5px 10px;
+
+                    }
+                }
+            }
+
+            h6 {
+                font-size: .7rem;
+                margin-bottom: 10px;
+            }
+
+        }
+
+    }
+
+    .down {
         position: fixed;
         right: 20px;
         bottom: 100px;
@@ -260,12 +339,12 @@
         border: 1px solid #fff;
         font-size: 1.5rem;
 
-        &:hover{
+        &:hover {
             background: #fff;
             color: #000;
         }
 
-        @include responsivePro(mobile){
+        @include responsivePro(mobile) {
             background: #263461;
         }
     }

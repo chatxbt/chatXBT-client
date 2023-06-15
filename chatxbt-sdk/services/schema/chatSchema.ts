@@ -21,7 +21,7 @@ const useChatSchema = () => {
 
     const { xbtResolve } = useChatResolver();
 
-    const sendResponse = (message: string) => {
+    const sendResponse = (message: any) => {
         botResponse(message)
     }
 

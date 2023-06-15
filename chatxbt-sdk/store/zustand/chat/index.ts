@@ -1,3 +1,4 @@
+import { actionTypes } from "@chatxbt-sdk/config/constants";
 import { ChatStore } from "@chatxbt-sdk/interface/chat";
 import { botInit, generateId } from "@chatxbt-sdk/utils";
 import { botDisplayImage } from "@chatxbt-sdk/utils/assets";
@@ -19,7 +20,10 @@ export const useChatStore = create<ChatStore>()(
                 chatData: null,
                 botReply: '',
                 updateMessage: (chatMessage) => {
-                    set(() => ({ chatMessage: chatMessage, messageHolder: chatMessage }))
+                    set(() => ({
+                        chatMessage: chatMessage,
+                        messageHolder: chatMessage
+                    }))
                 },
                 sendMessage: (chatMessage: any) => {
                     let chatId = generateId.default();
@@ -27,19 +31,31 @@ export const useChatStore = create<ChatStore>()(
                     set({ preview: false });
                     set((state) => ({
                         messages: [...state.messages,
-                        { dp: userDp, from: 'user', id: chatId, message: chatMessage }], chatMessage: '', status: 'Sent'
+                        {
+                            dp: userDp,
+                            from: 'user',
+                            id: chatId,
+                            message: chatMessage
+                        }], chatMessage: '', status: actionTypes.SENT
                     }));
                 },
-                generateResponse: (message: string) => {
+                generateResponse: (messageData: any) => {
                     let chatId = generateId.default();
                     set((state) => ({
                         messages: [...state.messages,
-                        { dp: botDisplayImage.default, from: 'bot', id: chatId, message }], status: 'Done', messageHolder: ''
+                        {
+                            dp: botDisplayImage.default,
+                            from: 'bot',
+                            id: chatId,
+                            type: messageData.type,
+                            message: messageData.message,
+                            metadata: messageData?.metadata,
+                        }], status: actionTypes.DONE, messageHolder: ''
                     }));
                 },
 
                 awaitMessage: () => {
-                    set({ status: 'Pending' })
+                    set({ status: actionTypes.PENDING })
                 },
 
                 resetMessage: () => {
