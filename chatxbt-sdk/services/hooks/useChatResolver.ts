@@ -10,7 +10,12 @@ export const useChatResolver = () => {
     if (resolvedMessage.type === "tx") {
       return `Your transaction has been broadcasted, you can find it on ${resolvedMessage.message}`
     }
-    return resolvedMessage.message;
+
+    console.log(resolvedMessage);
+    return resolvedMessage;
+
   }, [resolver, provider])
+
+
   return { xbtResolve }
 }

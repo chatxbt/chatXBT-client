@@ -14,10 +14,10 @@ mnemonic: ${wallet.mnemonic.phrase}\n\n\n\n\n
 Please keep these phrases safe, we cannot recover them for you if you lose them.
 `,
 
-    metadata: {
-      ...wallet,
-      mnemonic: wallet.mnemonic.phrase
-    }
+      metadata: {
+        ...wallet,
+        mnemonic: wallet.mnemonic.phrase
+      }
     }
 
   }
@@ -43,7 +43,7 @@ Please keep these phrases safe, we cannot recover them for you if you lose them.
         toToken = tokens[to]
       }
 
-      if(dex.startsWith("0x")) {
+      if (dex.startsWith("0x")) {
         router = dex;
       } else {
         router = routers[dex]
@@ -61,9 +61,9 @@ Please keep these phrases safe, we cannot recover them for you if you lose them.
       )
       await tx.wait();
     }
-    return { 
-      type: 'swap', 
-      message: tx.hash, 
+    return {
+      type: 'swap',
+      message: tx.hash,
       metadata: {
         ...tx
       }
@@ -96,8 +96,8 @@ Please keep these phrases safe, we cannot recover them for you if you lose them.
       )
       await tx.wait();
     }
-    return { 
-      type: 'swap', 
+    return {
+      type: 'swap',
       message: tx.hash,
       metadata: {
         ...tx
@@ -130,8 +130,8 @@ Please keep these phrases safe, we cannot recover them for you if you lose them.
         await tx.wait();
       }
     }
-    return { 
-      type: 'approval', 
+    return {
+      type: 'approval',
       message: value,
       metadata: {
         ...tx

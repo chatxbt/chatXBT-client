@@ -122,7 +122,6 @@ export class ChatXBTResolver {
     const { data } = await axios.post(`${envConfig.default.aiChatBotUrl}/chatai/query-ai`, {
       text: message
     })
-    console.log('data', data);
     return data?.data || this.defaultRelies[Math.floor(Math.random() * this.defaultRelies.length)];
   }
 
