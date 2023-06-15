@@ -5,6 +5,10 @@ export const createWalletIntents = [
   },
   {
     match:
+      '(create|generate|make)  (new|fresh) wallet for me (now|immediately)',
+  },
+  {
+    match:
       'i (want|need) you to (create|generate|make) (new|fresh) wallet for me',
   },
   {

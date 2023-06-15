@@ -1,6 +1,8 @@
 import { ethers } from 'ethers'
 import { createWalletIntents, swapEthForToken, swapTokenForEth, approveTokenSpend } from './intents'
 import { IntentHandler } from './intentResolver';
+import axios from 'axios';
+import { envConfig } from '../../config'
 
 export class ChatXBTResolver {
   private nlp = require('compromise');
@@ -97,7 +99,7 @@ export class ChatXBTResolver {
       const response = await this.internalResolver.giveTokenSpendApproval(to, token, provider)
       return response;
     }
-    return { type: '', message: this.useDefaultReply() };
+    return { type: '', message: await this.useDefaultReply(message) };
   }
 
   //   private async handleWalletCreate(password = 'Password-From-User') {
@@ -116,8 +118,12 @@ export class ChatXBTResolver {
   // `
   // }
 
-  private useDefaultReply() {
-    return this.defaultRelies[Math.floor(Math.random() * this.defaultRelies.length)];
+  private useDefaultReply = async (message: string) => {
+    const { data } = await axios.post(`${envConfig.default.aiChatBotUrl}/chatai/query-ai`, {
+      text: message
+    })
+    console.log('data', data);
+    return data?.data || this.defaultRelies[Math.floor(Math.random() * this.defaultRelies.length)];
   }
 
   isEth(value: string) {
