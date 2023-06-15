@@ -1,0 +1,64 @@
+{
+    "AIPrompts": [
+        {
+            "prompt": "create wallet"
+        },
+        {
+            "prompt": "swap coin"
+        },
+        {
+            "prompt": "add #Value (eth|ethereum) liquidity to (usdt|dai) on (uniswap|pancake)"
+        },
+        {
+            "prompt": "give approval to (uniswap) to spend #Value of (usdt|dai)"
+        },
+        {
+            "prompt": "grant (#AtMention|#Noun) approval to spend up to #Value of (usdt|dai)"
+        },
+        {
+            "prompt": "make new wallet for me"
+        },
+        {
+            "prompt": "i want to create a new wallet"
+        },
+        {
+            "prompt": "generate my wallet"
+        },
+        {
+            "prompt": "create new wallet"
+        },
+        {
+            "prompt": "i (want|need) you to (create|generate|make) (new|fresh) wallet for me"
+        },
+        {
+            "prompt": "if i {don't} have wallet before (create|generate|make) one for me"
+        },
+        {
+            "prompt": "(swap|convert|exchange|buy|sell) (eth|ethereum) for #Value (usdt|dai) on (uniswap|pancake) (immediately|now|instantly)"
+        },
+        {
+            "prompt": "(swap|convert|exchange|buy|sell) #Value (eth|ethereum) (for|to) (usdt|dai) on (uniswap|pancake) (immediately|now|instantly)"
+        },
+        {
+            "prompt": "i (want|need) to (swap|convert|exchange|buy|sell) (eth|ethereum) for #Value (usdt|dai) on (uniswap|pancake)"
+        },
+        {
+            "prompt": "{use} (uniswap|pancake) to (swap|convert|exchange|buy|sell) (eth|ethereum) to #Value (usdt|dai)"
+        },
+        {
+            "prompt": "buy (usdt|dai) on (uniswap|pancake) with #Value (eth|ethereum)"
+        },
+        {
+            "prompt": "buy (usdt|dai) with #Value (eth|ethereum) on (uniswap|pancake)"
+        },
+        {
+            "prompt": "buy (usdt|dai) #AtMention with #Value (eth|ethereum)"
+        },
+        {
+            "prompt": "sell #Value (usdt|dai) on (uniswap|pancake) for (eth|ethereum)"
+        },
+        {
+            "prompt": "give approval to (uniswap) to spend #Value of (usdt|dai)"
+        }
+    ]
+}

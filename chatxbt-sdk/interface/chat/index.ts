@@ -4,6 +4,7 @@ export type userState = {
 
 export type ChatStore = {
     chatMessage: any;
+    messageHolder: any;
     status: string;
     messages: any;
     chatData: any;
@@ -13,4 +14,5 @@ export type ChatStore = {
     sendMessage: (chatMessage: userState['message']) => void;
     generateResponse: (message: string) => void;
     resetMessage: () => void;
+    setPreview: (param: boolean) => void;
 }
