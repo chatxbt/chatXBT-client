@@ -4,12 +4,13 @@ import { motion } from "framer-motion";
 // import Logo from "../../shared/logo/Logo";
 import Link from "next/link";
 import * as BsIcons from "react-icons/bs";
-import { useConnection } from "@chatxbt-sdk/services/hooks";
+import { auth } from "@chatxbt-sdk/services/auth";
 import { useConnectionStore } from "@chatxbt-sdk/store/zustand/connection";
 
 const MetaAuth = ({ handleStart }: any) => {
   const [step, setStep] = useState<number>(0);
-  const { connectMetamask } = useConnection();
+  const authService = auth({})
+  const { connectMetamask } = authService.action.walletSignIn();
   const { visibleAddress } = useConnectionStore();
 
   const nextStep = async () => {

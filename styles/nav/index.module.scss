@@ -93,6 +93,10 @@
                 font-size: 16px;
                 text-align: center;
                 color: #8D8C8C;
+
+                @include responsivePro(mobile) {
+                    display: none;
+                }
             }
 
             #h2 {
@@ -106,6 +110,10 @@
 
                 #icon {
                     color: #1C4DF0;
+                }
+
+                @include responsivePro(mobile) {
+                    display: flex;
                 }
             }
 

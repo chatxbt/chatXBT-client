@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import Script from "next/script";
 import TagManager from 'react-gtm-module';
-import { envConfig } from "@chatxbt-sdk/config";
+import { credentials } from "@chatxbt-sdk/config";
 
 const GoogleAnalytics = () => {
-    const { googleAnalytics, googleTagManager } = envConfig.default;
+    const { googleAnalytics, googleTagManager } = credentials.google;
 
     useEffect(() => {
         TagManager.initialize({ gtmId: `${googleTagManager}` });

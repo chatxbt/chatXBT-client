@@ -1,6 +1,11 @@
 @font-face {
     font-family: Inter;
-    src: url(../../public/fonts/font1/static/Inter-Medium.ttf);
+    src: url(../../public/fonts/font1/static/Inter-Regular.ttf);
+}
+
+@font-face {
+    font-family: Inter Light;
+    src: url(../../public/fonts/font1/static/Inter-Light.ttf);
 }
 
 @font-face {
@@ -37,6 +42,7 @@
 
 
 $primaryFont: Inter;
+$primaryFontLight: Inter Light;
 // $headingFont: Quicksand Bold;
 // $headingFont2: Avenir;
 
