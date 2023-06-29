@@ -1,5 +1,5 @@
+import ActivityComponent from '@components/features/chatbox/components/activity'
 import React from 'react'
-import ActivityComponent from '../../../components/features/chatbox/components/activity'
 
 const ActivityPage = () => {
   return (

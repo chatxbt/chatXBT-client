@@ -5,7 +5,6 @@ import { aiMessageTypes } from "@chatxbt-sdk/config/constants";
 
 export const UserChatCard = (props: any) => {
   const { dp, from, id, message, type, metadata } = props;
-
   return (
     <>
       {from === "user" && (

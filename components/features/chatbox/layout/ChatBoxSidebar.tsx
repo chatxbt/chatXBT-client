@@ -3,10 +3,24 @@ import { useRouter } from "next/router";
 import style from "@styles/chat/layout.module.scss";
 import { chatLinks, socials } from "./data";
 import LogoTwo from "@components/shared/logo/LogoTwo";
+import { useEffect, useState } from "react";
 
 const ChatBoxSidebar = () => {
   const router = useRouter();
-  const handleClick = (url: any) => router.push(url);
+  const [active, setActive] = useState('');
+  const checkRoutePath = (href: any) => {
+    router.asPath === href && setActive(href);
+  };
+  const handleClick = (url: any) => {
+    router.push(url);
+    checkRoutePath(url);
+  };
+
+  useEffect(() => {
+    let url = router.asPath;
+    checkRoutePath(url);
+  }, []);
+
   return (
     <div className={style.sidebar}>
       <div className="container" id={style.con}>
@@ -15,12 +29,11 @@ const ChatBoxSidebar = () => {
         </div>
         <ul className={`navbar-nav`}>
           {chatLinks.map((data: any) => {
-            const active = router.asPath === data.href;
             return (
               <li className={`nav-item`} key={data.title}>
                 <button
                   onClick={() => handleClick(data.href)}
-                  className={active ? style.active : ""}
+                  className={active === data.href ? style.active : ""}
                 >
                   <i>{data.icon}</i>
                   <p>{data.title}</p>

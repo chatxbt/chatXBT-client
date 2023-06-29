@@ -1,1 +1,1 @@
-export * as store from './zustand';
+export * as zustandStore from './zustand';

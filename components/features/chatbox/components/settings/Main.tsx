@@ -1,4 +1,4 @@
-import useWalletTabControl from "@chatxbt-sdk/services/hooks/ui-behaviour/useWalletTabControl";
+import { useWalletTabControl } from "@chatxbt-sdk/hooks";
 import React from "react";
 import TabComponent from "../wallet/tab/TabComponent";
 import style from "@styles/chat/settings.module.scss";
