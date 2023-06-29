@@ -2,15 +2,15 @@ import React, { useRef } from "react";
 import style from "@styles/chat/chat.module.scss";
 import Preview from "./Preview";
 import { BotIndicator, UserChatCard } from "./ChatCard";
-import useChat from "@chatxbt-sdk/services/hooks/schema-hooks/useChat";
 import * as MdIcons from "react-icons/md";
 import { actionTypes } from "@chatxbt-sdk/config/constants";
+import { useChat } from "@chatxbt-sdk/hooks";
 
-const Main = () => {
+const Main = (props: any) => {
   const {
-    constants: { preview, messages, status, ref },
-    functions: { scrollDown },
-  } = useChat();
+    store: { preview, messages, status, ref },
+    action: { scrollDown },
+  } = useChat(props);
 
   return (
     <div className={style.chatCon} ref={ref}>
@@ -31,3 +31,4 @@ const Main = () => {
 };
 
 export default Main;
+// export default (props: any) => <Main {...useChat(props)} />

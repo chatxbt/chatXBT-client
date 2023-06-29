@@ -1,5 +1,5 @@
 import { ConnectionStore } from "@chatxbt-sdk/interface/connection";
-import { etherUtils } from "@chatxbt-sdk/utils";
+import { toolkit } from "@chatxbt-sdk/utils";
 import { create } from "zustand";
 import { devtools, persist } from 'zustand/middleware'
 
@@ -15,19 +15,32 @@ export const useConnectionStore = create<ConnectionStore>()(
         address: "",
         provider: '',
         visibleAddress: "",
-        signMessage: (signature) => {
+        _hasHydrated: false,
+        signMessage: (signature: string) => {
           set({ signature })
         },
-        connect: (address, signature, provider) => {
-          set({ provider, address, signature, visibleAddress: etherUtils.ellipticAddress(address), connected: true })
+        connect: (address: string, signature: string, provider: string) => {
+          set({ provider, address, signature, visibleAddress: toolkit.ellipticAddress(address), connected: true })
         },
         disconnect: () => {
           set({ provider: '', address: "", signature: null, visibleAddress: "", connected: false });
           window.localStorage.removeItem(storageName);
-        }
+        },
+        setHasHydrated: (state: any) => {
+          set({
+            _hasHydrated: state,
+          });
+        },
       }),
       {
         name: storageName,
+        getStorage: () => localStorage,
+        partialize: (state: any) => ({
+          _hasHydrated: state._hasHydrated,
+        }),
+        onRehydrateStorage: () => (state) => {
+          state?.setHasHydrated(true);
+        },
       }
     )
   )

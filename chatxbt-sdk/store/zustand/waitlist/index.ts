@@ -1,9 +1,9 @@
 import { create } from "zustand";
-import { api, envConfig } from "../../../config";
+import { chatxbtConfig, chatxbtUtils } from "../../../../chatxbt-sdk";
 import { Store } from "../../../interface/waitlist";
 
 
-export const useStore = create<Store>((set) => ({
+export const useWaitlistStore = create<Store>((set) => ({
     email: '',
     message: '',
     error: '',
@@ -17,7 +17,7 @@ export const useStore = create<Store>((set) => ({
             loading: true
         });
 
-        await api.default().post('/waitlist/subscribe', { email, captcha }).then((res) => {
+        await chatxbtUtils.privateApiConnect().post(chatxbtConfig.domains.endpoints.postWaitlist, { email, captcha }).then((res) => {
             const { status, message, data } = res.data;
 
             if (status) {

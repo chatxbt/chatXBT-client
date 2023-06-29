@@ -5,7 +5,7 @@ import TabComponent from "./tab/TabComponent";
 import TabRenderer from "./tab/TabRenderer";
 import Assets from "./Assets";
 import Collections from "./Collections";
-import useWalletTabControl from "@chatxbt-sdk/services/hooks/ui-behaviour/useWalletTabControl";
+import { useWalletTabControl } from "@chatxbt-sdk/hooks";
 
 const Body = () => {
   let page = "wallet";

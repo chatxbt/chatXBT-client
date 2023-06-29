@@ -1,6 +1,6 @@
-import { actionTypes } from "@chatxbt-sdk/config/constants";
+import { actionTypes } from "@chatxbt-sdk/config";
 import { ChatStore } from "@chatxbt-sdk/interface/chat";
-import { botInit, generateId } from "@chatxbt-sdk/utils";
+import { botInit, toolkit } from "@chatxbt-sdk/utils";
 import { botDisplayImage } from "@chatxbt-sdk/utils/assets";
 import { create } from "zustand";
 import { createJSONStorage, persist, devtools } from 'zustand/middleware'
@@ -19,17 +19,17 @@ export const useChatStore = create<ChatStore>()(
                 preview: true,
                 chatData: null,
                 botReply: '',
-                updateMessage: (chatMessage) => {
+                updateMessage: (chatMessage: any) => {
                     set(() => ({
                         chatMessage: chatMessage,
                         messageHolder: chatMessage
                     }))
                 },
                 sendMessage: (chatMessage: any) => {
-                    let chatId = generateId.default();
+                    let chatId = toolkit.generateUUID();
                     const userDp = '/images/chat/user.png';
                     set({ preview: false });
-                    set((state) => ({
+                    set((state: { messages: any; }) => ({
                         messages: [...state.messages,
                         {
                             dp: userDp,
@@ -40,8 +40,8 @@ export const useChatStore = create<ChatStore>()(
                     }));
                 },
                 generateResponse: (messageData: any) => {
-                    let chatId = generateId.default();
-                    set((state) => ({
+                    let chatId = toolkit.generateUUID();
+                    set((state: { messages: any; }) => ({
                         messages: [...state.messages,
                         {
                             dp: botDisplayImage.default,
@@ -57,17 +57,27 @@ export const useChatStore = create<ChatStore>()(
                 awaitMessage: () => {
                     set({ status: actionTypes.PENDING })
                 },
-
                 resetMessage: () => {
                     set({ status: '' })
                 },
 
                 setPreview: (param: boolean) => {
                     set({ preview: param });
+                },
+                setHasHydrated: (state: any) => {
+                    set({
+                        _hasHydrated: state
+                    });
                 }
             }),
             {
-                name: chatStorage
+                name: chatStorage,
+                getStorage: () => localStorage,
+                partialize: (state) => ({
+                }),
+                onRehydrateStorage: () => (state: any) => {
+                    state?.setHasHydrated(true)
+                }
             }
         )
     )

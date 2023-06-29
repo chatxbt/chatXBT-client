@@ -2,16 +2,15 @@ import React from "react";
 import { classInit } from "@chatxbt-sdk/utils";
 import style from "@styles/chat/layout.module.scss";
 import * as IoIcons from "react-icons/io5";
-import useChat from "@chatxbt-sdk/services/hooks/schema-hooks/useChat";
+import { useChat } from "@chatxbt-sdk/hooks";
 import { motion } from "framer-motion";
 import * as BsIcons from "react-icons/bs";
 
-const ChatInput = () => {
+const ChatInput = (props: any) => {
   const {
-    constants: { message, hints, chatInputRef },
-    functions: { setMessage, sendMessage, addHint },
-  } = useChat();
-
+    store: { message, hints, chatInputRef },
+    action: { setMessage, sendMessage, addHint },
+  } = useChat(props);
   return (
     <div className={style.chatInput}>
       {hints.length > 0 && (
@@ -49,3 +48,4 @@ const ChatInput = () => {
 };
 
 export default ChatInput;
+// export default (props: any) => <ChatInput {...useChat(props)} />
