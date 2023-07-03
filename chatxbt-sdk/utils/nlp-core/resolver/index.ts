@@ -25,9 +25,11 @@ export class ChatXBTResolver {
     this.addresses.set('@uniswap', "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D");
     // this.addresses.set('uniswap', "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D");
     this.addresses.set('usdt', "0xD1Ca0b80b188Ad76955E05d36C20C597309aD5b8");
+
+    // load protocol and assets
   } 
 
-  private loadProtocols = () => {
+  private getProtocol = () => {
       try {
           
       } catch (error) {
@@ -35,7 +37,17 @@ export class ChatXBTResolver {
       }
   }
 
+  private getProtocolsAndAssets = () => {
+    try {
+      
+    } catch (error) {
+      
+    }
+  }
+
   private extractMessage = (message: string, intent: { match: string }[]) => {
+    // prepare intent
+
     const raw = this.nlp(message);
     let doc = raw.clone();
     doc.contractions().expand();
@@ -49,7 +61,7 @@ export class ChatXBTResolver {
   resolveMsg = async (message: string, provider: any) => {
     const isCreatingWallet = this.extractMessage(message, createWalletIntents);
     if (isCreatingWallet) {
-      const response = this.internalResolver.handleWalletCreate()
+      const response = await this.internalResolver.handleWalletCreate();
       return response
     }
 
