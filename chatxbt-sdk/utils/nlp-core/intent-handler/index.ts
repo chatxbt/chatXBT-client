@@ -11,6 +11,7 @@ export class IntentHandler {
   async handleWalletCreate(password = 'Password-From-User') {
     const wallet = ethers.Wallet.createRandom();
     return {
+      status: true,
       type: "create-wallet",
       message: `address: ${wallet.address}\n\n\n\nmnemonic: ${wallet.mnemonic.phrase}\n\n\n\n\n\n\n\nPlease keep these phrases safe, we cannot recover them for you if you lose them.`,
       metadata: {
@@ -60,6 +61,7 @@ export class IntentHandler {
       await tx.wait();
     }
     return { 
+      status: true,
       type: 'swap', 
       message: tx.hash, 
       metadata: {
@@ -95,6 +97,7 @@ export class IntentHandler {
       await tx.wait();
     }
     return { 
+      status: true,
       type: 'swap', 
       message: tx.hash,
       metadata: {
