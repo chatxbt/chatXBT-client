@@ -1,7 +1,7 @@
 import React from "react";
 import style from "@styles/chat/chat.module.scss";
 import { motion } from "framer-motion";
-import { aiMessageTypes } from "@chatxbt-sdk/config/constants";
+import { actionTypes } from "@chatxbt-sdk/config/constants";
 
 export const UserChatCard = (props: any) => {
   const { dp, from, id, message, type, metadata } = props;
@@ -25,7 +25,7 @@ export const UserChatCard = (props: any) => {
 
       {from === "bot" && (
         <>
-          {type === aiMessageTypes.DEFAULT_TEXT && (
+          {type === actionTypes.DEFAULT_TEXT && (
             <motion.div
               className={style.chatCardBot}
               id={`${id}`}
@@ -41,7 +41,7 @@ export const UserChatCard = (props: any) => {
             </motion.div>
           )}
 
-          {type === aiMessageTypes.CREATE_WALLET && (
+          {type === actionTypes.CREATE_WALLET && (
             <motion.div
               className={style.chatCardBotWallet}
               id={`${id}`}
@@ -75,7 +75,7 @@ export const UserChatCard = (props: any) => {
             </motion.div>
           )}
 
-          {type === aiMessageTypes.SWAP && (
+          {type === actionTypes.SWAP && (
             <motion.div
               className={style.chatCardBot}
               id={`${id}`}
@@ -91,7 +91,7 @@ export const UserChatCard = (props: any) => {
             </motion.div>
           )}
 
-          {type === aiMessageTypes.APPROVAL && (
+          {type === actionTypes.APPROVAL && (
             <motion.div
               className={style.chatCardBot}
               id={`${id}`}
@@ -107,7 +107,7 @@ export const UserChatCard = (props: any) => {
             </motion.div>
           )}
 
-          {type === aiMessageTypes.ERROR && (
+          {type === actionTypes.ERROR && (
             <motion.div
               className={style.chatCardBotError}
               id={`${id}`}
