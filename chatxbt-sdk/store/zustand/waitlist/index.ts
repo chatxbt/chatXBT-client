@@ -2,6 +2,9 @@ import { create } from "zustand";
 import { chatxbtConfig, chatxbtUtils } from "../../../../chatxbt-sdk";
 import { Store } from "../../../interface/waitlist";
 
+/**
+ * refactor later
+ */
 
 export const useWaitlistStore = create<Store>((set) => ({
     email: '',
