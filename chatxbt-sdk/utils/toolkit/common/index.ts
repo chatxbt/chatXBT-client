@@ -35,8 +35,13 @@ export const daysDifference = (date_1: any, date_2: any) => {
   return TotalDays;
 }
 
+export const customlocalStorage = (storageKey: string) => {
+  const data: any = window?.localStorage.getItem(storageKey);
+  return JSON.parse(data)?.state;
+}
+
 // get bearer token
-export const getAuthToken = () => localStorage?.authToken
+export const getAuthToken = () => customlocalStorage('connection-storage')?.token
 
 // is user signed-in
-export const isAuthed = () => !!localStorage.authToken;
+export const isAuthed = () => !!customlocalStorage('connection-storage').token;

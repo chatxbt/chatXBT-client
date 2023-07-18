@@ -1,6 +1,9 @@
+//@ts-ignore
 import { randomBytes } from 'crypto'
+import Web3 from "web3";
 import { useCallback, useMemo } from "react";
 import { ethers } from 'ethers'
+import { useAccount, useSignMessage, useNetwork, useDisconnect } from 'wagmi'
 import { 
     chatxbtDataProvider,
     chatxbtStore,
@@ -8,6 +11,12 @@ import {
 } from "../.."
 
 export const auth = (props: any) => {
+
+    const { disconnect: walletDisconnect } = useDisconnect();
+    const wagmiData = useAccount();
+    const { chain } = useNetwork();
+    const { signMessageAsync } = useSignMessage();
+
 
     // data provider modules
     const {
@@ -98,7 +107,46 @@ export const auth = (props: any) => {
         }
     }
 
-    //wallet sign in
+    const handleWalletSignIn = async (address: string) => {
+        try {
+            const response = await chatxbtApi.getMessageToSign({
+                address
+            })
+            const messageToSign = response?.data;
+            if (!messageToSign) {
+              walletDisconnect();
+              throw new chatxbtUtils.Issue(401, response.message);
+            }
+        
+            const web3 = new Web3(Web3.givenProvider);
+            const signature = await web3.eth.personal.sign(messageToSign, address, '');
+            // const signature = await web3.eth.sign(messageToSign, address);
+        
+            const res = await chatxbtApi.getWalletJwt({
+                address,
+                signature
+            });
+        
+            const jwt = res?.data.token;
+            const user = res?.data;
+      
+            if (jwt) {
+                connect(user, jwt, wagmiData.address, signature, wagmiData.connector?.id);
+            }
+        
+            if (!jwt) {
+              walletDisconnect();
+              throw new chatxbtUtils.Issue(401, res.message);
+            }
+        } catch (error: any) {
+            // alert(error.message);
+            walletDisconnect();
+            // throw new chatxbtUtils.Issue(500, error.message)
+            // toast.success("You have successfully signed in");
+        }
+      };
+
+    //wallet sign in [depreciated] 🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫
     const walletSignIn = () => {
         try {
             const ethereum = useMemo(() => window.ethereum, []);
@@ -138,14 +186,17 @@ export const auth = (props: any) => {
      * sign out account
      */
     const signOut = () => {
-        disconnect()
+        disconnect();
+        walletDisconnect();
     }
 
     return {
         store: {
+            _hasHydrated,
             signature,
             connected,
             address,
+            wagmiData,
             provider,
             visibleAddress,
             // waitlist store (this has to be refactored)
@@ -158,6 +209,7 @@ export const auth = (props: any) => {
         action: {
             joinWaitlist,
             walletSignIn,
+            handleWalletSignIn,
             getSigner,
             signOut
         },

@@ -1,4 +1,5 @@
 export * from "./utilityAndConfig"
+export * from "./appEntry"
 export * from "./chat"
 export * from "./navbar"
 export * from "./walletTab"

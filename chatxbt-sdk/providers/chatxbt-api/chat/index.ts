@@ -8,8 +8,8 @@ export const queryAi = async ({
   }) => {
     try {
       const { data, headers } = await chatxbtUtils
-        .publicApiConnect()
-        .post(`${chatxbtConfig.envConfig.aiChatBotUrl}/${chatxbtConfig.domains.endpoints.postAiQuery}`, {
+        .privateApiConnect()
+        .post(`/${chatxbtConfig.domains.endpoints.postAiQuery}`, {
           text
         });
       return {

@@ -1,6 +1,6 @@
 import { axiosInstance } from './axios-instance'
 import { credentials, envConfig, lang } from "../../config";
-import { isAuthed, getAuthToken } from "../toolkit";
+import { isAuthed, getAuthToken, customlocalStorage } from "../toolkit";
 import Issue from "../error-handler"
 import axios, { Axios, AxiosInstance } from "axios"
 
@@ -22,7 +22,7 @@ export const privateApiConnect = (carrier: 'axios' | 'jquery' | 'super-agent' = 
       switch (carrier) {
          case 'axios':
             return axiosInstance({
-               baseURL: envConfig.chatXbtApiBaseUrl,
+               baseURL: envConfig.aiChatBotUrl,
                headers
             })
             break;
