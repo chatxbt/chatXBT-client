@@ -2,14 +2,15 @@ import React, { useRef } from "react";
 import style from "@styles/chat/chat.module.scss";
 import Preview from "./Preview";
 import { BotIndicator, UserChatCard } from "./ChatCard";
-import { useChat } from "@chatxbt-sdk/hooks";
 import * as MdIcons from "react-icons/md";
+import { actionTypes } from "@chatxbt-sdk/config/constants";
+import { useChat } from "@chatxbt-sdk/hooks";
 
 const Main = (props: any) => {
   const {
     store: { preview, messages, status, ref },
     action: { scrollDown },
-  } = props
+  } = useChat(props);
 
   return (
     <div className={style.chatCon} ref={ref}>
@@ -22,18 +23,12 @@ const Main = (props: any) => {
       {!preview &&
         messages.length > 0 &&
         messages?.map((data: any, index: any) => (
-          <UserChatCard
-            key={index}
-            dp={data.dp}
-            id={data.id}
-            message={data.message}
-            from={data.from}
-          />
+          <UserChatCard key={index} {...data} />
         ))}
-      {status === "Sent" && <BotIndicator />}
+      {status === actionTypes.PENDING && <BotIndicator />}
     </div>
   );
 };
 
-// export default Main;
-export default (props: any) => <Main {...useChat(props)} />
+export default Main;
+// export default (props: any) => <Main {...useChat(props)} />

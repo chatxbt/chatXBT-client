@@ -13,6 +13,7 @@ export type ChatStore = {
     updateMessage: (chatMessage: userState['message']) => void;
     sendMessage: (chatMessage: userState['message']) => void;
     generateResponse: (message: string) => void;
+    awaitMessage: () => void;
     resetMessage: () => void;
     setPreview: (param: boolean) => void;
 }

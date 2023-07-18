@@ -1,12 +1,10 @@
+import { chatxbtServices } from '@chatxbt-sdk/index';
 import { 
     useEffect 
 } from 'react';
 import swal from 'sweetalert';
-import { 
-    chatxbtServices
-} from "../../../chatxbt-sdk"
 
-export const utilityAndConfig = (props) => {
+export const utilityAndConfig = () => {
 
     const _utilAndConfigService = chatxbtServices.utilityAndConfig(props);
 
