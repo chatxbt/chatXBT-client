@@ -7,8 +7,13 @@ import * as HiIcons from "react-icons/hi";
 import Logo from "@components/shared/logo/Logo";
 import MobileSideBar from "./MobileSideBar";
 import { useConnectionStore } from "@chatxbt-sdk/store/zustand/connection";
+import { chatxbtServices } from "../../../../chatxbt-sdk"
 
-const ChatBoxHeader = () => {
+const ChatBoxHeader = ({
+  action: {
+    signOut
+  }
+}: any) => {
   const [click, setClick] = useState<boolean>(false);
   const handleToggle = () => setClick(!click);
   const { visibleAddress, disconnect } = useConnectionStore();
@@ -50,7 +55,8 @@ const ChatBoxHeader = () => {
             {visibleAddress && (
               <button
                 id={style.second}
-                onClick={disconnect}
+                // onClick={disconnect}
+                onClick={signOut}
                 onMouseEnter={startDisconnect}
                 onMouseLeave={stopDisconnect}
               >
@@ -64,4 +70,6 @@ const ChatBoxHeader = () => {
   );
 };
 
-export default ChatBoxHeader;
+// export default ChatBoxHeader;
+export default (props: any) => <ChatBoxHeader {...chatxbtServices.auth(props)} />
+

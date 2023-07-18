@@ -2,6 +2,11 @@ import React from "react";
 import style from "@styles/get-started/index.module.scss";
 import { icons } from "./data";
 import { motion } from "framer-motion";
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+
+export const RainBow = () => {
+  return <ConnectButton/>;
+};
 
 const GetStarted = ({ handleEmail, handleMeta }: any) => {
   return (
@@ -28,7 +33,8 @@ const GetStarted = ({ handleEmail, handleMeta }: any) => {
       <h4>OR</h4>
 
       <div className={style.wallets}>
-        <button onClick={handleMeta}>
+        <RainBow/>
+        {/* <button onClick={handleMeta}>
           <img src="/images/get-started/meta.png" alt="" />
           <p>Metamask</p>
         </button>
@@ -39,7 +45,7 @@ const GetStarted = ({ handleEmail, handleMeta }: any) => {
         <button>
           <img src="/images/get-started/trust.png" alt="" />
           <p>Trust Wallet</p>
-        </button>
+        </button> */}
       </div>
     </motion.div>
   );

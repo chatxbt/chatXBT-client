@@ -13,18 +13,20 @@ export const useConnectionStore = create<ConnectionStore>()(
         signature: null,
         connected: false,
         address: "",
+        token: null,
+        userInfo: null,
         provider: '',
         visibleAddress: "",
         _hasHydrated: false,
         signMessage: (signature: string) => {
           set({ signature })
         },
-        connect: (address: string, signature: string, provider: string) => {
-          set({ provider, address, signature, visibleAddress: toolkit.ellipticAddress(address), connected: true })
+        connect: (userInfo: any, token: string, address: string, signature: string, provider: string) => {
+          set({ userInfo, token, provider, address, signature, visibleAddress: toolkit.ellipticAddress(address), connected: true })
         },
         disconnect: () => {
-          set({ provider: '', address: "", signature: null, visibleAddress: "", connected: false });
-          window.localStorage.removeItem(storageName);
+          set({ provider: '', address: "", token: "", signature: null, visibleAddress: "", connected: false });
+          // window.localStorage.removeItem(storageName);
         },
         setHasHydrated: (state: any) => {
           set({
@@ -37,6 +39,13 @@ export const useConnectionStore = create<ConnectionStore>()(
         getStorage: () => localStorage,
         partialize: (state: any) => ({
           _hasHydrated: state._hasHydrated,
+          token: state.token,
+          userInfo: state.userInfo,
+          connected: state.connected,
+          provider: state.provider,
+          address: state.address,
+          signature: state.signature,
+          visibleAddress: state.visibleAddress,
         }),
         onRehydrateStorage: () => (state) => {
           state?.setHasHydrated(true);

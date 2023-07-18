@@ -24,8 +24,11 @@ export const axiosInstance = ({
                     });
                 }
                 if (error.response.status === 401) {
-                    localStorage.removeItem("token");
-                    window.location = "/login" as any;
+                    // localStorage.removeItem("token");
+                    // window.location = "/login" as any;
+                    return new Promise((resolve, reject) => {
+                        reject(error);
+                    });
                 } else {
                     return new Promise((resolve, reject) => {
                         reject(error);
