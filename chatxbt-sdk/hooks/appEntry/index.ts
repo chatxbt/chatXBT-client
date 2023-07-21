@@ -6,6 +6,7 @@ import {
 
 export const useAppEntry = (props: any) => {
     const authService = chatxbtServices.auth(props);
+    const defiService = chatxbtServices.defi(props);
     const {
         store: { 
             _hasHydrated,
@@ -17,6 +18,16 @@ export const useAppEntry = (props: any) => {
             signOut
         }
     } = authService;
+
+    const {
+        store: { 
+            configured,
+            lightPool
+        },
+        action: { 
+            loadLightPoolAndInitialiseNlpCoreConfigs
+        }
+    } = defiService
 
     useEffect(() => {
         !connected
@@ -30,11 +41,15 @@ export const useAppEntry = (props: any) => {
         // connected && props.history.push('/chat');
         // !connected && props.history.push('/');
         // signOut();
+        !configured && connected && loadLightPoolAndInitialiseNlpCoreConfigs()
     }, [connected]);
 
     return {
         store: {
             connected
+        },
+        action: {
+            loadLightPoolAndInitialiseNlpCoreConfigs
         }
     };
 }

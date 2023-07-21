@@ -18,32 +18,29 @@ import {
 export class ChatXBTResolver {
   private nlp = require('compromise');
   private internalResolver = new IntentHandler();
-  private addresses = new Map()
+  // private addresses = new Map()
+  private addresses = new Map();
+  private intents: any
+  private dexKeys = "";
+  private tokenKeys = "";
 
-  constructor() {
-    this.addresses.set('uniswap', "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D");
-    this.addresses.set('@uniswap', "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D");
+  constructor({
+    intents,
+    dexKeys,
+    tokenKeys,
+    addresses
+  }: any) {
     // this.addresses.set('uniswap', "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D");
-    this.addresses.set('usdt', "0xD1Ca0b80b188Ad76955E05d36C20C597309aD5b8");
+    // this.addresses.set('@uniswap', "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D");
+    // // this.addresses.set('uniswap', "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D");
+    // this.addresses.set('usdt', "0xD1Ca0b80b188Ad76955E05d36C20C597309aD5b8");
 
-    // load protocol and assets
+    // configure
+    this.intents = intents;
+    this.dexKeys = dexKeys;
+    this.tokenKeys = tokenKeys;
+    this.addresses = addresses;
   } 
-
-  private getProtocol = () => {
-      try {
-          
-      } catch (error) {
-          
-      }
-  }
-
-  private getProtocolsAndAssets = () => {
-    try {
-      
-    } catch (error) {
-      
-    }
-  }
 
   private extractMessage = (message: string, intent: { match: string }[]) => {
     // prepare intent
@@ -59,17 +56,17 @@ export class ChatXBTResolver {
   };
 
   resolveMsg = async (message: string, provider: any) => {
-    const isCreatingWallet = this.extractMessage(message, createWalletIntents);
+    const isCreatingWallet = this.extractMessage(message, this.intents.createWalletIntents);
     if (isCreatingWallet) {
       const response = await this.internalResolver.handleWalletCreate();
       return response
     }
 
-    const isBuyingWithEth = this.extractMessage(message, swapEthForToken);
+    const isBuyingWithEth = this.extractMessage(message, this.intents.swapEthForToken);
     if (isBuyingWithEth) {
       const _doc = this.nlp(isBuyingWithEth); // reconstruct the doc
-      const toToken = _doc.match('(usdt|dai)').out('text');
-      let exchange = _doc.match('(uniswap|pancake)');
+      const toToken = _doc.match(`(${this.tokenKeys})`).out('text');
+      let exchange = _doc.match(`(${this.dexKeys})`);
       const rawAmount = _doc.match('#Value');
       if (!exchange) {
         exchange = _doc.match('(#AtMention)').out('text');
@@ -90,11 +87,11 @@ export class ChatXBTResolver {
       }
     }
 
-    const isSellingTokenForEth = this.extractMessage(message, swapTokenForEth);
+    const isSellingTokenForEth = this.extractMessage(message, this.intents.swapTokenForEth);
     if (isSellingTokenForEth) {
       const _doc = this.nlp(isSellingTokenForEth); // reconstruct the doc
-      const fromToken = _doc.match('(usdt|dai)').out('text');
-      const exchange = _doc.match('(uniswap|pancake)');
+      const fromToken = _doc.match(`(${this.tokenKeys})`).out('text');
+      const exchange = _doc.match(`(${this.dexKeys})`);
       const rawAmount = _doc.match('#Value');
       const dex = exchange.text();
       let amount = rawAmount.text();
@@ -105,15 +102,15 @@ export class ChatXBTResolver {
       return response;
     }
 
-    const isApproval = this.extractMessage(message, approveTokenSpend);
+    const isApproval = this.extractMessage(message, this.intents.approveTokenSpend);
     if (isApproval) {
       const _doc = this.nlp(isApproval); // reconstruct the doc
       let to = _doc.match('(#AtMention|#Noun)').out('text');
-      let token = _doc.match('(usdt|dai)').out('text');
+      let token = _doc.match(`(${this.tokenKeys})`).out('text');
       const rawAmount = _doc.match('#Value');
       let amount = rawAmount.text();
       if (!to.startsWith("0x")) {
-        to = _doc.match('(uniswap|pancake)').out('text')
+        to = _doc.match(`(${this.dexKeys})`).out('text')
         to = this.addresses.get(to)
       }
       token = this.addresses.get(token)
@@ -124,10 +121,10 @@ export class ChatXBTResolver {
       return response;
     }
 
-    const isCheckingcoinPrice = this.extractMessage(message, checkCoinPrice);
+    const isCheckingcoinPrice = this.extractMessage(message, this.intents.checkCoinPrice);
     if (isCheckingcoinPrice) {
       const _doc = this.nlp(isCheckingcoinPrice); // reconstruct the doc
-      const coin = _doc.match('(usdt|dai)').out('text');
+      const coin = _doc.match(`(${this.tokenKeys})`).out('text');
       const exchange = _doc.match('(coinmarketcap|coingecko)');
       const dex = exchange.text();
       const response = await this.internalResolver.getCoinPrice({

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import GetStarted from "./get-started";
 import { useConnectionStore } from "@chatxbt-sdk/store/zustand/connection";
-import { chatxbtHooks } from "../chatxbt-sdk"
+import { chatxbtHooks, chatxbtUtils } from "../chatxbt-sdk"
 import ChatPage from "./dashboard/chat";
 import dynamic from "next/dynamic";
 
@@ -12,13 +12,15 @@ const ChatPageView = dynamic(() => import("./dashboard/chat"), {
 const Home = ({
   store: {
     connected
-  }
+  },
 }: any) => {
   // const [isConnected, setIsConnected] = useState(false);
   // const { connected, visibleAddress } = useConnectionStore();
   // useEffect(() => {
   //   setIsConnected(connected)
   // }, [connected]);
+
+  // console.log('intentTemplate', chatxbtUtils.intents);
   return <>{connected ? <ChatPageView /> : <GetStarted />}</>;
 };
 

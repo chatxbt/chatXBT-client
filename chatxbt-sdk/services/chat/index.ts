@@ -19,6 +19,7 @@ export const chat = (props: any) =>  {
 
     // store module
     const { 
+        useDefiStore,
         useChatStore, 
         useConnectionStore 
     } = chatxbtStore.zustandStore
@@ -58,6 +59,31 @@ export const chat = (props: any) =>  {
         provider,
     } = useConnectionStore((state: any) => ({
         provider: state.provider,
+    }))
+
+    // defi store
+    const { 
+        configured,
+        lightPool,
+        heavyPool,
+        _hasHydrated,
+        protocols,
+        tokens,
+        intents,
+        dexKeys,
+        tokenKeys,
+        addresses,
+    } = useDefiStore((state: any) => ({
+        configured: state.configured,
+        lightPool: state.lightPool,
+        heavyPool: state.heavyPool,
+        protocols: state.protocols,
+        tokens: state.tokens,
+        intents: state.intents,
+        dexKeys: state.dexKeys,
+        tokenKeys: state.tokenKeys,
+        addresses: state.addresses,
+        _hasHydrated: state._hasHydrated,
     }))
 
     const ref = useRef<null | HTMLDivElement>(null);
@@ -119,7 +145,12 @@ export const chat = (props: any) =>  {
 
     const resolvePrompt = async () => {
         try {
-            const resolver = new chatxbtUtils.ChatXBTResolver()
+            const resolver = new chatxbtUtils.ChatXBTResolver({
+                intents,
+                dexKeys,
+                tokenKeys,
+                addresses
+            })
             const xbtResolve = async (message: string) => {
               const resolvedMessage: any = await resolver.resolveMsg(message, provider)
               if(resolvedMessage?.status){

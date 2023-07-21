@@ -1,6 +1,6 @@
 export const swapTokenForEth = [
   {
-    match: 'sell #Value (usdt|dai) on (uniswap|pancake) for (eth|ethereum)'
+    match: 'sell #Value (@token) on (@dex) for (@token)'
   },
 ];
 
