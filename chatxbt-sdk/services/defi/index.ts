@@ -70,21 +70,26 @@ export const defi = (props: any) => {
     const transformIntents = async ({
         dexKeys,
         tokenKeys
-    }:any) => {
+    }: any ) => {
         try {
             const transformedIntent: any = {};
+            const transformedIntentList: Array<string> = [];
             const intentTemplates: any = chatxbtUtils.intents;
             for (const intent in intentTemplates) {
                 transformedIntent[intent] = [];
                 for (let match of intentTemplates[intent]) {
                     let transformedData = match.match.replace(/@dex/g, dexKeys);
                     transformedData = transformedData.replace(/@token/g, tokenKeys);
+                    transformedIntentList.push(transformedData);
                     transformedIntent[intent].push({
                         match: transformedData
                     })
                 }
             }
-            return transformedIntent;
+            return {
+                transformedIntent, 
+                transformedIntentList
+            };
         } catch (error: any) {
             throw new chatxbtUtils.Issue(500, error?.message)
         }
@@ -132,13 +137,20 @@ export const defi = (props: any) => {
                 } = await transformTags(dexesAndTokens);
 
                 // transform intents
-                const intents = await transformIntents({
+                const {
+                    transformedIntent, 
+                    transformedIntentList
+                } = await transformIntents({
                     dexKeys,
                     tokenKeys
                 })
 
+                // console.log('transformedIntentList', JSON.stringify(transformedIntentList));
+                console.log('dexKeys', dexKeys);
+                console.log('tokenKeys', tokenKeys);
+
                 // configure in store
-                configure(dexKeys, tokenKeys, addresses, intents);
+                configure(dexKeys, tokenKeys, addresses, transformedIntent, transformedIntentList);
             }
         } catch (error: any) {
             throw new chatxbtUtils.Issue(500, error?.message)

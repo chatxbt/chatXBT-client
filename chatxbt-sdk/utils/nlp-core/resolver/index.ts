@@ -17,7 +17,7 @@ import {
 
 export class ChatXBTResolver {
   private nlp = require('compromise');
-  private internalResolver = new IntentHandler();
+  private internalResolver = new IntentHandler({});
   // private addresses = new Map()
   private addresses = new Map();
   private intents: any
@@ -39,7 +39,9 @@ export class ChatXBTResolver {
     this.intents = intents;
     this.dexKeys = dexKeys;
     this.tokenKeys = tokenKeys;
-    this.addresses = addresses;
+    this.addresses = new Map(addresses);
+
+    // console.log('intents', intents);
   } 
 
   private extractMessage = (message: string, intent: { match: string }[]) => {
@@ -132,6 +134,56 @@ export class ChatXBTResolver {
         coin,
       });
       return response;
+    }
+    
+    const isBorrowingEth = this.extractMessage(message, this.intents.borrowEth);
+    if (isBorrowingEth) {
+      const _doc = this.nlp(isBorrowingEth); // reconstruct the doc
+      const toToken = _doc.match(`(${this.tokenKeys})`).out('text');
+      let exchange = _doc.match(`(${this.dexKeys})`);
+      const rawAmount = _doc.match('#Value');
+      if (!exchange) {
+        exchange = _doc.match('(#AtMention)').out('text');
+      }
+      // const dex = exchange.text();
+      const dexText = exchange.text();
+      const dex = this.addresses.get(dexText);
+      let amount = rawAmount.text();
+      if (amount.startsWith('$')) {
+        amount = +amount.slice(1);
+      }
+      try {
+        const response = await this.internalResolver.borrow('9');
+        return response;
+      } catch (e: any) {
+        console.log(Object.keys(e))
+        return { type: 'error', message: `An Error Occurred, I Got This Feedback "${e.reason}"` }
+      }
+    }
+
+    const isLendingEth = this.extractMessage(message, this.intents.lendEth);
+    if (isLendingEth) {
+      const _doc = this.nlp(isLendingEth); // reconstruct the doc
+      const toToken = _doc.match(`(${this.tokenKeys})`).out('text');
+      let exchange = _doc.match(`(${this.dexKeys})`);
+      const rawAmount = _doc.match('#Value');
+      if (!exchange) {
+        exchange = _doc.match('(#AtMention)').out('text');
+      }
+      // const dex = exchange.text();
+      const dexText = exchange.text();
+      const dex = this.addresses.get(dexText);
+      let amount = rawAmount.text();
+      if (amount.startsWith('$')) {
+        amount = +amount.slice(1);
+      }
+      try {
+        const response = await this.internalResolver.lend('9');
+        return response;
+      } catch (e: any) {
+        console.log(Object.keys(e))
+        return { type: 'error', message: `An Error Occurred, I Got This Feedback "${e.reason}"` }
+      }
     }
 
     return { 

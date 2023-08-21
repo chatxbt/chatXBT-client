@@ -15,6 +15,7 @@ export const useDefiStore = create<DefiStore>()(
         protocols: [],
         tokens: [],
         intents: null,
+        intentList: null,
         dexKeys: null,
         tokenKeys: null,
         addresses: [],
@@ -41,8 +42,8 @@ export const useDefiStore = create<DefiStore>()(
         setAddress: (addresses: any) => {
           set({ addresses })
         },
-        configure: (dexKeys: string, tokenKeys: string, addresses: any, intents: any) => {
-          set({ dexKeys, tokenKeys, addresses, intents, configured: true })
+        configure: (dexKeys: string, tokenKeys: string, addresses: any, intents: any, intentList: any) => {
+          set({ dexKeys, tokenKeys, addresses, intents, intentList, configured: true })
         },
         setHasHydrated: (state: any) => {
           set({

@@ -2,15 +2,18 @@ import { chatxbtUtils, chatxbtConfig } from "../../../../chatxbt-sdk";
 
 // query ai
 export const queryAi = async ({
-    text
+    text,
+    intent
   }: {
-    text: string
+    text: string,
+    intent: string
   }) => {
     try {
       const { data, headers } = await chatxbtUtils
         .privateApiConnect()
         .post(`/${chatxbtConfig.domains.endpoints.postAiQuery}`, {
-          text
+          text,
+          intent
         });
       return {
         status: true,

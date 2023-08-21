@@ -49,3 +49,17 @@ export const getPriceFromCoinmarketCap = async (coin: string, amount: number, to
         metadata: { },
     };
 }
+
+export const checkIfprotocolExist = (protocols: Array<string>, text: string): boolean => {
+  text = text.toLowerCase();
+  for(let i = 0; i < protocols.length; i++){
+    let word_find = protocols[i].toLowerCase(); // Word to check
+    let str_pos = text.indexOf(word_find);
+    if (str_pos > -1) {
+      return true
+    } else {
+      return false
+    }
+  }
+  return false
+}
