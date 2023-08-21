@@ -234,11 +234,35 @@ async borrow(amountInEth: string) {
       await cTokenContract.borrow(amountInWei);
 
       console.log(`${amountInEth} ETH borrowed successfully.`);
+      return { 
+        type: 'borrow', 
+        message: `${amountInEth} ETH borrowed successfully.`,
+        status: true,
+        metadata: {
+          // ...tx
+        }
+      };
     } else {
       console.log('Please install MetaMask or use a compatible dapp browser.');
+      return { 
+        type: 'borrow', 
+        message: `Please install MetaMask or use a compatible dapp browser.`,
+        status: false,
+        metadata: {
+          // ...tx
+        }
+      };
     }
   } catch (error) {
     console.error('Error occurred while borrowing:', error);
+    return { 
+      type: 'borrow', 
+      message: `Error occurred while borrowing.`,
+      status: false,
+      metadata: {
+        // ...tx
+      }
+    };
   }
 }
 
