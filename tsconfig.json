@@ -21,6 +21,6 @@
       "@chatxbt-sdk/*" : ["chatxbt-sdk/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "chatxbt-sdk/utils/debounce/index.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "chatxbt-sdk/utils/debounce/index.js", "chatxbt-sdk/hooks/utilityAndConfig/index.js"],
   "exclude": ["node_modules"]
 }

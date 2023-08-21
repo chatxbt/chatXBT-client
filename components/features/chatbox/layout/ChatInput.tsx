@@ -10,8 +10,7 @@ const ChatInput = (props: any) => {
   const {
     store: { message, hints, chatInputRef },
     action: { setMessage, sendMessage, addHint },
-  } = props;
-  console.log('props', props);
+  } = useChat(props);
   return (
     <div className={style.chatInput}>
       {hints.length > 0 && (
@@ -48,5 +47,5 @@ const ChatInput = (props: any) => {
   );
 };
 
-// export default ChatInput;
-export default (props: any) => <ChatInput {...useChat(props)} />
+export default ChatInput;
+// export default (props: any) => <ChatInput {...useChat(props)} />

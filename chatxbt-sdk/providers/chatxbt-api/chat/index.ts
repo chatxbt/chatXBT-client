@@ -1,4 +1,4 @@
-import { chatxbtUtils, chatxbtConfig } from "../../../../chatxbt-sdk";
+import { chatxbtConfig, chatxbtUtils } from "@chatxbt-sdk/index";
 
 // query ai
 export const queryAi = async ({

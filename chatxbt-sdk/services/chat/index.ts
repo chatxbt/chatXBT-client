@@ -38,7 +38,8 @@ export const chat = (props: any) =>  {
         submit,
         generateResponse,
         resetMessage,
-        setPreview
+        setPreview,
+        awaitMessage
     } = useChatStore((state: any) => ({ 
         message: state.chatMessage,
         messageHolder: state.messageHolder,
@@ -51,7 +52,8 @@ export const chat = (props: any) =>  {
         submit: state.sendMessage,
         generateResponse: state.generateResponse,
         resetMessage: state.resetMessage,
-        setPreview: state.setPreview
+        setPreview: state.setPreview,
+        awaitMessage: state.awaitMessage
     }))
 
     // connection store
@@ -104,6 +106,8 @@ export const chat = (props: any) =>  {
         e.preventDefault();
         if (!message.length) return;
         submit(message);
+        connectResolver();
+        awaitMessage();
     };
 
     const connectResolver = () => {
@@ -111,7 +115,8 @@ export const chat = (props: any) =>  {
             (async () => {
                 const { xbtResolve } = await resolvePrompt()
                 const result = await xbtResolve(messageHolder);
-                sendResponse(result?.message);
+                sendResponse(result);
+                console.log(result);
             })()
         } catch (error) {
             

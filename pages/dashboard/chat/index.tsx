@@ -1,4 +1,4 @@
-import ChatComponent from "../../../components/features/chatbox/components/chat";
+import ChatComponent from "@components/features/chatbox/components/chat";
 
 const ChatPage = () => {
   return <ChatComponent />;

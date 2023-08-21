@@ -1,3 +1,4 @@
+import { actionTypes } from "@chatxbt-sdk/config";
 import { ChatStore } from "@chatxbt-sdk/interface/chat";
 import { botInit, toolkit } from "@chatxbt-sdk/utils";
 import { botDisplayImage } from "@chatxbt-sdk/utils/assets";
@@ -19,26 +20,43 @@ export const useChatStore = create<ChatStore>()(
                 chatData: null,
                 botReply: '',
                 updateMessage: (chatMessage: any) => {
-                    set({ status: 'Updating' });
-                    set(() => ({ chatMessage: chatMessage, messageHolder: chatMessage }))
+                    set(() => ({
+                        chatMessage: chatMessage,
+                        messageHolder: chatMessage
+                    }))
                 },
                 sendMessage: (chatMessage: any) => {
                     let chatId = toolkit.generateUUID();
                     const userDp = '/images/chat/user.png';
                     set({ preview: false });
-                    set((state: any) => ({
+                    set((state: { messages: any; }) => ({
                         messages: [...state.messages,
-                        { dp: userDp, from: 'user', id: chatId, message: chatMessage }], chatMessage: '', status: 'Sent'
+                        {
+                            dp: userDp,
+                            from: 'user',
+                            id: chatId,
+                            message: chatMessage
+                        }], chatMessage: '', status: actionTypes.SENT
                     }));
                 },
-                generateResponse: (message: string) => {
+                generateResponse: (messageData: any) => {
                     let chatId = toolkit.generateUUID();
-                    set((state: any) => ({
+                    set((state: { messages: any; }) => ({
                         messages: [...state.messages,
-                        { dp: botDisplayImage.default, from: 'bot', id: chatId, message }], status: 'Done', messageHolder: ''
+                        {
+                            dp: botDisplayImage.default,
+                            from: 'bot',
+                            id: chatId,
+                            type: messageData.type,
+                            message: messageData.message,
+                            metadata: messageData?.metadata,
+                        }], status: actionTypes.DONE, messageHolder: ''
                     }));
                 },
 
+                awaitMessage: () => {
+                    set({ status: actionTypes.PENDING })
+                },
                 resetMessage: () => {
                     set({ status: '' })
                 },
@@ -48,7 +66,7 @@ export const useChatStore = create<ChatStore>()(
                 },
                 setHasHydrated: (state: any) => {
                     set({
-                    _hasHydrated: state
+                        _hasHydrated: state
                     });
                 }
             }),

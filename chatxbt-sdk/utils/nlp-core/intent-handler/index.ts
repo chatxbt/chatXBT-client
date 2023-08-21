@@ -231,7 +231,7 @@ async borrow(amountInEth: string) {
       // }
 
       // Borrow
-      await cTokenContract.borrow(amountInWei);
+      const tx = await cTokenContract.borrow(amountInWei);
 
       console.log(`${amountInEth} ETH borrowed successfully.`);
       return { 
@@ -239,7 +239,7 @@ async borrow(amountInEth: string) {
         message: `${amountInEth} ETH borrowed successfully.`,
         status: true,
         metadata: {
-          // ...tx
+          ...tx
         }
       };
     } else {
@@ -290,14 +290,38 @@ async lend(amountInEth: string) {
 
       // Supply the tokens to the Compound protocol
       const txMint = await cTokenContract.mint(amountInWei);
-      await txMint.wait(); // Wait for the transaction to be mined
+      const tx = await txMint.wait(); // Wait for the transaction to be mined
 
       console.log(`${amountInEth} ETH supplied successfully.`);
+      return { 
+        type: 'lend', 
+        message: `${amountInEth} ETH supplied successfully.`,
+        status: true,
+        metadata: {
+          ...tx
+        }
+      };
     } else {
       console.log('Please install MetaMask or use a compatible dapp browser.');
+      return { 
+        type: 'lend', 
+        message: `Please install MetaMask or use a compatible dapp browser.`,
+        status: false,
+        metadata: {
+          // ...tx
+        }
+      };
     }
   } catch (error) {
     console.error('Error occurred while lending:', error);
+    return { 
+      type: 'lend', 
+      message: `Error occurred while lending.`,
+      status: false,
+      metadata: {
+        // ...tx
+      }
+    };
   }
 }
 
