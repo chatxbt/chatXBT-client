@@ -1,9 +1,9 @@
 export const approveTokenSpend = [
   {
-    match: 'give approval to (uniswap) to spend #Value of (usdt|dai)'
+    match: 'give approval to (@dex) to spend #Value of (@token)'
   },
   {
-    match: 'grant (#AtMention|#Noun) approval to spend up to #Value of (usdt|dai)'
+    match: 'grant (#AtMention|#Noun) approval to spend up to #Value of (@token)'
   },
 ];
 

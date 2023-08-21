@@ -1,7 +1,7 @@
 export const addLiquidityEth = [
   {
     match:
-      'add #Value (eth|ethereum) liquidity to (usdt|dai) on (uniswap|pancake)',
+      'add #Value (@token) liquidity to (@token) on (@dex)',
   },
 ];
 

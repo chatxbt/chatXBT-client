@@ -1,28 +1,28 @@
 export const swapEthForToken = [
   {
     match:
-      '(swap|convert|exchange|buy|sell) (eth|ethereum) for #Value (usdt|dai) on (uniswap|pancake) (immediately|now|instantly)',
+      '(swap|convert|exchange|buy|sell) (@token) for #Value (usdt|dai) on (@token) (immediately|now|instantly)',
   },
   {
     match:
-      '(swap|convert|exchange|buy|sell) #Value (eth|ethereum) (for|to) (usdt|dai) on (uniswap|pancake) (immediately|now|instantly)',
+      '(swap|convert|exchange|buy|sell) #Value (@token) (for|to) (@token) on (@dex) (immediately|now|instantly)',
   },
   {
     match:
-      'i (want|need) to (swap|convert|exchange|buy|sell) (eth|ethereum) for #Value (usdt|dai) on (uniswap|pancake)',
+      'i (want|need) to (swap|convert|exchange|buy|sell) (@token) for #Value (@token) on (@dex)',
   },
   {
     match:
-      '{use} (uniswap|pancake) to (swap|convert|exchange|buy|sell) (eth|ethereum) to #Value (usdt|dai)',
+      '{use} (@dex) to (swap|convert|exchange|buy|sell) (@token) to #Value (@token)',
   },
   {
-    match: 'buy (usdt|dai) on (uniswap|pancake) with #Value (eth|ethereum)'
+    match: 'buy (@token) on (@dex) with #Value (@dex)'
   },
   {
-    match: 'buy (usdt|dai) with #Value (eth|ethereum) on (uniswap|pancake)'
+    match: 'buy (@token) with #Value (@token) on (@dex)'
   },
   {
-    match: 'buy (usdt|dai) #AtMention with #Value (eth|ethereum)'
+    match: 'buy (@token) #AtMention with #Value (@token)'
   },
 ];
 

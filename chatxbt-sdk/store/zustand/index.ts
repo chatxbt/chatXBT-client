@@ -5,3 +5,4 @@ export * from "./app-utility";
 export * from "./connection"
 export * from "./chat"
 export * from "./waitlist"
+export * from "./defi"
