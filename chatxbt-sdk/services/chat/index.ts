@@ -149,7 +149,7 @@ export const chat = (props: any) =>  {
     const nlpAiBot = async (message: string) => {
         try {
 
-            const botRes = await chatxbtApi.queryAi({
+            const botRes = await chatxbtApi.nlpPrompt({
                 text: message,
                 intent: JSON.stringify(intentList),
             })
@@ -164,9 +164,19 @@ export const chat = (props: any) =>  {
         }
     }
 
-    const conversationAiBot = async () => {
+    const conversationAiBot = async (message: string) => {
         try {
-            
+
+            const botRes = await chatxbtApi.queryAi({
+                text: message,
+                intent: JSON.stringify(intentList),
+            })
+            const botReply = botRes?.data || chatxbtConfig.lang.defaultRelies[Math.floor(Math.random() * chatxbtConfig.lang.defaultRelies.length)];
+            return {
+                status: true,
+                type: 'default-text', 
+                message: botReply
+            } 
         } catch (error: any) {
             throw new chatxbtUtils.Issue(500, error?.message);
         }
@@ -181,6 +191,19 @@ export const chat = (props: any) =>  {
                 addresses
             })
             const xbtResolve = async (message: string) => {
+              // cv prompting
+              const {
+                  message: cv
+              } =  await conversationAiBot(message);
+
+              if( chatxbtUtils.toolkit.doesNotContainWord(cv, 'DEFI-DETECTED')){
+                return {
+                    status: true,
+                    type: 'default-text', 
+                    message: cv
+                }
+              }
+              // nlp prompting
               const {
                   message: msg
               } =  await nlpAiBot(message);
@@ -194,7 +217,7 @@ export const chat = (props: any) =>  {
             return {
                 status: true,
                 type: 'default-text', 
-                message: 'default conversation'
+                message: 'please try again'
             }
             }
             return { xbtResolve }
