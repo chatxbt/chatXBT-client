@@ -30,7 +30,6 @@ const Main = (props: any) => {
           <UserChatCard key={index} {...data} />
         ))}
       {status === actionTypes.PENDING && <BotIndicator />}
-      <></>
     </div>
   );
 };
