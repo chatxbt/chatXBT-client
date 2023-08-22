@@ -1,4 +1,4 @@
-import { chatxbtUtils, chatxbtConfig } from "../../../../chatxbt-sdk";
+import { chatxbtConfig, chatxbtUtils } from "@chatxbt-sdk/index";
 
 // query ai
 export const queryAi = async ({
@@ -29,7 +29,7 @@ export const queryAi = async ({
     }
   };
 
-  // query ai
+// prompt nlp ai
 export const nlpPrompt = async ({
   text,
   intent
