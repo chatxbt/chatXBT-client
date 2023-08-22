@@ -18,7 +18,6 @@ const ChatCardRow = (props: any) => {
         <h4>Available balance</h4>
         <h5>{balance} Max</h5>
       </div>
-      <></>
     </div>
   );
 };
