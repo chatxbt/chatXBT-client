@@ -5,6 +5,7 @@ import ChatCardButtons from "./utils/ChatCardButtons";
 import GasFee from "./utils/GasFee";
 
 const ChatCardBorrow = (props: any) => {
+  // simulating error
   const error = {
     message: "There was an error. Please try again later!",
   };
