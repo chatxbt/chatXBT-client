@@ -1,0 +1,104 @@
+@font-face {
+  font-family: Inter;
+  src: url(../../public/fonts/font1/static/Inter-Regular.ttf);
+}
+
+@font-face {
+  font-family: Inter Light;
+  src: url(../../public/fonts/font1/static/Inter-Light.ttf);
+}
+
+@font-face {
+  font-family: Inter Bold;
+  src: url(../../public/fonts/font1/static/Inter-Bold.ttf);
+}
+
+@font-face {
+  font-family: Avenir;
+  src: url(../../public/fonts/font2/avenir_ff/AvenirLTStd-Roman.otf);
+}
+
+@font-face {
+  font-family: Quicksand;
+  src: url(../../public/fonts/font3/static/Quicksand-Medium.ttf);
+}
+
+@font-face {
+  font-family: Quicksand Bold;
+  src: url(../../public/fonts/font3/static/Quicksand-Bold.ttf);
+}
+
+@font-face {
+  font-family: Machina Bold;
+  src: url(../../public/fonts/main/Neue-Machina/NeueMachina-Ultrabold.otf);
+}
+
+@font-face {
+  font-family: Machina;
+  src: url(../../public/fonts/main/Neue-Machina/NeueMachina-Regular.otf);
+}
+
+$primaryFont: Inter;
+$primaryFontLight: Inter Light;
+// $headingFont: Quicksand Bold;
+// $headingFont2: Avenir;
+
+// $primaryFont: Machina;
+$headingFont: Machina;
+$headingFont2: Avenir;
+
+@mixin responsivePro($breakpoint) {
+  @if ($breakpoint ==mobile) {
+    @media (max-width: 768px) {
+      @content;
+    }
+  } @else if($breakpoint ==portrait) {
+    @media (orientation: portrait) and (max-width: 774px) {
+      @content;
+    }
+  } @else if($breakpoint ==portrait-large) {
+    @media (orientation: landscape) and (max-width: 1270px) {
+      @content;
+    }
+  } @else if($breakpoint ==landscape) {
+    @media (orientation: landscape) and (max-width: 774px) {
+      @content;
+    }
+  } @else if ($breakpoint ==small) {
+    @media (max-width: 300px) {
+      @content;
+    }
+  } @else if ($breakpoint ==ipad) {
+    @media (min-width: 992px) and (max-width: 1025px) {
+      @content;
+    }
+  } @else if($breakpoint ==above) {
+    @media (orientation: portrait) and (min-width: 1025px) {
+      @content;
+    }
+  } @else if($breakpoint ==above2) {
+    @media (min-width: 1026px) and (max-width: 1251px) {
+      @content;
+    }
+  } @else if($breakpoint == large-above) {
+    @media (min-width: 1280px) and (max-width: 1320px) {
+      @content;
+    }
+  } @else if($breakpoint ==exception) {
+    @media (min-width: 768px) and (max-width: 992px) {
+      @content;
+    }
+  } @else if($breakpoint ==MD) {
+    @media (min-width: 1200px) {
+      @content;
+    }
+  } @else if($breakpoint ==LG) {
+    @media (min-width: 1400px) {
+      @content;
+    }
+  } @else if ($breakpoint ==tab) {
+    @media (max-width: 481px) {
+      @content;
+    }
+  }
+}

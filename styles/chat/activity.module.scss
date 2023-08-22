@@ -1,0 +1,147 @@
+@import '../utils/functions.scss';
+
+.activityCon {
+    height: auto;
+    padding: 20px 20px 40px;
+
+    @include responsivePro(mobile) {
+        height: auto;
+        padding: 0px;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 40px;
+
+        h1,
+        #icon {
+            font-weight: 500;
+            font-size: 20px;
+        }
+    }
+
+    .actBox {
+        background: linear-gradient(180deg, rgba(205, 207, 255, 0.08) 0%, rgba(205, 207, 255, 0.05) 100%);
+        border-radius: 10px;
+        padding: 30px;
+
+        #section {
+            margin: 20px auto;
+
+            h2 {
+                font-weight: 500;
+                font-size: 16px;
+                line-height: 139.52%;
+                text-transform: uppercase;
+                color: rgba(255, 255, 255, 0.7);
+                margin-bottom: 20px;
+            }
+
+            #card {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-top: 0.5px solid #414044;
+                padding: 20px;
+                height: 100px;
+                width: 100%;
+
+                @include responsivePro(mobile){
+                    flex-wrap: wrap;
+                    height: auto;
+                }
+
+                @include responsivePro(exception){
+                    flex-wrap: wrap;
+                    height: auto;
+                }
+
+                div {
+                    height: 100%;
+                    width: 20%;
+
+                    @include responsivePro(mobile){
+                        width: 50%;
+                        height: 70px;
+                    }
+
+                    @include responsivePro(exception){
+                        width: 50%;
+                        height: 70px;
+                    }
+                }
+
+                #div {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    @include responsivePro(mobile){
+                        justify-content: left;
+                    }
+
+                    @include responsivePro(exception){
+                        justify-content: left;
+                    }
+                }
+
+                h4 {
+                    font-weight: 500;
+                    font-size: 12px;
+                }
+
+                #type {
+                    width: 30px;
+                    height: 30px;
+                    background: #1C4DF0;
+                    border-radius: 50%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    text-align: center;
+                    font-size: 1rem;
+                }
+
+                #status {
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 50%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    text-align: center;
+                    font-size: 1rem;
+                }
+
+                p {
+                    font-weight: 400;
+                    font-size: 16px;
+                    color: rgba(255, 255, 255, 0.7);
+                }
+
+                h3 {
+                    font-weight: 500;
+                    font-size: 16px;
+                    margin: 0px;
+                    margin-right: 10px;
+
+                }
+
+                a {
+                    color: #fff;
+                    text-decoration: #fff;
+                }
+
+                #share {
+                    font-size: 1rem;
+                    margin-bottom: 10px;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+
+
+}

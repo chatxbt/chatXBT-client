@@ -1,0 +1,1 @@
+export default 'https://www.linkpicture.com/q/SEO-IMAGE5.png';
