@@ -1,0 +1,243 @@
+@import "../utils/functions.scss";
+
+// COMMON WRAPPER STYLE
+.chatCardWrapper {
+  font-family: $primaryFontLight;
+
+  background: linear-gradient(
+    180deg,
+    rgba(94, 148, 255, 0.16) 0%,
+    rgba(84, 142, 254, 0.1) 100%
+  );
+  width: 504px;
+  height: fit-content;
+  display: inline-flex;
+  flex-direction: column;
+  padding: 18px 22px;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-start;
+  border-radius: 5px;
+
+  @include responsivePro(mobile) {
+    width: 100%;
+  }
+}
+
+// REUSABLE ROW COMPONENT STYLE
+.chatCardRow {
+  background: linear-gradient(
+    180deg,
+    rgba(205, 207, 255, 0.08) 0%,
+    rgba(205, 207, 255, 0.05) 100%
+  );
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 8px 16px;
+  border-radius: 3px;
+
+  position: relative;
+
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  > div:last-of-type {
+    text-align: right;
+    justify-content: center;
+    gap: 4px;
+
+    //
+    aside {
+      height: 40px;
+      padding-left: 10px;
+      display: flex;
+      justify-content: space-between;
+      gap: 5px;
+      align-items: center;
+
+      border-radius: 200px;
+      background: #202631;
+
+      div {
+        height: 40px;
+        width: 40px;
+        border-radius: 50%;
+
+        background: linear-gradient(
+          152deg,
+          #fc7916 0%,
+          #880ef7 73.44%,
+          #1c4df0 100%
+        );
+
+        @include responsivePro(small) {
+          display: none;
+        }
+      }
+    }
+  }
+
+  h4,
+  h2,
+  h5 {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 139.523%; /* 22.324px */
+  }
+
+  h2,
+  h4 {
+    color: #fff;
+    font-weight: 700;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 6px;
+  }
+
+  h4 {
+    font-weight: 500;
+  }
+
+  h5 {
+    color: #606b87;
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  @include responsivePro(tab) {
+    flex-direction: column;
+
+    > div:last-of-type {
+      text-align: left;
+    }
+  }
+}
+
+// REUSABLE BUTTONS AND BUTTON CONTAINER COMPONENT STYLE
+.chatCardBtns {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  width: 100%;
+
+  button {
+    cursor: pointer;
+    text-transform: capitalize;
+    padding: 0.7rem 1.5rem;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    flex: 1;
+    color: #fff;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.16) 0%,
+      rgba(255, 255, 255, 0.1) 100%
+    );
+  }
+
+  button:first-child {
+    background: #1c4df0;
+  }
+
+  @include responsivePro(small) {
+    flex-direction: column;
+  }
+}
+
+// ERROR STYLE FOR CHATCARD BORROW
+.chatErrorMsg {
+  padding: 10px;
+  border-radius: 4px;
+  background: rgba(54, 2, 2, 0.3);
+  margin-block: 8px 12px;
+  width: 100%;
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: row;
+  gap: 12px;
+  color: #5a6789;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+
+  img {
+    width: 28px;
+    height: 28px;
+  }
+
+  @include responsivePro(small) {
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+//
+.gasPump {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin-top: 8px;
+
+  span {
+    color: #c2d0e5;
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 139.523%; /* 22.324px */
+  }
+
+  img {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+.chatCardSwapRow {
+  h4 {
+    color: #fff;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 6px;
+  }
+
+  > span {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(
+      152deg,
+      #ffb57d 0%,
+      #880ef7 73.44%,
+      #1c4df0 100%
+    );
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    display: grid;
+    place-items: center;
+
+    transform: translate(-50%, calc(-50% - 4px));
+
+    svg {
+      font-size: 1.8rem;
+    }
+  }
+}
