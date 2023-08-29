@@ -5,7 +5,8 @@ export const endpoints = {
     postUserEmailVerification: "auth/verify",
 
     // chat
-    postAiQuery: "chatai/query-ai",
+    postAiQuery: "chatai/query-prompt",
+    postNlpPromptQuery: "chatai/nlp-prompt",
 
     // waitlist
     postWaitlist: "waitlist/subscribe"

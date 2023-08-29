@@ -50,6 +50,35 @@ export const getPriceFromCoinmarketCap = async (coin: string, amount: number, to
     };
 }
 
+// fetch trending coins
+export const searchTrendingCoinsFromCoinGecko = async () => {
+  let { data } = await publicApiConnect().get(
+    `https://api.coingecko.com/api/v3/search/trending`,
+  );
+  return {
+    status: true,
+    type: 'trending-coins',
+    dex: 'coin gecko',
+    message: `trending coins on coingecko `,
+    metadata: data?.coins || [],
+  };
+}
+
+// fetch coin market chart
+export const getCoinMarketChartFromCoinGecko = async (coin: string, amount: number, to: string = 'usd') => {
+  let { data } = await publicApiConnect().get(
+    `https://api.coingecko.com/api/v3/coins/${coin}/market_chart?vs_currency=${to}&days=1`,
+  );
+  return {
+    status: true,
+    // type: 'coin-market-price history',
+    type: 'coin-price',
+    dex: 'coin gecko',
+    message: `coin history `,
+    metadata: data?.prices || [],
+  };
+}
+
 export const checkIfprotocolExist = (protocols: Array<string>, text: string): boolean => {
   text = text.toLowerCase();
   for(let i = 0; i < protocols.length; i++){

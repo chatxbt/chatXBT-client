@@ -135,6 +135,18 @@ export class ChatXBTResolver {
       });
       return response;
     }
+
+    const isCheckingTrendingCoins = this.extractMessage(message, this.intents.trendingCoins);
+    if (isCheckingTrendingCoins) {
+      const _doc = this.nlp(isCheckingTrendingCoins); // reconstruct the doc
+      const coin = _doc.match(`(${this.tokenKeys})`).out('text');
+      const exchange = _doc.match('(coinmarketcap|coingecko)');
+      const dex = exchange.text();
+      const response = await this.internalResolver.searchTrendingCoins({
+        dex,
+      });
+      return response;
+    }
     
     const isBorrowingEth = this.extractMessage(message, this.intents.borrowEth);
     if (isBorrowingEth) {

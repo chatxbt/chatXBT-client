@@ -154,14 +154,31 @@ export class IntentHandler {
     try {
       switch (dex) {
         case 'coingecko':
-          return toolkit.getPriceFromCoingecko(coin, amount, to);
+          return await toolkit.getCoinMarketChartFromCoinGecko(coin, amount, to);
+          // return toolkit.getPriceFromCoingecko(coin, amount, to);
         case 'coinmarketcap':
           return toolkit.getPriceFromCoinmarketCap(coin, amount, to);
         default:
-          return toolkit.getPriceFromCoingecko(coin, amount, to); 
+          return await toolkit.getCoinMarketChartFromCoinGecko(coin, amount, to);
+          // return toolkit.getPriceFromCoingecko(coin, amount, to); 
       }
     } catch (error) {
        return false;
+    }
+  }
+
+  async searchTrendingCoins({dex}: {dex: string}){
+    try{
+      switch (dex) {
+        case 'coingecko':
+          return await toolkit.searchTrendingCoinsFromCoinGecko()
+        case 'coinmarketcap':
+          return toolkit.searchTrendingCoinsFromCoinGecko()
+        default:
+          return toolkit.searchTrendingCoinsFromCoinGecko()
+      }
+    } catch (error) {
+      return false;
     }
   }
 

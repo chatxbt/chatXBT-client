@@ -40,6 +40,10 @@ export const customlocalStorage = (storageKey: string) => {
   return JSON.parse(data)?.state;
 }
 
+export const doesNotContainWord = (str: string, word: string) => {
+  return str.indexOf(word) === -1;
+}
+
 // get bearer token
 export const getAuthToken = () => customlocalStorage('connection-storage')?.token
 
