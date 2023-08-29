@@ -215,15 +215,16 @@ export const chat = (props: any) =>  {
               alert(msg);
               const resolvedMessage: any = await resolver.resolveMsg(msg, provider)
               const internalHandler = new chatxbtUtils.IntentHandler({})
+            //   console.log(resolvedMessage);
               if(resolvedMessage?.status){
                 return resolvedMessage
               }
             //   return await queryAiChatBot(message);
-            return {
-                status: true,
-                type: 'default-text', 
-                message: 'please try again'
-            }
+            // return {
+            //     status: true,
+            //     type: 'default-text', 
+            //     message: 'please try again'
+            // }
             }
             return { xbtResolve }
         } catch (error: any) {
