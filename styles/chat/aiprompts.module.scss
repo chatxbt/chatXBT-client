@@ -241,3 +241,140 @@
     }
   }
 }
+
+// TRENDING COINS STYLE
+.trendCoinsCon {
+  border-radius: 10px;
+  background: linear-gradient(
+    180deg,
+    rgba(94, 148, 255, 0.16) 0%,
+    rgba(84, 142, 254, 0.1) 100%
+  );
+  width: 100%;
+  max-width: 900px;
+  padding: 10px;
+
+  // @include responsivePro(mobile) {
+  //   width: 100%;
+  // }
+}
+
+.trendCoins {
+  overflow: auto; /* Enable horizontal scrolling */
+  white-space: nowrap; /* Prevent line breaks */
+
+  // Hide the scrollbar
+  scrollbar-width: none; // Firefox
+  -ms-overflow-style: none; // Internet Explorer and Microsoft Edge
+
+  // Style for Webkit browsers (Chrome, Safari)
+  &::-webkit-scrollbar {
+    height: 0;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  width: 100%;
+  height: fit-content;
+  max-height: 70vh;
+}
+
+.coinList {
+  font-weight: 600;
+  padding: 10px;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  text-transform: capitalize;
+
+  thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: #111d37;
+    color: #bdbdbdd0;
+  }
+
+  th,
+  td {
+    padding: 8px;
+    text-align: right;
+  }
+
+  td {
+    border-block: 0.5px solid #2f3b55;
+    height: 70px;
+    min-width: 120px;
+
+    @include responsivePro(mobile) {
+      min-width: 80px;
+    }
+  }
+
+  tbody {
+    tr {
+      &:hover {
+        td {
+          background-color: #13213f;
+        }
+      }
+    }
+
+    svg {
+      margin-right: 4px;
+    }
+  }
+
+  .fixed {
+    position: sticky;
+    left: 0;
+    background-color: #111d37;
+    text-align: left;
+    min-width: 200px;
+
+    @include responsivePro(mobile) {
+      min-width: 120px;
+    }
+
+    div {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 6px 0;
+    }
+
+    p {
+      &:first-of-type {
+        min-width: 30px;
+      }
+      padding-inline: 4px;
+      margin: 0;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 6px 12px;
+      text-transform: capitalize;
+
+      img {
+        border-radius: 50%;
+      }
+
+      .gray {
+        color: #a5a5a598;
+        text-transform: uppercase;
+      }
+    }
+  }
+}

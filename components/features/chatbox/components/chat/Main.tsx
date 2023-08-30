@@ -9,6 +9,7 @@ import ChatCardBorrow from "./components/ChatCardBorrow";
 import ChatCardLend from "./components/ChatCardLend";
 import ChatCardStake from "./components/ChatCardStake";
 import ChatCardSwap from "./components/ChatCardSwap";
+import TrendingCoins from "./components/TrendingCoins";
 
 const Main = (props: any) => {
   const {
@@ -30,6 +31,7 @@ const Main = (props: any) => {
           <UserChatCard key={index} {...data} />
         ))}
       {status === actionTypes.PENDING && <BotIndicator />}
+      <TrendingCoins />
     </div>
   );
 };
