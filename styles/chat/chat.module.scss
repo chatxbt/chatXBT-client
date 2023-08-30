@@ -376,6 +376,7 @@
         font-size: 15px;
         padding: 5px 10px;
         border-radius: 5px;
+        background: #263461;
 
         #icon {
             font-size: 17px;
@@ -388,7 +389,6 @@
         }
 
         @include responsivePro(mobile) {
-            background: #263461;
             right: 10px;
             bottom: 100px;
         }
@@ -405,6 +405,7 @@
         background: transparent;
         border: 1px solid #fff;
         font-size: 1.5rem;
+        background: #263461;
 
         &:hover {
             background: #fff;
@@ -412,7 +413,6 @@
         }
 
         @include responsivePro(mobile) {
-            background: #263461;
             right: 10px;
         }
     }
