@@ -31,8 +31,6 @@ ChartJS.register(
   Filler
 );
 
-// rgba(53, 162, 235, 0.5)
-
 const ChatCardPrice = () => {
   const data = {
     labels: ["January", "February", "March", "April", "May", "June", "July"],

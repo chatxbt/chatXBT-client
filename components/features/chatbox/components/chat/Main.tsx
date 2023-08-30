@@ -31,11 +31,13 @@ const Main = (props: any) => {
       )}
 
       {preview && <Preview />}
+
       {!preview &&
         messages.length > 0 &&
         messages?.map((data: any, index: any) => (
           <UserChatCard key={index} {...data} />
         ))}
+
       {status === actionTypes.PENDING && <BotIndicator />}
     </div>
   );
