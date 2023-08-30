@@ -20,7 +20,11 @@ const Main = (props: any) => {
       )}
 
       {messages.length > 0 && (
-        <button className={style.rePrompt} onClick={rePrompt}>
+        <button
+          className={style.rePrompt}
+          onClick={rePrompt}
+          disabled={status === actionTypes.PENDING}
+        >
           <MdIcons.MdOutlineRefresh id={style.icon} />
           Re-prompt
         </button>
