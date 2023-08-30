@@ -1,24 +1,32 @@
-import React, { useRef } from "react";
+import React from "react";
 import style from "@styles/chat/chat.module.scss";
 import Preview from "./Preview";
 import { BotIndicator, UserChatCard } from "./ChatCard";
 import * as MdIcons from "react-icons/md";
 import { actionTypes } from "@chatxbt-sdk/config/constants";
 import { useChat } from "@chatxbt-sdk/hooks";
+import BackToBottomButton from "@components/shared/back-to-bottom";
 
 const Main = (props: any) => {
   const {
-    store: { preview, messages, status, ref },
-    action: { scrollDown },
+    store: { preview, messages, status, ref, scroll },
+    action: { scrollDown, rePrompt },
   } = useChat(props);
 
   return (
     <div className={style.chatCon} ref={ref}>
-      {messages.length > 10 && (
-        <button className={style.down} onClick={scrollDown}>
-          <MdIcons.MdKeyboardDoubleArrowDown />
+      
+      {status === actionTypes.DONE && scroll && (
+        <BackToBottomButton onClick={scrollDown} />
+      )}
+
+      {messages.length > 0 && (
+        <button className={style.rePrompt} onClick={rePrompt}>
+          <MdIcons.MdOutlineRefresh id={style.icon} />
+          Re-prompt
         </button>
       )}
+
       {preview && <Preview />}
       {!preview &&
         messages.length > 0 &&
