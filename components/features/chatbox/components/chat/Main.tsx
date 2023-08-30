@@ -15,7 +15,6 @@ const Main = (props: any) => {
 
   return (
     <div className={style.chatCon} ref={ref}>
-      
       {status === actionTypes.DONE && scroll && (
         <BackToBottomButton onClick={scrollDown} />
       )}
