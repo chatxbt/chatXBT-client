@@ -251,12 +251,8 @@
     rgba(84, 142, 254, 0.1) 100%
   );
   width: 100%;
-  max-width: 900px;
+  max-width: 640px;
   padding: 10px;
-
-  // @include responsivePro(mobile) {
-  //   width: 100%;
-  // }
 }
 
 .trendCoins {
@@ -282,7 +278,7 @@
 
   width: 100%;
   height: fit-content;
-  max-height: 70vh;
+  max-height: 65vh;
 }
 
 .coinList {
@@ -290,7 +286,7 @@
   padding: 10px;
   width: 100%;
   border-collapse: collapse;
-  font-size: 12px;
+  font-size: 10px;
   text-transform: capitalize;
 
   thead {
@@ -309,8 +305,8 @@
 
   td {
     border-block: 0.5px solid #2f3b55;
-    height: 70px;
-    min-width: 120px;
+    min-height: 60px;
+    min-width: 100px;
 
     @include responsivePro(mobile) {
       min-width: 80px;
@@ -329,6 +325,10 @@
     svg {
       margin-right: 4px;
     }
+
+    p {
+      margin: 0;
+    }
   }
 
   .fixed {
@@ -336,7 +336,7 @@
     left: 0;
     background-color: #111d37;
     text-align: left;
-    min-width: 200px;
+    min-width: 180px;
 
     @include responsivePro(mobile) {
       min-width: 120px;
