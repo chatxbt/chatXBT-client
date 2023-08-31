@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 export default () => {
 
     const scrollToLastChat = (ref: any) => {

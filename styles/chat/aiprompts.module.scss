@@ -4,11 +4,9 @@
 .chatCardWrapper {
   font-family: $primaryFontLight;
 
-  background: linear-gradient(
-    180deg,
-    rgba(94, 148, 255, 0.16) 0%,
-    rgba(84, 142, 254, 0.1) 100%
-  );
+  background: linear-gradient(180deg,
+      rgba(94, 148, 255, 0.16) 0%,
+      rgba(84, 142, 254, 0.1) 100%);
   width: 504px;
   height: fit-content;
   display: inline-flex;
@@ -26,11 +24,9 @@
 
 // REUSABLE ROW COMPONENT STYLE
 .chatCardRow {
-  background: linear-gradient(
-    180deg,
-    rgba(205, 207, 255, 0.08) 0%,
-    rgba(205, 207, 255, 0.05) 100%
-  );
+  background: linear-gradient(180deg,
+      rgba(205, 207, 255, 0.08) 0%,
+      rgba(205, 207, 255, 0.05) 100%);
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -47,7 +43,7 @@
     gap: 4px;
   }
 
-  > div:last-of-type {
+  >div:last-of-type {
     text-align: right;
     justify-content: center;
     gap: 4px;
@@ -69,12 +65,10 @@
         width: 40px;
         border-radius: 50%;
 
-        background: linear-gradient(
-          152deg,
-          #fc7916 0%,
-          #880ef7 73.44%,
-          #1c4df0 100%
-        );
+        background: linear-gradient(152deg,
+            #fc7916 0%,
+            #880ef7 73.44%,
+            #1c4df0 100%);
 
         @include responsivePro(small) {
           display: none;
@@ -90,7 +84,8 @@
     font-size: 16px;
     font-style: normal;
     font-weight: 500;
-    line-height: 139.523%; /* 22.324px */
+    line-height: 139.523%;
+    /* 22.324px */
   }
 
   h2,
@@ -116,7 +111,7 @@
   @include responsivePro(tab) {
     flex-direction: column;
 
-    > div:last-of-type {
+    >div:last-of-type {
       text-align: left;
     }
   }
@@ -138,11 +133,9 @@
     border: none;
     flex: 1;
     color: #fff;
-    background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.16) 0%,
-      rgba(255, 255, 255, 0.1) 100%
-    );
+    background: linear-gradient(180deg,
+        rgba(255, 255, 255, 0.16) 0%,
+        rgba(255, 255, 255, 0.1) 100%);
   }
 
   button:first-child {
@@ -200,7 +193,8 @@
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
-    line-height: 139.523%; /* 22.324px */
+    line-height: 139.523%;
+    /* 22.324px */
   }
 
   img {
@@ -218,15 +212,13 @@
     gap: 6px;
   }
 
-  > span {
+  >span {
     width: 40px;
     height: 40px;
-    background: linear-gradient(
-      152deg,
-      #ffb57d 0%,
-      #880ef7 73.44%,
-      #1c4df0 100%
-    );
+    background: linear-gradient(152deg,
+        #ffb57d 0%,
+        #880ef7 73.44%,
+        #1c4df0 100%);
     border-radius: 50%;
     position: absolute;
     top: 0;
@@ -242,9 +234,13 @@
   }
 }
 
+<<<<<<< HEAD
 // TRENDING COINS STYLE
 
 .chatCardBot {
+=======
+.chatCardBotPrice {
+>>>>>>> 7f32e20c61bdda4ec381462b2dc7f0e76f2b2f9b
   margin-top: 10px;
   width: 90%;
   display: flex;
@@ -253,13 +249,21 @@
 
   @include responsivePro(mobile) {
     width: 100%;
+<<<<<<< HEAD
   }
 
   > img {
+=======
+    flex-direction: column;
+  }
+
+  img {
+>>>>>>> 7f32e20c61bdda4ec381462b2dc7f0e76f2b2f9b
     width: 32px;
     height: 32px;
     border-radius: 50%;
     margin-right: 10px;
+<<<<<<< HEAD
   }
 }
 
@@ -408,3 +412,83 @@
     }
   }
 }
+=======
+
+    @include responsivePro(mobile) {
+      margin-bottom: 10px;
+    }
+  }
+
+  .message {
+    height: auto;
+    padding: 20px;
+    background: linear-gradient(180deg, rgba(94, 148, 255, 0.16) 0%, rgba(84, 142, 254, 0.1) 100%);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: flex-start;
+    text-align: left;
+    font-family: $primaryFontLight;
+
+    @include responsivePro(mobile) {
+      width: 100%;
+      padding: 15px 14px;
+    }
+
+    h1,
+    h4,
+    h5 {
+      text-align: left;
+    }
+
+    h5 {
+      font-size: 15px;
+      color: #ccc;
+
+      span {
+        color: #fff;
+        font-weight: 900;
+      }
+    }
+
+    h1{
+      font-size: 26px;
+      font-weight: 900;
+
+      span{
+        color: #ccc;
+        font-size: 13px;
+        font-weight: 100;
+      }
+    }
+
+    h4{
+      font-size: 14px;
+      color: red;
+    }
+
+    .rise{
+      color: green;
+    }
+
+    .fall{
+      color: red;
+    }
+
+    .chat{
+      width: 500px;
+      height: 300px;
+      margin-top: 20px;
+      position: relative;
+
+      @include responsivePro(mobile) {
+        height: auto;
+        width: 100%;
+      }
+      
+    }
+  }
+
+}
+>>>>>>> 7f32e20c61bdda4ec381462b2dc7f0e76f2b2f9b

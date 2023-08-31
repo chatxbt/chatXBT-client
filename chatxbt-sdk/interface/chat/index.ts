@@ -10,10 +10,12 @@ export type ChatStore = {
     chatData: any;
     preview: boolean;
     botReply: any;
+    scroll: any;
     updateMessage: (chatMessage: userState['message']) => void;
     sendMessage: (chatMessage: userState['message']) => void;
     generateResponse: (message: string) => void;
     awaitMessage: () => void;
     resetMessage: () => void;
     setPreview: (param: boolean) => void;
+    setScroll: (param: boolean) => void;
 }
