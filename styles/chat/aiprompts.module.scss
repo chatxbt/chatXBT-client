@@ -243,6 +243,26 @@
 }
 
 // TRENDING COINS STYLE
+
+.chatCardBot {
+  margin-top: 10px;
+  width: 90%;
+  display: flex;
+  justify-content: left;
+  align-items: flex-start;
+
+  @include responsivePro(mobile) {
+    width: 100%;
+  }
+
+  > img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+}
+
 .trendCoinsCon {
   border-radius: 10px;
   background: linear-gradient(
@@ -251,12 +271,12 @@
     rgba(84, 142, 254, 0.1) 100%
   );
   width: 100%;
-  max-width: 640px;
+  max-width: 620px;
   padding: 10px;
 }
 
 .trendCoins {
-  overflow: auto; /* Enable horizontal scrolling */
+  overflow: auto;
   white-space: nowrap; /* Prevent line breaks */
 
   // Hide the scrollbar
@@ -278,7 +298,8 @@
 
   width: 100%;
   height: fit-content;
-  max-height: 65vh;
+  max-height: 61vh;
+  border-radius: 10px;
 }
 
 .coinList {
@@ -288,6 +309,10 @@
   border-collapse: collapse;
   font-size: 10px;
   text-transform: capitalize;
+
+  @include responsivePro(mobile) {
+    font-size: 9px;
+  }
 
   thead {
     position: sticky;
@@ -310,6 +335,9 @@
 
     @include responsivePro(mobile) {
       min-width: 80px;
+    }
+    @include responsivePro(small) {
+      min-width: 70px;
     }
   }
 
@@ -341,6 +369,9 @@
     @include responsivePro(mobile) {
       min-width: 120px;
     }
+    @include responsivePro(small) {
+      min-width: 90px;
+    }
 
     div {
       height: 100%;
@@ -350,7 +381,7 @@
       align-items: center;
       flex-direction: row;
       flex-wrap: wrap;
-      gap: 6px 0;
+      gap: 4px 0;
     }
 
     p {
@@ -358,7 +389,6 @@
         min-width: 30px;
       }
       padding-inline: 4px;
-      margin: 0;
       display: flex;
       justify-content: flex-start;
       align-items: center;

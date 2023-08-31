@@ -2,6 +2,7 @@ import React from "react";
 import style from "@styles/chat/chat.module.scss";
 import { motion } from "framer-motion";
 import { actionTypes } from "@chatxbt-sdk/config/constants";
+import TrendingCoins from "./components/TrendingCoins";
 
 export const UserChatCard = (props: any) => {
   const { dp, from, id, message, type, metadata } = props;
@@ -86,7 +87,7 @@ export const UserChatCard = (props: any) => {
               <img src={dp} alt="" />
 
               <div className={style.message}>
-                <p>{message} </p>
+                <p>{message}</p>
               </div>
             </motion.div>
           )}
