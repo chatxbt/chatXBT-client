@@ -2,6 +2,8 @@ import React from "react";
 import style from "@styles/chat/chat.module.scss";
 import { motion } from "framer-motion";
 import { actionTypes } from "@chatxbt-sdk/config/constants";
+import TrendingCoins from "./components/TrendingCoins";
+import CoinPrice from "./components/ChatCardPrice";
 
 export const UserChatCard = (props: any) => {
   const { dp, from, id, message, type, metadata } = props;
@@ -118,9 +120,29 @@ export const UserChatCard = (props: any) => {
             <img src={dp} alt="" />
 
             <div className={style.message}>
-              {metadata.map((coin: any) =>
+              {/* {metadata.map((coin: any) =>
               <><p>{coin?.item?.symbol}</p><br/></>
-              )}
+              )} */}
+              <TrendingCoins dummyCoins={metadata} />
+            </div>
+          </motion.div>
+          )}
+
+          {type === actionTypes.COINPRICE && (
+            <motion.div
+            className={style.chatCardBot}
+            id={`18`}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
+          >
+            <img src={dp} alt="" />
+
+            <div className={style.message}>
+              {/* {metadata.map((coin: any) =>
+              <><p>{coin?.item?.symbol}</p><br/></>
+              )} */}
+              <CoinPrice prices={metadata} />
             </div>
           </motion.div>
           )}

@@ -66,8 +66,22 @@ export const searchTrendingCoinsFromCoinGecko = async () => {
 
 // fetch coin market chart
 export const getCoinMarketChartFromCoinGecko = async (coin: string, amount: number, to: string = 'usd') => {
+  let from = coin?.toLowerCase() as 'dai';
+  to = to?.toLowerCase();
+  let t = to as 'dai'
+
+  const token = supportedTokens[from] || supportedTokens[t];
+
+  if (!token) {
+    throw new Error(lang.unsupportedToken);
+  }
+
+  const fromCrypto = token.asset.toLowerCase() === from.toLowerCase();
+
+  const crypto = token.coinGeckoId, fiat = fromCrypto ? to : from;
+
   let { data } = await publicApiConnect().get(
-    `https://api.coingecko.com/api/v3/coins/${coin}/market_chart?vs_currency=${to}&days=1`,
+    `https://api.coingecko.com/api/v3/coins/${crypto}/market_chart?vs_currency=${fiat}&days=7&interval=daily&precision=1`,
   );
   return {
     status: true,
@@ -75,7 +89,12 @@ export const getCoinMarketChartFromCoinGecko = async (coin: string, amount: numb
     type: 'coin-price',
     dex: 'coin gecko',
     message: `coin history `,
-    metadata: data?.prices || [],
+    metadata: {
+      priceHistory: data?.prices || [],
+      mkCapHistory: data?.market_caps || [],
+      volumesHistory: data?.total_volumes || [],
+      coin,
+    }
   };
 }
 

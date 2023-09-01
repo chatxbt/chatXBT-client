@@ -39,7 +39,21 @@ export const supportedTokens = {
         decimal: 1e18,
         icon: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880',
     },
+    "ethereum": {
+      asset: 'ETH',
+      coinGeckoId: 'ethereum',
+      isStable: false,
+      decimal: 1e18,
+      icon: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880',
+  },
     "btc": {
+        asset: 'BTC',
+        coinGeckoId: 'bitcoin',
+        isStable: false,
+        decimal: 1e6,
+        icon: ' https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579',
+    },
+    "bitcoin": {
         asset: 'BTC',
         coinGeckoId: 'bitcoin',
         isStable: false,
