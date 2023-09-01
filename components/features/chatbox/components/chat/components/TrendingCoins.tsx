@@ -5,26 +5,26 @@ import { FaCaretDown, FaCaretUp } from "react-icons/fa";
 
 const TrendingCoins = (props: any) => {
   // dummy data
-  const dummyCoins = [];
+  const coinData = {
+    icon: "/images/chat/bot.png",
+    name: `Coin 1`,
+    Symbol: `Coin 1`,
+    price: 3453454,
+    _24h: 34,
+    _7d: 34,
+    _30d: 34,
+    marketCap: 664535478,
+    volume: 664535478,
+  };
 
-  for (let i = 1; i <= 30; i++) {
-    const min = 5000000;
-    const max = 1000000000;
-
-    const coinData = {
-      icon: "/images/chat/bot.png",
-      name: `Coin ${i}`,
-      Symbol: `Coin ${i}`,
-      price: Math.random() * 100000,
-      _24h: Math.random() * 201 - 100,
-      _7d: Math.random() * 201 - 100,
-      _30d: Math.random() * 201 - 100,
-      marketCap: Math.floor(Math.random() * (max - min + 1) + min),
-      volume: Math.floor(Math.random() * (max - min + 1) + min),
-    };
-
-    dummyCoins.push(coinData);
-  }
+  const dummyCoins = [
+    coinData,
+    coinData,
+    coinData,
+    coinData,
+    coinData,
+    coinData,
+  ];
 
   return (
     <motion.div
@@ -34,13 +34,7 @@ const TrendingCoins = (props: any) => {
       exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
     >
       {/* Bot Icon */}
-      <Image
-        src={"/images/chat/bot.png"}
-        width={32}
-        height={32}
-        alt={"Bot Icon"}
-        className={style.trendCoinImg}
-      />
+      <img src={"/images/chat/bot.png"} alt={"Bot Icon"} />
 
       {/* Main Bot Response */}
       <div className={style.trendCoinsCon}>
@@ -55,12 +49,7 @@ const TrendingCoins = (props: any) => {
                       <div>
                         <p>{index + 1}</p>
                         <p>
-                          <Image
-                            src={coin.icon}
-                            width={17}
-                            height={17}
-                            alt={coin.icon}
-                          />
+                          <img src={coin.icon} alt={coin.icon} />
                           <span>{coin.name}</span>
                           <span className={style.gray}>{coin.Symbol}</span>
                         </p>
@@ -69,9 +58,9 @@ const TrendingCoins = (props: any) => {
                     <td>
                       <p>
                         $
-                        {/* {coin.price.toLocaleString(undefined, {
+                        {coin.price.toLocaleString(undefined, {
                           maximumFractionDigits: 2,
-                        })} */}
+                        })}
                       </p>
                     </td>
                     <td
