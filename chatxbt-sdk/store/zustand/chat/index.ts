@@ -19,6 +19,7 @@ export const useChatStore = create<ChatStore>()(
                 preview: true,
                 chatData: null,
                 botReply: '',
+                scroll: '',
                 updateMessage: (chatMessage: any) => {
                     set(() => ({
                         chatMessage: chatMessage,
@@ -50,7 +51,7 @@ export const useChatStore = create<ChatStore>()(
                             type: messageData.type,
                             message: messageData.message,
                             metadata: messageData?.metadata,
-                        }], status: actionTypes.DONE, messageHolder: ''
+                        }], status: actionTypes.DONE, 
                     }));
                 },
 
@@ -63,6 +64,10 @@ export const useChatStore = create<ChatStore>()(
 
                 setPreview: (param: boolean) => {
                     set({ preview: param });
+                },
+
+                setScroll: (param: boolean) => {
+                    set({scroll: param})
                 },
                 setHasHydrated: (state: any) => {
                     set({

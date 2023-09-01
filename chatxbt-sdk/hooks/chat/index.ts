@@ -12,9 +12,7 @@ export const useChat = (props: any) => {
             messages 
         },
         action: { 
-            resetMessage, 
             setPreview, 
-            connectResolver 
         }
     } = chatServices;
 

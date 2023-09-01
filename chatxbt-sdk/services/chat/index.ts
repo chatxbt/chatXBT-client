@@ -1,7 +1,8 @@
-import { 
-    useCallback, 
-    useMemo, 
-    useRef 
+import {
+    useCallback,
+    useMemo,
+    useRef,
+    useState
 } from "react"
 import {
     chatxbtStore,
@@ -10,7 +11,7 @@ import {
     chatxbtConfig
 } from "../.."
 
-export const chat = (props: any) =>  {
+export const chat = (props: any) => {
 
     // data provider modules
     const {
@@ -18,14 +19,14 @@ export const chat = (props: any) =>  {
     } = chatxbtDataProvider
 
     // store module
-    const { 
+    const {
         useDefiStore,
-        useChatStore, 
-        useConnectionStore 
+        useChatStore,
+        useConnectionStore
     } = chatxbtStore.zustandStore
 
     // chat store
-    const { 
+    const {
         message,
         messageHolder,
         status,
@@ -33,14 +34,16 @@ export const chat = (props: any) =>  {
         preview,
         chatData,
         botReply,
+        scroll,
         // functions
         setMessage,
         submit,
         generateResponse,
         resetMessage,
         setPreview,
+        setScroll,
         awaitMessage
-    } = useChatStore((state: any) => ({ 
+    } = useChatStore((state: any) => ({
         message: state.chatMessage,
         messageHolder: state.messageHolder,
         status: state.status,
@@ -48,13 +51,15 @@ export const chat = (props: any) =>  {
         preview: state.preview,
         chatData: state.chatData,
         botReply: state.botReply,
+        scroll: state.scroll,
         setMessage: state.updateMessage,
         submit: state.sendMessage,
         generateResponse: state.generateResponse,
         resetMessage: state.resetMessage,
         setPreview: state.setPreview,
+        setScroll: state.setScroll,
         awaitMessage: state.awaitMessage
-    }))
+    }));
 
     // connection store
     const {
@@ -64,7 +69,7 @@ export const chat = (props: any) =>  {
     }))
 
     // defi store
-    const { 
+    const {
         configured,
         lightPool,
         heavyPool,
@@ -110,6 +115,14 @@ export const chat = (props: any) =>  {
         awaitMessage();
     };
 
+    const rePrompt = async (e: { preventDefault: () => void }) => {
+        e.preventDefault();
+        if (!messageHolder.length) return;
+        submit(messageHolder);
+        connectResolver();
+        awaitMessage();
+    };
+
     const connectResolver = () => {
         try {
             (async () => {
@@ -119,7 +132,7 @@ export const chat = (props: any) =>  {
                 console.log(result);
             })()
         } catch (error) {
-            
+
         }
     }
 
@@ -129,10 +142,11 @@ export const chat = (props: any) =>  {
             const keyword = word.prompt.toLowerCase();
             return typedCommand && keyword.startsWith(typedCommand) && keyword !== typedCommand;
         }).slice(0, 10);
-    
+
     const scrollDown = () => {
         chatxbtUtils.handleRefs.default().scrollToLastChat(ref);
     };
+
     /**
      * 📝📝📝 NOTE: funtion will be refactored later
      * 
@@ -161,7 +175,7 @@ export const chat = (props: any) =>  {
             const botReply = botRes?.data || chatxbtConfig.lang.defaultRelies[Math.floor(Math.random() * chatxbtConfig.lang.defaultRelies.length)];
             return {
                 status: true,
-                type: 'default-text', 
+                type: 'default-text',
                 message: botReply
             }
         } catch (error: any) {
@@ -179,9 +193,9 @@ export const chat = (props: any) =>  {
             const botReply = botRes?.data || chatxbtConfig.lang.defaultRelies[Math.floor(Math.random() * chatxbtConfig.lang.defaultRelies.length)];
             return {
                 status: true,
-                type: 'default-text', 
+                type: 'default-text',
                 message: botReply
-            } 
+            }
         } catch (error: any) {
             throw new chatxbtUtils.Issue(500, error?.message);
         }
@@ -196,35 +210,35 @@ export const chat = (props: any) =>  {
                 addresses
             })
             const xbtResolve = async (message: string) => {
-              // cv prompting
-              const {
-                  message: cv
-              } =  await conversationAiBot(message);
-
-              if( chatxbtUtils.toolkit.doesNotContainWord(cv, 'DEFI-DETECTED')){
-                return {
-                    status: true,
-                    type: 'default-text', 
+                // cv prompting
+                const {
                     message: cv
+                } = await conversationAiBot(message);
+
+                if (chatxbtUtils.toolkit.doesNotContainWord(cv, 'DEFI-DETECTED')) {
+                    return {
+                        status: true,
+                        type: 'default-text',
+                        message: cv
+                    }
                 }
-              }
-              // nlp prompting
-              const {
-                  message: msg
-              } =  await nlpAiBot(message);
-              alert(msg);
-              const resolvedMessage: any = await resolver.resolveMsg(msg, provider)
-              const internalHandler = new chatxbtUtils.IntentHandler({})
-            //   console.log(resolvedMessage);
-              if(resolvedMessage?.status){
-                return resolvedMessage
-              }
-            //   return await queryAiChatBot(message);
-            // return {
-            //     status: true,
-            //     type: 'default-text', 
-            //     message: 'please try again'
-            // }
+                // nlp prompting
+                const {
+                    message: msg
+                } = await nlpAiBot(message);
+                alert(msg);
+                const resolvedMessage: any = await resolver.resolveMsg(msg, provider)
+                const internalHandler = new chatxbtUtils.IntentHandler({})
+                //   console.log(resolvedMessage);
+                if (resolvedMessage?.status) {
+                    return resolvedMessage
+                }
+                //   return await queryAiChatBot(message);
+                // return {
+                //     status: true,
+                //     type: 'default-text', 
+                //     message: 'please try again'
+                // }
             }
             return { xbtResolve }
         } catch (error: any) {
@@ -243,7 +257,8 @@ export const chat = (props: any) =>  {
             preview,
             chatData,
             botReply,
-            hints
+            hints,
+            scroll
         },
         action: {
             resolvePrompt,
@@ -255,7 +270,10 @@ export const chat = (props: any) =>  {
             setPreview,
             scrollDown,
             connectResolver,
-            addHint
+            addHint,
+            rePrompt,
+            // handleScroll
+            setScroll
         },
         ...props
     }
