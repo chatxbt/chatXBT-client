@@ -12,7 +12,7 @@ const TrendingCoins = (props: any) => {
     const max = 1000000000;
 
     const coinData = {
-      icon: "/images/chat/eth.png",
+      icon: "/images/chat/bot.png",
       name: `Coin ${i}`,
       Symbol: `Coin ${i}`,
       price: Math.random() * 100000,
@@ -28,7 +28,7 @@ const TrendingCoins = (props: any) => {
 
   return (
     <motion.div
-      className={style.chatCardBot}
+      className={style.chatCardBotTrending}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
@@ -39,6 +39,7 @@ const TrendingCoins = (props: any) => {
         width={32}
         height={32}
         alt={"Bot Icon"}
+        className={style.trendCoinImg}
       />
 
       {/* Main Bot Response */}
@@ -47,57 +48,62 @@ const TrendingCoins = (props: any) => {
           <table className={style.coinList}>
             <TableHead />
             <tbody>
-              {dummyCoins?.map((coin, index) => (
-                <tr key={index + 1}>
-                  <td className={style.fixed}>
-                    <div>
-                      <p>{index + 1}</p>
+              {dummyCoins.length &&
+                dummyCoins?.map((coin, index) => (
+                  <tr key={index}>
+                    <td className={style.fixed}>
+                      <div>
+                        <p>{index + 1}</p>
+                        <p>
+                          <Image
+                            src={coin.icon}
+                            width={17}
+                            height={17}
+                            alt={coin.icon}
+                          />
+                          <span>{coin.name}</span>
+                          <span className={style.gray}>{coin.Symbol}</span>
+                        </p>
+                      </div>
+                    </td>
+                    <td>
                       <p>
-                        <Image
-                          src={coin.icon}
-                          width={17}
-                          height={17}
-                          alt={coin.icon}
-                        />
-                        <span>{coin.name}</span>
-                        <span className={style.gray}>{coin.Symbol}</span>
+                        $
+                        {/* {coin.price.toLocaleString(undefined, {
+                          maximumFractionDigits: 2,
+                        })} */}
                       </p>
-                    </div>
-                  </td>
-                  <td>
-                    <p>
-                      $
-                      {coin.price.toLocaleString(undefined, {
-                        maximumFractionDigits: 2,
-                      })}
-                    </p>
-                  </td>
-                  <td style={{ color: coin._24h > 0 ? "#16c784" : "#f7414a" }}>
-                    <p>
-                      {coin._24h > 0 ? <FaCaretUp /> : <FaCaretDown />}
-                      {coin._24h.toFixed(2)}%
-                    </p>
-                  </td>
-                  <td style={{ color: coin._7d > 0 ? "#16c784" : "#f7414a" }}>
-                    <p>
-                      {coin._7d > 0 ? <FaCaretUp /> : <FaCaretDown />}
-                      {coin._7d.toFixed(2)}%
-                    </p>
-                  </td>
-                  <td style={{ color: coin._30d > 0 ? "#16c784" : "#f7414a" }}>
-                    <p>
-                      {coin._30d > 0 ? <FaCaretUp /> : <FaCaretDown />}
-                      {coin._30d.toFixed(2)}%
-                    </p>
-                  </td>
-                  <td>
-                    <p>${coin.marketCap.toLocaleString()}</p>
-                  </td>
-                  <td>
-                    <p>${coin.volume.toLocaleString()}</p>
-                  </td>
-                </tr>
-              ))}
+                    </td>
+                    <td
+                      style={{ color: coin._24h > 0 ? "#16c784" : "#f7414a" }}
+                    >
+                      <p>
+                        {coin._24h > 0 ? <FaCaretUp /> : <FaCaretDown />}
+                        {coin._24h.toFixed(2)}%
+                      </p>
+                    </td>
+                    <td style={{ color: coin._7d > 0 ? "#16c784" : "#f7414a" }}>
+                      <p>
+                        {coin._7d > 0 ? <FaCaretUp /> : <FaCaretDown />}
+                        {coin._7d.toFixed(2)}%
+                      </p>
+                    </td>
+                    <td
+                      style={{ color: coin._30d > 0 ? "#16c784" : "#f7414a" }}
+                    >
+                      <p>
+                        {coin._30d > 0 ? <FaCaretUp /> : <FaCaretDown />}
+                        {coin._30d.toFixed(2)}%
+                      </p>
+                    </td>
+                    <td>
+                      <p>${coin.marketCap.toLocaleString()}</p>
+                    </td>
+                    <td>
+                      <p>${coin.volume.toLocaleString()}</p>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>

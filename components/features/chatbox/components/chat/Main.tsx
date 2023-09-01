@@ -6,6 +6,7 @@ import * as MdIcons from "react-icons/md";
 import { actionTypes } from "@chatxbt-sdk/config/constants";
 import { useChat } from "@chatxbt-sdk/hooks";
 import BackToBottomButton from "@components/shared/back-to-bottom";
+import TrendingCoins from "./components/TrendingCoins";
 
 const Main = (props: any) => {
   const {
@@ -38,6 +39,7 @@ const Main = (props: any) => {
           <UserChatCard key={index} {...data} />
         ))}
 
+      <TrendingCoins />
       {status === actionTypes.PENDING && <BotIndicator />}
     </div>
   );
