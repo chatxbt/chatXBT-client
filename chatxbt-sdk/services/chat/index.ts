@@ -226,10 +226,10 @@ export const chat = (props: any) => {
                 const {
                     message: msg
                 } = await nlpAiBot(message);
-                alert(msg);
+                // alert(msg);
                 const resolvedMessage: any = await resolver.resolveMsg(msg, provider)
                 const internalHandler = new chatxbtUtils.IntentHandler({})
-                //   console.log(resolvedMessage);
+                  console.log(resolvedMessage);
                 if (resolvedMessage?.status) {
                     return resolvedMessage
                 }

@@ -157,7 +157,8 @@ export class IntentHandler {
           return await toolkit.getCoinMarketChartFromCoinGecko(coin, amount, to);
           // return toolkit.getPriceFromCoingecko(coin, amount, to);
         case 'coinmarketcap':
-          return toolkit.getPriceFromCoinmarketCap(coin, amount, to);
+          // return toolkit.getPriceFromCoinmarketCap(coin, amount, to);
+          return await toolkit.getCoinMarketChartFromCoinGecko(coin, amount, to);
         default:
           return await toolkit.getCoinMarketChartFromCoinGecko(coin, amount, to);
           // return toolkit.getPriceFromCoingecko(coin, amount, to); 
