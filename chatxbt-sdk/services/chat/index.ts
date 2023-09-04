@@ -10,6 +10,7 @@ import {
     chatxbtDataProvider,
     chatxbtConfig
 } from "../.."
+import { actionTypes } from "@chatxbt-sdk/config/constants"
 
 export const chat = (props: any) => {
 
@@ -110,6 +111,7 @@ export const chat = (props: any) => {
     const sendMessage = async (e: { preventDefault: () => void }) => {
         e.preventDefault();
         if (!message.length) return;
+        if (status === actionTypes.PENDING) return;
         submit(message);
         connectResolver();
         awaitMessage();

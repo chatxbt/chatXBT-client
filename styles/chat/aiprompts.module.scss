@@ -290,31 +290,31 @@
       }
     }
 
-    h1{
+    h1 {
       font-size: 26px;
       font-weight: 900;
 
-      span{
+      span {
         color: #ccc;
         font-size: 13px;
         font-weight: 100;
       }
     }
 
-    h4{
+    h4 {
       font-size: 14px;
       color: red;
     }
 
-    .rise{
+    .rise {
       color: green;
     }
 
-    .fall{
+    .fall {
       color: red;
     }
 
-    .chat{
+    .chat {
       width: 500px;
       height: 300px;
       margin-top: 20px;
@@ -324,8 +324,192 @@
         height: auto;
         width: 100%;
       }
-      
+
     }
   }
 
 }
+
+.chatCardBotTrending {
+  margin-top: 10px;
+  width: 90%;
+  display: flex;
+  justify-content: left;
+  align-items: flex-start;
+
+  @include responsivePro(mobile) {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  @include responsivePro(exception) {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 10px;
+
+    @include responsivePro(mobile) {
+      margin-bottom: 10px;
+    }
+
+    @include responsivePro(exception) {
+      margin-bottom: 10px;
+    }
+  }
+
+  .trendCoinsCon {
+    border-radius: 10px;
+    background: linear-gradient(180deg,
+        rgba(94, 148, 255, 0.16) 0%,
+        rgba(84, 142, 254, 0.1) 100%);
+    width: 100%;
+    max-width: 620px;
+    padding: 10px;
+  }
+  
+  .trendCoins {
+    overflow: auto;
+    white-space: nowrap;
+    /* Prevent line breaks */
+  
+    // Hide the scrollbar
+    scrollbar-width: none; // Firefox
+    -ms-overflow-style: none; // Internet Explorer and Microsoft Edge
+  
+    // Style for Webkit browsers (Chrome, Safari)
+    &::-webkit-scrollbar {
+      height: 0;
+    }
+  
+    &::-webkit-scrollbar-thumb {
+      background-color: transparent;
+    }
+  
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+  
+    width: 100%;
+    height: fit-content;
+    max-height: 61vh;
+    border-radius: 10px;
+  }
+  
+  .coinList {
+    padding: 10px;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+    text-transform: capitalize;
+    font-family: $primaryFontLight;
+  
+    @include responsivePro(mobile) {
+      font-size: 13px;
+    }
+  
+    thead {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background-color: #111d37;
+      color: #bdbdbdd0;
+    }
+  
+    th,
+    td {
+      padding: 8px;
+      text-align: right;
+    }
+  
+    td {
+      border-block: 0.5px solid #2f3b55;
+      min-height: 60px;
+      min-width: 100px;
+  
+      @include responsivePro(mobile) {
+        min-width: 80px;
+      }
+  
+      @include responsivePro(small) {
+        min-width: 70px;
+      }
+    }
+  
+    tbody {
+      tr {
+        &:hover {
+          td {
+            background-color: #13213f;
+          }
+        }
+      }
+  
+      svg {
+        margin-right: 4px;
+      }
+  
+      p {
+        margin: 0;
+      }
+    }
+  
+    .fixed {
+      position: sticky;
+      left: 0;
+      background-color: #111d37;
+      text-align: left;
+      min-width: 150px;
+  
+      @include responsivePro(mobile) {
+        min-width: 120px;
+      }
+  
+      @include responsivePro(small) {
+        min-width: 90px;
+      }
+  
+      div {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 4px 0;
+      }
+  
+      p {
+        &:first-of-type {
+          min-width: 30px;
+        }
+  
+        padding-inline: 4px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 6px 12px;
+        text-transform: capitalize;
+  
+        img {
+          border-radius: 50%;
+          width: 17px;
+          height: 17px;
+        }
+  
+        .gray {
+          color: #a5a5a598;
+          text-transform: uppercase;
+        }
+      }
+    }
+  }
+}
+
