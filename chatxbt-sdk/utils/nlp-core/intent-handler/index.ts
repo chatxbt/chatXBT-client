@@ -78,12 +78,12 @@ export class IntentHandler {
       }
     };
   }
-  async sellTokenForEth(from: 'usdt', amountIn: string, dex: 'uniswap', provider: string) {
+  async sellTokenForEth(from: 'usdt', amountIn: string, dex: 'uniswap', wallertProvider: string) {
     const router = routers[dex]
     let signer = null;
     let address = ""
     let tx;
-    if (provider === 'metamask') {
+    if (wallertProvider.toLowerCase() === 'metamask') {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const accounts = await window.ethereum.request({
         method: 'eth_requestAccounts',
@@ -93,9 +93,11 @@ export class IntentHandler {
     }
     if (signer) {
       const path = [tokens[from], tokens['weth']];
+      alert(path);
       const contract = toolkit.makeContract(router, routerV2ABI, signer)
       const amountsIn = await contract.connect(signer).getAmountsOut(ethers.utils.parseEther(String(amountIn)), path);
       const now = new Date()
+      alert(now);
       tx = await contract.swapExactTokensForETHSupportingFeeOnTransferTokens(
         amountsIn[0],
         0,

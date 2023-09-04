@@ -66,6 +66,7 @@ export class ChatXBTResolver {
 
     const isBuyingWithEth = this.extractMessage(message, this.intents.swapEthForToken);
     if (isBuyingWithEth) {
+      alert('buying with Eth');
       const _doc = this.nlp(isBuyingWithEth); // reconstruct the doc
       const toToken = _doc.match(`(${this.tokenKeys})`).out('text');
       let exchange = _doc.match(`(${this.dexKeys})`);
@@ -92,15 +93,15 @@ export class ChatXBTResolver {
     const isSellingTokenForEth = this.extractMessage(message, this.intents.swapTokenForEth);
     if (isSellingTokenForEth) {
       const _doc = this.nlp(isSellingTokenForEth); // reconstruct the doc
-      const fromToken = _doc.match(`(${this.tokenKeys})`).out('text');
-      const exchange = _doc.match(`(${this.dexKeys})`);
+      const fromToken = _doc.match(`(${this.tokenKeys.toLowerCase()})`).out('text');
+      const exchange = _doc.match(`(${this.dexKeys.toLowerCase()})`);
       const rawAmount = _doc.match('#Value');
       const dex = exchange.text();
       let amount = rawAmount.text();
       if (amount.startsWith('$')) {
         amount = +amount.slice(1);
       }
-      const response = await this.internalResolver.sellTokenForEth(fromToken, amount, dex, provider)
+      const response = await this.internalResolver.sellTokenForEth(fromToken.split(/(\s)/)[0], amount, dex, provider)
       return response;
     }
 

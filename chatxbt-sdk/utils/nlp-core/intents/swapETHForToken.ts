@@ -27,3 +27,4 @@ export const swapEthForToken = [
 ];
 
 // buy usdt on uniswap with 0.005 eth
+// Buy 0.005 ETH worth of USDT on Uniswap
