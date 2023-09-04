@@ -81,7 +81,7 @@ export const getCoinMarketChartFromCoinGecko = async (coin: string, amount: numb
   const crypto = token.coinGeckoId, fiat = fromCrypto ? to : from;
 
   let { data } = await publicApiConnect().get(
-    `https://api.coingecko.com/api/v3/coins/${crypto}/market_chart?vs_currency=${fiat}&days=7&interval=daily&precision=1`,
+    `https://api.coingecko.com/api/v3/coins/${crypto}/market_chart?vs_currency=usd&days=7&interval=daily&precision=1`,
   );
   return {
     status: true,
