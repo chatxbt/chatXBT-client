@@ -114,22 +114,7 @@ export const UserChatCard = (props: any) => {
           )}
 
           {type === actionTypes.COINPRICE && (
-            <motion.div
-              className={style.chatCardBot}
-              id={`18`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
-            >
-              <img src={dp} alt="" />
-
-              <div className={style.message}>
-                {/* {metadata.map((coin: any) =>
-              <><p>{coin?.item?.symbol}</p><br/></>
-              )} */}
-                <CoinPrice prices={metadata} />
-              </div>
-            </motion.div>
+            <CoinPrice dp={dp} prices={metadata} />
           )}
 
           {/* {type === actionTypes.APPROVAL && (

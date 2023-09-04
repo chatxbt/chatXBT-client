@@ -32,20 +32,21 @@ ChartJS.register(
 );
 
 const ChatCardPrice = (props: any) => {
-  const {
-    prices
-  } = props
+  const { dp, prices } = props;
+
+  const a = prices?.priceHistory.map((data: any) => data[1]);
+
   const data = {
-    labels: ["January", "February", "March", "April", "May", "June", "July"],
+    labels: [" ", " ", " ", " ", " ", " ", " "],
     datasets: [
       {
         fill: true,
         label: " ",
-        data: [12, 19, 42, 5, 27, 21, 30],
+        data: a,
         borderColor: "rgb(53, 162, 235)",
         backgroundColor: "rgba(53, 162, 235, 0.1)",
         borderWidth: 1,
-        lineTension: 0.3,
+        // lineTension: 0.3,
       },
     ],
   };
@@ -72,18 +73,17 @@ const ChatCardPrice = (props: any) => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
     >
-      <img src={botDisplayImage.default} alt="" />
+      <img src={dp} alt="" />
 
       <div className={style.message}>
         <h5>
           Market Summary {`>`} <span>{prices?.coin}</span>
         </h5>
 
-        {/* if the price drops programmatically add className of fall else add rise */}
         <h1>
           {prices?.priceHistory[0][1]} <span>USD</span>
         </h1>
-        <h4>−259,549.92 (1.21%) today</h4>
+        <h4>{prices?.mkCapHistory[0][1].toLocaleString()}</h4>
         <div className={style.chat}>
           <Line options={options} data={data} />
         </div>
