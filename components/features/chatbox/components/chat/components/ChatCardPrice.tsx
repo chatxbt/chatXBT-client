@@ -83,7 +83,7 @@ const ChatCardPrice = (props: any) => {
         <h1>
           {prices?.priceHistory[0][1]} <span>USD</span>
         </h1>
-        <h4>{prices?.mkCapHistory[0][1].toLocaleString()}</h4>
+        <h4>{prices?.mkCapHistory[0][1].toLocaleString()} <span>Mkt Cap</span></h4>
         <div className={style.chat}>
           <Line options={options} data={data} />
         </div>
