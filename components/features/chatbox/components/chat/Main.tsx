@@ -6,7 +6,6 @@ import * as MdIcons from "react-icons/md";
 import { actionTypes } from "@chatxbt-sdk/config/constants";
 import { useChat } from "@chatxbt-sdk/hooks";
 import BackToBottomButton from "@components/shared/back-to-bottom";
-import ChatCardPrice from "./components/ChatCardPrice";
 
 const Main = (props: any) => {
   const {
@@ -30,8 +29,6 @@ const Main = (props: any) => {
           Re-prompt
         </button>
       )}
-
-      {/* <ChatCardPrice/> */}
 
       {preview && <Preview />}
 
