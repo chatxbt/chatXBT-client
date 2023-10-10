@@ -30,11 +30,13 @@ export class IntentHandler {
     }
   }
 
-  async buyTokenWithEth(to: 'usdt', amountIn: string, dex: 'uniswap', provider: string) {
+  async buyTokenWithEth(to: 'usdt', amountIn: string, dex: 'uniswap', p: string) {
+    // alert(`to: ${to} \n amountIn: ${amountIn} \n dex: ${dex} \n provider: ${provider}`);
     let signer = null;
     let address = ""
     let tx;
-    if (provider === 'metamask') {
+    if (p.toLowerCase() === 'metamask') {
+      // alert(`to: ${to} \n amountIn: ${amountIn} \n dex: ${dex} \n provider: ${p}`);
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const accounts = await window.ethereum.request({
         method: 'eth_requestAccounts',
@@ -56,7 +58,7 @@ export class IntentHandler {
       } else {
         router = routers[dex]
       }
-      console.log({ router })
+      console.log('r',{ router })
       const path = [tokens['weth'], toToken];
       const contract = toolkit.makeContract(router, routerV2ABI, signer)
       const amountsOut = await contract.getAmountsOut(ethers.utils.parseEther(String(amountIn)), path);
@@ -78,12 +80,12 @@ export class IntentHandler {
       }
     };
   }
-  async sellTokenForEth(from: 'usdt', amountIn: string, dex: 'uniswap', provider: string) {
+  async sellTokenForEth(from: 'usdt', amountIn: string, dex: 'uniswap', wallertProvider: string) {
     const router = routers[dex]
     let signer = null;
     let address = ""
     let tx;
-    if (provider === 'metamask') {
+    if (wallertProvider.toLowerCase() === 'metamask') {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const accounts = await window.ethereum.request({
         method: 'eth_requestAccounts',
@@ -93,6 +95,7 @@ export class IntentHandler {
     }
     if (signer) {
       const path = [tokens[from], tokens['weth']];
+      // alert(path);
       const contract = toolkit.makeContract(router, routerV2ABI, signer)
       const amountsIn = await contract.connect(signer).getAmountsOut(ethers.utils.parseEther(String(amountIn)), path);
       const now = new Date()
@@ -163,7 +166,8 @@ export class IntentHandler {
           return await toolkit.getCoinMarketChartFromCoinGecko(coin, amount, to);
           // return toolkit.getPriceFromCoingecko(coin, amount, to); 
       }
-    } catch (error) {
+    } catch (error: any) {
+      alert(error?.message);
        return false;
     }
   }

@@ -22,8 +22,12 @@ export const swapEthForToken = [
     match: 'buy (@token) with #Value (@token) on (@dex)'
   },
   {
+    match: 'buy #Value (@token) worth of (@token) on (@dex)'
+  },
+  {
     match: 'buy (@token) #AtMention with #Value (@token)'
   },
 ];
 
 // buy usdt on uniswap with 0.005 eth
+// Buy 0.005 ETH worth of USDT on Uniswap
