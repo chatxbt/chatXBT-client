@@ -145,10 +145,6 @@ export const defi = (props: any) => {
                     tokenKeys
                 })
 
-                // console.log('transformedIntentList', JSON.stringify(transformedIntentList));
-                console.log('dexKeys', dexKeys);
-                console.log('tokenKeys', tokenKeys);
-
                 // configure in store
                 configure(dexKeys, tokenKeys, addresses, transformedIntent, transformedIntentList);
             }

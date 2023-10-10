@@ -38,6 +38,7 @@ export const useAppEntry = (props: any) => {
     }, [wagmiData.isConnected, wagmiData.address]);
 
     useEffect(() => {
+        // localStorage.clear();
         // connected && props.history.push('/chat');
         // !connected && props.history.push('/');
         // signOut();
