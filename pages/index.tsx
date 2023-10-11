@@ -5,6 +5,11 @@ import { chatxbtHooks, chatxbtUtils } from "../chatxbt-sdk"
 import ChatPage from "./dashboard/chat";
 import dynamic from "next/dynamic";
 
+// Window?.addEventListener('error', function (event) {
+//   // Handle the error here
+//   console.error('Client-side exception:', event.error);
+// });
+
 const ChatPageView = dynamic(() => import("./dashboard/chat"), {
   loading: () => <ChatPage />,
 });
