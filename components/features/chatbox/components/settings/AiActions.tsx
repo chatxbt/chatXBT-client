@@ -2,6 +2,7 @@ import React from "react";
 import style from "@styles/chat/settings.module.scss";
 import { actionsData } from "./data";
 import * as BsIcons from "react-icons/bs";
+import Image from "next/image";
 
 const AiActions = () => {
   return (
@@ -27,7 +28,7 @@ const AiActions = () => {
                   </td>
                   <td>
                     <div id={style.card}>
-                      <img src={`${data.icon}`} alt="" />
+                      <Image src={`${data.icon}`} alt="" />
                       <p>{data.name}</p>
 
                       <i>
@@ -53,7 +54,7 @@ const AiActions = () => {
             <h1>{data.title}</h1>
             <div id={style.div}>
               <div id={style.card}>
-                <img src={`${data.icon}`} alt="" />
+                <Image src={`${data.icon}`} alt="" />
                 <p>{data.name}</p>
 
                 <i>

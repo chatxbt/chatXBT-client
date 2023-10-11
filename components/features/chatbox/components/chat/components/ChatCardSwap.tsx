@@ -2,6 +2,7 @@ import style from "@styles/chat/aiprompts.module.scss";
 import { motion } from "framer-motion";
 import ChatCardButtons from "./utils/ChatCardButtons";
 import { BiRefresh } from "react-icons/bi";
+import Image from "next/image";
 
 const ChatCardSwap = (props: any) => {
   return (
@@ -15,7 +16,7 @@ const ChatCardSwap = (props: any) => {
         <div>
           <h2>Pay</h2>
           <h4>
-            <img src={"/images/chat/eth.png"} alt="right arrow" />
+            <Image src={"/images/chat/eth.png"} alt="right arrow" />
             <span>ETH</span>
           </h4>
           <h5>Balance: 20</h5>
@@ -31,7 +32,7 @@ const ChatCardSwap = (props: any) => {
         <div>
           <h2>Receive</h2>
           <h4>
-            <img src={"/images/chat/eth.png"} alt="right arrow" />
+            <Image src={"/images/chat/eth.png"} alt="right arrow" />
             <span>PEPE</span>
           </h4>
           <h5>Balance: 0</h5>

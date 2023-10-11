@@ -14,7 +14,7 @@ const TrendingCoins = (props: any) => {
       exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
     >
       {/* Bot Icon */}
-      <img src={dp} alt={"Bot Icon"} />
+      <Image src={dp} alt={"Bot Icon"} />
 
       {/* Main Bot Response */}
       <div className={style.trendCoinsCon}>

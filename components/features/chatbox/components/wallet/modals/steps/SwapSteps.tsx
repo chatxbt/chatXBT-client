@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import style from "@styles/chat/modal.module.scss";
 import * as MdIcons from "react-icons/md";
 import WalletAssets from "../assets/WalletAssets";
@@ -38,7 +39,7 @@ const SwapSteps = ({ step, nextStep, goBack, closeModal }: any) => {
           </div>
 
           <div className={style.swapDetails}>
-            <img src="/images/main/swap.png" alt="" className={style.icon} />
+            <Image src="/images/main/swap.png" alt="" className={style.icon} />
             <div className={style.cardOne}>
               <div>
                 <h3>Pay</h3>
@@ -92,7 +93,7 @@ const SwapSteps = ({ step, nextStep, goBack, closeModal }: any) => {
             </button>
           </div>
           <div className={style.success}>
-            <img src="/images/main/success.png" alt="" />
+            <Image src="/images/main/success.png" alt="" />
             <p>
               You successfully swapped 0.041610435 ETH ($3.79) to
               0x76aF8...dv0072GA8Df8e4F{" "}

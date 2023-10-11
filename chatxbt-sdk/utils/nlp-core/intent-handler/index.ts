@@ -38,7 +38,9 @@ export class IntentHandler {
       let tx;
       if (p.toLowerCase() === 'metamask') {
         // alert(`to: ${to} \n amountIn: ${amountIn} \n dex: ${dex} \n provider: ${p}`);
+        // @ts-ignore
         const provider = new ethers.providers.Web3Provider(window.ethereum);
+        // @ts-ignore
         const accounts = await window.ethereum.request({
           method: 'eth_requestAccounts',
         });
@@ -95,7 +97,9 @@ export class IntentHandler {
       let address = ""
       let tx;
       if (wallertProvider.toLowerCase() === 'metamask') {
+        // @ts-ignore
         const provider = new ethers.providers.Web3Provider(window.ethereum);
+        // @ts-ignore
         const accounts = await window.ethereum.request({
           method: 'eth_requestAccounts',
         });
@@ -141,7 +145,9 @@ export class IntentHandler {
       let value = "0";
       let tx;
       if (provider === 'metamask') {
+        // @ts-ignore
         const provider = new ethers.providers.Web3Provider(window.ethereum);
+        // @ts-ignore
         const accounts = await window.ethereum.request({
           method: 'eth_requestAccounts',
         });
@@ -217,7 +223,9 @@ export class IntentHandler {
     let address = ""
     let tx;
     if (provider === 'metamask') {
+      // @ts-ignore
       const provider = new ethers.providers.Web3Provider(window.ethereum);
+      // @ts-ignore
       const accounts = await window.ethereum.request({
         method: 'eth_requestAccounts',
       });
@@ -253,9 +261,11 @@ async borrow(amountInEth: string) {
   try {
     // Modern dapp browsers (like MetaMask) automatically provide the injected ethereum object
     if (window.ethereum) {
+      // @ts-ignore
       await window.ethereum.enable(); // Requesting user permission to access accounts
 
       // Use the MetaMask provider
+      // @ts-ignore
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       // const comptrollerABI = require('./path/to/ComptrollerABI.json');
       // const cTokenABI = require('./path/to/CTokenABI.json');
@@ -317,9 +327,11 @@ async lend(amountInEth: string) {
   try {
     // Modern dapp browsers (like MetaMask) automatically provide the injected ethereum object
     if (window.ethereum) {
+      // @ts-ignore
       await window.ethereum.enable(); // Requesting user permission to access accounts
 
       // Use the MetaMask provider
+      // @ts-ignore
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       // const cTokenABI = require('./path/to/CTokenABI.json');
 

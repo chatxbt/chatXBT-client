@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import style from "@styles/chat/wallet.module.scss";
 import { walletHistory } from "./data";
 
@@ -21,7 +22,7 @@ const Assets = () => {
                 <tr key={index}>
                   <td>
                     <div id={style.div}>
-                      <img src={`${data.icon}`} alt="" />
+                      <Image src={`${data.icon}`} alt="" />
                       <div>
                         <h3>{data.title}</h3>
                         <h4>{data.initial}</h4>

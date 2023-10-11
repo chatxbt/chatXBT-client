@@ -63,6 +63,7 @@ const { chains, provider } = configureChains(
 );
 const { connectors } = getDefaultWallets({
   appName: 'ChatXBT',
+  // @ts-ignore
   projectId: 'PROJECT_ID',
   chains
 });

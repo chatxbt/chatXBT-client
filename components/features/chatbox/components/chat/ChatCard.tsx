@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import style from "@styles/chat/chat.module.scss";
 import { motion } from "framer-motion";
 import { actionTypes } from "@chatxbt-sdk/config/constants";
@@ -17,7 +18,7 @@ export const UserChatCard = (props: any) => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
         >
-          <img src={dp} alt="" />
+          <Image src={dp} alt="" />
 
           <div className={style.message}>
             <p>{message}</p>
@@ -35,7 +36,7 @@ export const UserChatCard = (props: any) => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
             >
-              <img src={dp} alt="" />
+              <Image src={dp} alt="" />
 
               <div className={style.message}>
                 <p>{message}</p>
@@ -51,7 +52,7 @@ export const UserChatCard = (props: any) => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
             >
-              <img src={dp} alt="" />
+              <Image src={dp} alt="" />
 
               <div className={style.message}>
                 <div id={style.card}>
@@ -85,7 +86,7 @@ export const UserChatCard = (props: any) => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
             >
-              <img src={dp} alt="" />
+              <Image src={dp} alt="" />
 
               <div className={style.message}>
                 <p>{message}</p>
@@ -101,7 +102,7 @@ export const UserChatCard = (props: any) => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
             >
-              <img src={dp} alt="" />
+              <Image src={dp} alt="" />
 
               <div className={style.message}>
                 <p>{message}</p>
@@ -125,7 +126,7 @@ export const UserChatCard = (props: any) => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
             >
-              <img src={dp} alt="" />
+              <Image src={dp} alt="" />
 
               <div className={style.message}>
                 <p>{message}</p>
@@ -141,7 +142,7 @@ export const UserChatCard = (props: any) => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
             >
-              <img src={dp} alt="" />
+              <Image src={dp} alt="" />
 
               <div className={style.message}>
                 <p>{message}</p>
@@ -158,7 +159,7 @@ export const BotIndicator = () => {
   return (
     <>
       <div className={style.indicator}>
-        <img src={`/images/chat/bot.png`} alt="" />
+        <Image src={`/images/chat/bot.png`} alt="" />
         <div className={style.message}>
           <div className={style.lds_ellipsis}>
             <div></div>

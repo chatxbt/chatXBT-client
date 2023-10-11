@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import style from "@styles/chat/aiprompts.module.scss";
 import { motion } from "framer-motion";
 import { botDisplayImage } from "@chatxbt-sdk/utils/assets";
@@ -73,7 +74,7 @@ const ChatCardPrice = (props: any) => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
     >
-      <img src={dp} alt="" />
+      <Image src={dp} alt="" />
 
       <div className={style.message}>
         <h5>
