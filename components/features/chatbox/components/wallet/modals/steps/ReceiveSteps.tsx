@@ -36,7 +36,7 @@ const ReceiveSteps = ({ step, nextStep, goBack, closeModal }: any) => {
             </button>
           </div>
           <div className={style.success}>
-            <Image src="/images/main/success.png" alt="" />
+            <img src="/images/main/success.png" alt="" />
             <p>
               You successfully sent 0.041610435 ETH ($3.79) to
               0x76aF8...dv0072GA8Df8e4F{" "}

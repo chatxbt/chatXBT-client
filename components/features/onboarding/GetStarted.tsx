@@ -25,7 +25,7 @@ const GetStarted = ({ handleEmail, handleMeta }: any) => {
         <p>Sign Up with socials:</p>
         <div>
           {icons.map((data: any, index: any) => (
-            <Image src={data} alt="" key={index} />
+            <img src={data} alt="" key={index} />
           ))}
         </div>
         <button onClick={handleEmail}>Sign up with email</button>
@@ -36,15 +36,15 @@ const GetStarted = ({ handleEmail, handleMeta }: any) => {
       <div className={style.wallets}>
         <RainBow/>
         {/* <button onClick={handleMeta}>
-          <Image src="/images/get-started/meta.png" alt="" />
+          <img src="/images/get-started/meta.png" alt="" />
           <p>Metamask</p>
         </button>
         <button>
-          <Image src="/images/get-started/connect.png" alt="" />
+          <img src="/images/get-started/connect.png" alt="" />
           <p>Wallet Connect</p>
         </button>
         <button>
-          <Image src="/images/get-started/trust.png" alt="" />
+          <img src="/images/get-started/trust.png" alt="" />
           <p>Trust Wallet</p>
         </button> */}
       </div>

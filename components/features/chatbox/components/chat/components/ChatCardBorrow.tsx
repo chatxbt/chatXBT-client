@@ -30,7 +30,7 @@ const ChatCardBorrow = (props: any) => {
         <div>
           <h2>Health factor</h2>
           <h4>
-            <Image src={"/images/chat/ArrowRight.svg"} alt="right arrow" />
+            <img src={"/images/chat/ArrowRight.svg"} alt="right arrow" />
             <span style={{ color: error ? "#D63252" : "#058F58" }}>1.34</span>
           </h4>
         </div>
@@ -44,7 +44,7 @@ const ChatCardBorrow = (props: any) => {
 
       {error && (
         <p className={style.chatErrorMsg}>
-          <Image src="/images/chat/Warning.png" alt="warning" />
+          <img src="/images/chat/Warning.png" alt="warning" />
           <span>
             {error?.message ||
               "Borrowing this amount will reduce your health factor and increase risk of liquidation"}

@@ -34,7 +34,7 @@ const MetaAuth = ({ handleStart }: any) => {
               id={style.back}
               onClick={handleStart}
             />
-            <Image src="/images/get-started/meta1.png" alt="" />
+            <img src="/images/get-started/meta1.png" alt="" />
 
             <form onSubmit={(e) => e.preventDefault()}>
               <div className={style.formGroup}>
@@ -51,7 +51,7 @@ const MetaAuth = ({ handleStart }: any) => {
         return (
           <motion.div className={style.second}>
             <div id={style.logo}>
-              <Image src="/images/logo/logo-alt.png" alt="" />
+              <img src="/images/logo/logo-alt.png" alt="" />
               <Link href={"#"}>https://chatgpt.io</Link>
             </div>
 
@@ -89,7 +89,7 @@ const MetaAuth = ({ handleStart }: any) => {
         return (
           <motion.div className={style.third}>
             <div id={style.logo}>
-              <Image src="/images/logo/logo-alt.png" alt="" />
+              <img src="/images/logo/logo-alt.png" alt="" />
               <Link href={"#"}>https://chatgpt.io</Link>
             </div>
 
@@ -146,7 +146,7 @@ const MetaAuth = ({ handleStart }: any) => {
               id={style.back}
               onClick={handleStart}
             />
-            <Image src="/images/get-started/meta1.png" alt="" />
+            <img src="/images/get-started/meta1.png" alt="" />
 
             <form action="">
               <div className={style.formGroup}>

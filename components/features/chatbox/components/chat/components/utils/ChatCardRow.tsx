@@ -8,7 +8,7 @@ const ChatCardRow = (props: any) => {
       <div>
         <h4>Amount</h4>
         <h2>
-          <Image src={icon} alt={icon} width={16} height={16} />
+          <img src={icon} alt={icon} width={16} height={16} />
           <span>
             {quantity} {symbol}
           </span>

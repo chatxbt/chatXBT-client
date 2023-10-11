@@ -8,7 +8,7 @@ interface Prop {
 const GasFee = ({ amount }: Prop) => {
   return (
     <p className={style.gasPump}>
-      <Image src="/images/chat/GasPump.png" alt="GasPump" />
+      <img src="/images/chat/GasPump.png" alt="GasPump" />
       <span>${`${amount || "10.00"}`}</span>
     </p>
   );

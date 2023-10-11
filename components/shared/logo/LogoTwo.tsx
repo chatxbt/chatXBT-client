@@ -8,7 +8,7 @@ const LogoTwo = () => {
         <>
           <Link href={"/"}>
             <div className={`${style.logoWhite}`}>
-              <Image src="/images/logo/logo-white1.png" alt="" />
+              <img src="/images/logo/logo-white1.png" alt="" />
             </div>
           </Link>
         </>

@@ -37,7 +37,7 @@ const WalletAssets = ({ nextStep, closeModal, title }: any) => {
                 id={active ? style.active : ""}
               >
                 <div id={style.div1}>
-                  <Image src={`${data.icon}`} alt="" />
+                  <img src={`${data.icon}`} alt="" />
                   <div>
                     <h3>{data.title}</h3>
                     <p>
