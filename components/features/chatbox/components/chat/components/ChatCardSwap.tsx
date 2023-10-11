@@ -2,6 +2,7 @@ import style from "@styles/chat/aiprompts.module.scss";
 import { motion } from "framer-motion";
 import ChatCardButtons from "./utils/ChatCardButtons";
 import { BiRefresh } from "react-icons/bi";
+import Image from "next/image";
 
 const ChatCardSwap = (props: any) => {
   return (

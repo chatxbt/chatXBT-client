@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import style from "@styles/chat/aiprompts.module.scss";
 import { motion } from "framer-motion";
 import { botDisplayImage } from "@chatxbt-sdk/utils/assets";

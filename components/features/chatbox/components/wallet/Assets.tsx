@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import style from "@styles/chat/wallet.module.scss";
 import { walletHistory } from "./data";
 

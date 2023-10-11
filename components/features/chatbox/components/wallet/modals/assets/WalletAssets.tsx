@@ -1,6 +1,7 @@
 import { liveSearch } from "@chatxbt-sdk/utils";
 import style from "@styles/chat/modal.module.scss";
 import React from "react";
+import Image from "next/image";
 import * as BsIcons from "react-icons/bs";
 import * as MdIcons from "react-icons/md";
 

@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import ChatCardRow from "./utils/ChatCardRow";
 import ChatCardButtons from "./utils/ChatCardButtons";
 import GasFee from "./utils/GasFee";
+import Image from "next/image";
 
 const ChatCardBorrow = (props: any) => {
   // simulating error

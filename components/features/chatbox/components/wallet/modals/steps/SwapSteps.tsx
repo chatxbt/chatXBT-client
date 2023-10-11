@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import style from "@styles/chat/modal.module.scss";
 import * as MdIcons from "react-icons/md";
 import WalletAssets from "../assets/WalletAssets";

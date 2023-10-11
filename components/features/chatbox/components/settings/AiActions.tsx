@@ -2,6 +2,7 @@ import React from "react";
 import style from "@styles/chat/settings.module.scss";
 import { actionsData } from "./data";
 import * as BsIcons from "react-icons/bs";
+import Image from "next/image";
 
 const AiActions = () => {
   return (

@@ -1,4 +1,5 @@
 import style from "@styles/chat/aiprompts.module.scss";
+import Image from "next/image";
 
 interface Prop {
   amount: number;

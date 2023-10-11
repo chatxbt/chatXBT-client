@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import style from "@styles/get-started/index.module.scss";
 import { icons } from "./data";
 import { motion } from "framer-motion";

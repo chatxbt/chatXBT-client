@@ -71,5 +71,6 @@ const ChatBoxHeader = ({
 };
 
 // export default ChatBoxHeader;
-export default (props: any) => <ChatBoxHeader {...chatxbtServices.auth(props)} />
+const C = (props: any) => <ChatBoxHeader {...chatxbtServices.auth(props)} />
+export default C;
 
