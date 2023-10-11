@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import ChatCardRow from "./utils/ChatCardRow";
 import ChatCardButtons from "./utils/ChatCardButtons";
 import GasFee from "./utils/GasFee";
+import Image from "next/image";
 
 const ChatCardBorrow = (props: any) => {
   // simulating error
@@ -29,7 +30,7 @@ const ChatCardBorrow = (props: any) => {
         <div>
           <h2>Health factor</h2>
           <h4>
-            <img src={"/images/chat/ArrowRight.svg"} alt="right arrow" />
+            <Image src={"/images/chat/ArrowRight.svg"} alt="right arrow" />
             <span style={{ color: error ? "#D63252" : "#058F58" }}>1.34</span>
           </h4>
         </div>
@@ -43,7 +44,7 @@ const ChatCardBorrow = (props: any) => {
 
       {error && (
         <p className={style.chatErrorMsg}>
-          <img src="/images/chat/Warning.png" alt="warning" />
+          <Image src="/images/chat/Warning.png" alt="warning" />
           <span>
             {error?.message ||
               "Borrowing this amount will reduce your health factor and increase risk of liquidation"}

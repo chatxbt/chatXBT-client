@@ -3,6 +3,7 @@ import style from "@styles/get-started/index.module.scss";
 import { motion } from "framer-motion";
 // import Logo from "../../shared/logo/Logo";
 import Link from "next/link";
+import Image from "next/image";
 import * as BsIcons from "react-icons/bs";
 import { auth } from "@chatxbt-sdk/services/auth";
 import { useConnectionStore } from "@chatxbt-sdk/store/zustand/connection";
@@ -33,7 +34,7 @@ const MetaAuth = ({ handleStart }: any) => {
               id={style.back}
               onClick={handleStart}
             />
-            <img src="/images/get-started/meta1.png" alt="" />
+            <Image src="/images/get-started/meta1.png" alt="" />
 
             <form onSubmit={(e) => e.preventDefault()}>
               <div className={style.formGroup}>
@@ -50,7 +51,7 @@ const MetaAuth = ({ handleStart }: any) => {
         return (
           <motion.div className={style.second}>
             <div id={style.logo}>
-              <img src="/images/logo/logo-alt.png" alt="" />
+              <Image src="/images/logo/logo-alt.png" alt="" />
               <Link href={"#"}>https://chatgpt.io</Link>
             </div>
 
@@ -88,7 +89,7 @@ const MetaAuth = ({ handleStart }: any) => {
         return (
           <motion.div className={style.third}>
             <div id={style.logo}>
-              <img src="/images/logo/logo-alt.png" alt="" />
+              <Image src="/images/logo/logo-alt.png" alt="" />
               <Link href={"#"}>https://chatgpt.io</Link>
             </div>
 
@@ -145,7 +146,7 @@ const MetaAuth = ({ handleStart }: any) => {
               id={style.back}
               onClick={handleStart}
             />
-            <img src="/images/get-started/meta1.png" alt="" />
+            <Image src="/images/get-started/meta1.png" alt="" />
 
             <form action="">
               <div className={style.formGroup}>

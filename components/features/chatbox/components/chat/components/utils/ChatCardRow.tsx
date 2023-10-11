@@ -1,4 +1,5 @@
 import style from "@styles/chat/aiprompts.module.scss";
+import Image from "next/image";
 
 const ChatCardRow = (props: any) => {
   const { icon, equivalent, symbol, quantity, balance } = props;
@@ -7,7 +8,7 @@ const ChatCardRow = (props: any) => {
       <div>
         <h4>Amount</h4>
         <h2>
-          <img src={icon} alt={icon} width={16} height={16} />
+          <Image src={icon} alt={icon} width={16} height={16} />
           <span>
             {quantity} {symbol}
           </span>

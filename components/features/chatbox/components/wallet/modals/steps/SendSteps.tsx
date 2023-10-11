@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import style from "@styles/chat/modal.module.scss";
 import * as MdIcons from "react-icons/md";
 import { summaryData } from "../data";
@@ -84,7 +85,7 @@ const SendSteps = ({ step, nextStep, goBack, closeModal }: any) => {
             </button>
           </div>
           <div className={style.success}>
-            <img src="/images/main/success.png" alt="" />
+            <Image src="/images/main/success.png" alt="" />
             <p>
               You successfully sent 0.041610435 ETH ($3.79) to
               0x76aF8...dv0072GA8Df8e4F{" "}

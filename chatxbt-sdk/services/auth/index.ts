@@ -93,9 +93,12 @@ export const auth = (props: any) => {
     const getSigner = async (provider: any, account: string) => {
         try {
             const signer = provider.getSigner(account);
+            // @ts-ignore
             const signature = await window.ethereum.request({
+              // @ts-ignore
               method: 'personal_sign',
               params: [
+                  // @ts-ignore
                 `Verify Your Address ${account} Request Key: ${randomBytes(16).toString('hex')}`,
                 account,
               ],
@@ -152,18 +155,21 @@ export const auth = (props: any) => {
             const ethereum = useMemo(() => window.ethereum, []);
             const connectMetamask = useCallback(async () => {
               if (!ethereum) return { signer: null }
+              // @ts-ignore
               const provider = new ethers.providers.Web3Provider(ethereum);
               const accounts = await ethereum.request({
                 method: 'eth_requestAccounts',
               });
               const { signature, address } = await getSigner(provider, accounts[0]);
               connect(address, signature, 'metamask');
+              // @ts-ignore
               window.ethereum.on('accountsChanged', async (accounts: string[]) => {
                 if (accounts.length > 0) {
                   const { signature, address, signer } = await getSigner(provider, accounts[0])
                   connect(address, signature, 'metamask');
                 }
               });
+              // @ts-ignore
               window.ethereum.on('chainChanged', async (_chainId: any) => {
                 window.location.reload(); // As recommended by metamask doc
               });

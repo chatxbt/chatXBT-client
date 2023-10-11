@@ -1,6 +1,7 @@
 import { liveSearch } from "@chatxbt-sdk/utils";
 import style from "@styles/chat/modal.module.scss";
 import React from "react";
+import Image from "next/image";
 import * as BsIcons from "react-icons/bs";
 import * as MdIcons from "react-icons/md";
 
@@ -36,7 +37,7 @@ const WalletAssets = ({ nextStep, closeModal, title }: any) => {
                 id={active ? style.active : ""}
               >
                 <div id={style.div1}>
-                  <img src={`${data.icon}`} alt="" />
+                  <Image src={`${data.icon}`} alt="" />
                   <div>
                     <h3>{data.title}</h3>
                     <p>

@@ -1,4 +1,5 @@
 import style from "@styles/chat/aiprompts.module.scss";
+import Image from "next/image";
 
 interface Prop {
   amount: number;
@@ -7,7 +8,7 @@ interface Prop {
 const GasFee = ({ amount }: Prop) => {
   return (
     <p className={style.gasPump}>
-      <img src="/images/chat/GasPump.png" alt="GasPump" />
+      <Image src="/images/chat/GasPump.png" alt="GasPump" />
       <span>${`${amount || "10.00"}`}</span>
     </p>
   );

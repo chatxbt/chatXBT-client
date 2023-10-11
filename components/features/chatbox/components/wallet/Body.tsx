@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import style from "@styles/chat/wallet.module.scss";
 import { tabLinks, walletHistory } from "./data";
 import TabComponent from "./tab/TabComponent";
@@ -43,7 +44,7 @@ const Body = () => {
         {walletHistory.map((data: any, index: any) => (
           <div className={style.card} key={index}>
             <div id={style.div1}>
-              <img src={`${data.icon}`} alt="" />
+              <Image src={`${data.icon}`} alt="" />
               <div>
                 <h3>{data.title}</h3>
                 <p>

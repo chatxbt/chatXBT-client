@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import React from "react";
 import style from "@styles/nav/index.module.scss";
 
@@ -7,7 +8,7 @@ const Logo = () => {
     <>
       <Link href={"/"}>
         <div className={`${style.logo}`}>
-          <img src="/images/logo/logo-alt.png" alt="" />
+          <Image src="/images/logo/logo-alt.png" alt="" />
         </div>
       </Link>
     </>

@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import style from "@styles/get-started/index.module.scss";
 import { icons } from "./data";
 import { motion } from "framer-motion";
@@ -24,7 +25,7 @@ const GetStarted = ({ handleEmail, handleMeta }: any) => {
         <p>Sign Up with socials:</p>
         <div>
           {icons.map((data: any, index: any) => (
-            <img src={data} alt="" key={index} />
+            <Image src={data} alt="" key={index} />
           ))}
         </div>
         <button onClick={handleEmail}>Sign up with email</button>
@@ -35,15 +36,15 @@ const GetStarted = ({ handleEmail, handleMeta }: any) => {
       <div className={style.wallets}>
         <RainBow/>
         {/* <button onClick={handleMeta}>
-          <img src="/images/get-started/meta.png" alt="" />
+          <Image src="/images/get-started/meta.png" alt="" />
           <p>Metamask</p>
         </button>
         <button>
-          <img src="/images/get-started/connect.png" alt="" />
+          <Image src="/images/get-started/connect.png" alt="" />
           <p>Wallet Connect</p>
         </button>
         <button>
-          <img src="/images/get-started/trust.png" alt="" />
+          <Image src="/images/get-started/trust.png" alt="" />
           <p>Trust Wallet</p>
         </button> */}
       </div>

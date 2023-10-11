@@ -2,6 +2,7 @@ import style from "@styles/chat/aiprompts.module.scss";
 import { motion } from "framer-motion";
 import ChatCardButtons from "./utils/ChatCardButtons";
 import GasFee from "./utils/GasFee";
+import Image from "next/image";
 
 const ChatCardStake = () => {
   return (
@@ -15,7 +16,7 @@ const ChatCardStake = () => {
         <div>
           <h4>Available to stake</h4>
           <h2>
-            <img
+            <Image
               src={"/images/chat/eth.png"}
               alt="ETH"
               width={16}
@@ -39,7 +40,7 @@ const ChatCardStake = () => {
         <div>
           <h4>Staked amount</h4>
           <h2>
-            <img
+            <Image
               src={"/images/chat/eth.png"}
               alt="ETH"
               width={16}
