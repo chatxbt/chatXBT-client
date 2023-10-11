@@ -20,7 +20,7 @@ export const useWaitlistStore = create<Store>((set) => ({
             loading: true
         });
 
-        await chatxbtUtils.privateApiConnect().post(chatxbtConfig.domains.endpoints.postWaitlist, { email, captcha }).then((res) => {
+        await chatxbtUtils.privateApiConnect().post(chatxbtConfig.domains.endpoints.postWaitlist, { email, captcha }).then((res: any) => {
             const { status, message, data } = res.data;
 
             if (status) {
@@ -39,7 +39,7 @@ export const useWaitlistStore = create<Store>((set) => ({
                     // email: ''
                 });
             }
-        }).catch((err) => {
+        }).catch((err: any) => {
 
             console.log(err);
             set({
