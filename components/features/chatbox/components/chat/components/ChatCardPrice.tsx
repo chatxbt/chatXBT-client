@@ -74,7 +74,7 @@ const ChatCardPrice = (props: any) => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
     >
-      <Image src={dp} alt="" />
+      <img src={dp} alt="" />
 
       <div className={style.message}>
         <h5>

@@ -16,7 +16,7 @@ const ChatCardSwap = (props: any) => {
         <div>
           <h2>Pay</h2>
           <h4>
-            <Image src={"/images/chat/eth.png"} alt="right arrow" />
+            <img src={"/images/chat/eth.png"} alt="right arrow" />
             <span>ETH</span>
           </h4>
           <h5>Balance: 20</h5>
@@ -32,7 +32,7 @@ const ChatCardSwap = (props: any) => {
         <div>
           <h2>Receive</h2>
           <h4>
-            <Image src={"/images/chat/eth.png"} alt="right arrow" />
+            <img src={"/images/chat/eth.png"} alt="right arrow" />
             <span>PEPE</span>
           </h4>
           <h5>Balance: 0</h5>

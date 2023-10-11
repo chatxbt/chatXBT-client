@@ -22,7 +22,7 @@ const Assets = () => {
                 <tr key={index}>
                   <td>
                     <div id={style.div}>
-                      <Image src={`${data.icon}`} alt="" />
+                      <img src={`${data.icon}`} alt="" />
                       <div>
                         <h3>{data.title}</h3>
                         <h4>{data.initial}</h4>

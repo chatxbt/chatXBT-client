@@ -44,7 +44,7 @@ const Body = () => {
         {walletHistory.map((data: any, index: any) => (
           <div className={style.card} key={index}>
             <div id={style.div1}>
-              <Image src={`${data.icon}`} alt="" />
+              <img src={`${data.icon}`} alt="" />
               <div>
                 <h3>{data.title}</h3>
                 <p>

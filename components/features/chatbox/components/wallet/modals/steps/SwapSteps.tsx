@@ -39,7 +39,7 @@ const SwapSteps = ({ step, nextStep, goBack, closeModal }: any) => {
           </div>
 
           <div className={style.swapDetails}>
-            <Image src="/images/main/swap.png" alt="" className={style.icon} />
+            <img src="/images/main/swap.png" alt="" className={style.icon} />
             <div className={style.cardOne}>
               <div>
                 <h3>Pay</h3>
@@ -93,7 +93,7 @@ const SwapSteps = ({ step, nextStep, goBack, closeModal }: any) => {
             </button>
           </div>
           <div className={style.success}>
-            <Image src="/images/main/success.png" alt="" />
+            <img src="/images/main/success.png" alt="" />
             <p>
               You successfully swapped 0.041610435 ETH ($3.79) to
               0x76aF8...dv0072GA8Df8e4F{" "}

@@ -28,7 +28,7 @@ const AiActions = () => {
                   </td>
                   <td>
                     <div id={style.card}>
-                      <Image src={`${data.icon}`} alt="" />
+                      <img src={`${data.icon}`} alt="" />
                       <p>{data.name}</p>
 
                       <i>
@@ -54,7 +54,7 @@ const AiActions = () => {
             <h1>{data.title}</h1>
             <div id={style.div}>
               <div id={style.card}>
-                <Image src={`${data.icon}`} alt="" />
+                <img src={`${data.icon}`} alt="" />
                 <p>{data.name}</p>
 
                 <i>
