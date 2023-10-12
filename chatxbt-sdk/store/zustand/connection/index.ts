@@ -1,7 +1,7 @@
 import { ConnectionStore } from "@chatxbt-sdk/interface/connection";
 import { toolkit } from "@chatxbt-sdk/utils";
 import { create } from "zustand";
-import { devtools, persist } from 'zustand/middleware'
+import { devtools, persist, createJSONStorage } from 'zustand/middleware'
 
 
 const storageName = 'connection-storage'
@@ -36,7 +36,7 @@ export const useConnectionStore = create<ConnectionStore>()(
       }),
       {
         name: storageName,
-        getStorage: () => localStorage,
+        storage: createJSONStorage(() => localStorage),
         partialize: (state: any) => ({
           _hasHydrated: state._hasHydrated,
           token: state.token,

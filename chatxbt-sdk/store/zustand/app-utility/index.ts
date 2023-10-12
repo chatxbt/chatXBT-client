@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { devtools, persist } from 'zustand/middleware'
+import { devtools, persist, createJSONStorage } from 'zustand/middleware'
 
 /**
  * @param {}
@@ -83,7 +83,7 @@ export const utilityAndConfigStore = create<any>(
             }),
             {
                 name: 'utilityAndConfig-storage',
-                getStorage: () => localStorage,
+                storage: createJSONStorage(() => localStorage),
                 partialize: (state) => ({ 
                     theme: state.theme,
                     isNewToApp: state.isNewToApp

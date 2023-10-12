@@ -1,7 +1,7 @@
 import { DefiStore } from "@chatxbt-sdk/interface/defi";
 import { toolkit } from "@chatxbt-sdk/utils";
 import { create } from "zustand";
-import { devtools, persist } from 'zustand/middleware'
+import { devtools, persist, createJSONStorage } from 'zustand/middleware'
 
 
 const storageName = 'defi-storage'
@@ -53,7 +53,7 @@ export const useDefiStore = create<DefiStore>()(
       }),
       {
         name: storageName,
-        getStorage: () => localStorage,
+        storage: createJSONStorage(() => localStorage),
         partialize: (state: any) => ({
           _hasHydrated: state._hasHydrated,
         //   lightPool: state.lightPool,

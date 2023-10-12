@@ -43,7 +43,7 @@ const ChatBoxHeader = ({
                 href={data.href}
                 scroll={false}
                 passHref
-                legacyBehavior
+                // legacyBehavior
                 key={index}
               >
                 <a className={`nav-link`}>{data.name}</a>
