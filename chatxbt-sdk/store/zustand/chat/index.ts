@@ -77,7 +77,7 @@ export const useChatStore = create<ChatStore>()(
             }),
             {
                 name: chatStorage,
-                getStorage: () => localStorage,
+                storage: createJSONStorage(() => localStorage),
                 partialize: (state) => ({
                 }),
                 onRehydrateStorage: () => (state: any) => {

@@ -10,9 +10,9 @@ import dynamic from "next/dynamic";
 //   console.error('Client-side exception:', event.error);
 // });
 
-const ChatPageView = dynamic(() => import("./dashboard/chat"), {
-  loading: () => <ChatPage />,
-});
+// const ChatPageView = dynamic(() => import("./dashboard/chat"), {
+//   loading: () => <ChatPage />,
+// });
 
 const Home = ({
   store: {
@@ -26,7 +26,7 @@ const Home = ({
   // }, [connected]);
 
   // console.log('intentTemplate', chatxbtUtils.intents);
-  return <>{connected ? <ChatPageView /> : <GetStarted />}</>;
+  return <>{connected ? <ChatPage /> : <GetStarted />}</>;
 };
 
 // export default Home;
