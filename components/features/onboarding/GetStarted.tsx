@@ -21,7 +21,7 @@ const GetStarted = ({ handleEmail, handleMeta }: any) => {
       <h1>Get started</h1>
       <h3>Welcome to ChatXBT - Where AI meets Defi</h3>
 
-      <div className={style.socials}>
+      {/* <div className={style.socials}>
         <p>Sign Up with socials:</p>
         <div>
           {icons.map((data: any, index: any) => (
@@ -31,7 +31,7 @@ const GetStarted = ({ handleEmail, handleMeta }: any) => {
         <button onClick={handleEmail}>Sign up with email</button>
       </div>
 
-      <h4>OR</h4>
+      <h4>OR</h4> */}
 
       <div className={style.wallets}>
         <RainBow/>
