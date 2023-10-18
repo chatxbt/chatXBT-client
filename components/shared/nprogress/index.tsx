@@ -1,9 +1,14 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import "nprogress/nprogress.css";
 import NProgress from "nprogress";
 import { Router } from "next/router";
 
 const PageLoadProgressIndicator = ({ children }: any) => {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+      setMounted(true)
+  }, [])
+
   Router.events.on("routeChangeStart", (url) => {
     NProgress.start();
   });
@@ -13,7 +18,7 @@ const PageLoadProgressIndicator = ({ children }: any) => {
   });
 
   NProgress.configure({ showSpinner: false });
-  return <>{children}</>;
+  return <>{mounted && children}</>;
 };
 
 export default PageLoadProgressIndicator;
