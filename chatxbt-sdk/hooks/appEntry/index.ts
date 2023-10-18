@@ -45,6 +45,13 @@ export const useAppEntry = (props: any) => {
             // signOut();
             !configured && connected && loadLightPoolAndInitialiseNlpCoreConfigs()
         }, [connected]);
+
+        useEffect(() => {
+            // localStorage.clear();
+            wagmiData?.isDisconnected && signOut();
+        }, [wagmiData?.isDisconnected]);
+
+        
     
         return {
             store: {
