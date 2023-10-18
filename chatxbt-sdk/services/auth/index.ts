@@ -192,8 +192,8 @@ export const auth = (props: any) => {
          * sign out account
          */
         const signOut = () => {
-            disconnect();
             walletDisconnect();
+            disconnect();
         }
     
         return {
