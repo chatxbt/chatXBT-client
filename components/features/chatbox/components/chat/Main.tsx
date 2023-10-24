@@ -20,7 +20,7 @@ const Main = (props: any) => {
         <BackToBottomButton onClick={scrollDown} />
       )}
 
-      {messages.length > 0 && (
+      {/* {messages.length > 0 && (
         <button
           className={style.rePrompt}
           onClick={rePrompt}
@@ -29,7 +29,7 @@ const Main = (props: any) => {
           <MdIcons.MdOutlineRefresh id={style.icon} />
           Re-prompt
         </button>
-      )}
+      )} */}
 
       {/* <ChatCardPrice/> */}
 
