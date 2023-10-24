@@ -45,7 +45,7 @@ export const useChatStore = create<ChatStore>()(
                     set((state: { messages: any; }) => ({
                         messages: [...state.messages,
                         {
-                            dp: botDisplayImage.default,
+                            dp: '/images/chat/bot.png',
                             from: 'bot',
                             id: chatId,
                             type: messageData.type,
