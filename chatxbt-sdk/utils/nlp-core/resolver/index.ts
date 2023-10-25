@@ -66,7 +66,6 @@ export class ChatXBTResolver {
 
     const isBuyingWithEth = this.extractMessage(message, this.intents.swapEthForToken);
     if (isBuyingWithEth) {
-      // alert('buying with Eth');
       const _doc = this.nlp(isBuyingWithEth); // reconstruct the doc
       const toToken = _doc.match(`(${this.tokenKeys})`).out('text');
       let exchange = _doc.match(`(${this.dexKeys})`);
