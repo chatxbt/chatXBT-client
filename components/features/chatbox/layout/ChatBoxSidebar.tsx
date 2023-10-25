@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 const ChatBoxSidebar = () => {
   const router = useRouter();
-  const [active, setActive] = useState('');
+  const [active, setActive] = useState("");
   const checkRoutePath = (href: any) => {
     router.asPath === href && setActive(href);
   };
@@ -52,7 +52,9 @@ const ChatBoxSidebar = () => {
             ))}
           </div>
           <div className={style.btn}>
-            <button>Upgrade</button>
+            <button>
+              Upgrades <span>Coming soon</span>
+            </button>
           </div>
         </div>
       </div>
