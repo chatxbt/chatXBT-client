@@ -32,7 +32,7 @@ export class IntentHandler {
 
   async buyTokenWithEth(to: 'usdt', amountIn: string, dex: 'uniswap', p: string) {
     try {
-      // alert(`to: ${to} \n amountIn: ${amountIn} \n dex: ${dex} \n provider: ${provider}`);
+      alert(`to: ${to} \n amountIn: ${amountIn} \n dex: ${dex} \n provider: ${p}`);
       let signer = null;
       let address = ""
       let tx;
