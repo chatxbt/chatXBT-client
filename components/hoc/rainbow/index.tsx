@@ -47,26 +47,55 @@ import '@rainbow-me/rainbowkit/styles.css';
 import {
   getDefaultWallets,
   RainbowKitProvider,
+  connectorsForWallets,
 } from '@rainbow-me/rainbowkit';
 import { configureChains, createClient, WagmiConfig } from 'wagmi';
 import { mainnet, polygon, optimism, arbitrum } from 'wagmi/chains';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
+import {
+  injectedWallet,
+  rainbowWallet,
+  walletConnectWallet,
+  metaMaskWallet,
+  coinbaseWallet,
+  ledgerWallet,
+  trustWallet
+} from '@rainbow-me/rainbowkit/wallets';
 
 const { chains, provider } = configureChains(
   [mainnet, polygon, optimism, arbitrum],
   [
     // alchemyProvider({ apiKey: process.env.ALCHEMY_ID }),
-    alchemyProvider({ apiKey: '' }),
+    alchemyProvider({ apiKey: 'e9w03gynFBVJdeZv_yjvhZHgsUJthowe' }),
     publicProvider()
   ]
 );
-const { connectors } = getDefaultWallets({
-  appName: 'ChatXBT',
-  // @ts-ignore
-  projectId: '954d1cd106b485e394a1b5b7423a42bd',
-  chains
-});
+// const { connectors } = getDefaultWallets({
+//   appName: 'ChatXBT',
+//   // @ts-ignore
+//   projectId: '954d1cd106b485e394a1b5b7423a42bd',
+//   chains
+// });
+const connectors = connectorsForWallets([
+  {
+      groupName: 'Recommended',
+      wallets: [
+          injectedWallet({ chains, shimDisconnect: true }),
+          metaMaskWallet({ chains, shimDisconnect: true,  }),
+          coinbaseWallet({ chains, appName: 'Linagee Identity' }),
+          ledgerWallet({ chains }),
+          rainbowWallet({ chains, shimDisconnect: true }),
+          walletConnectWallet({ chains }),
+      ],
+  },
+  {
+      groupName: 'Other',
+      wallets: [
+          trustWallet({ chains, shimDisconnect: true }),
+      ]
+  }
+]);
 const wagmiClient = createClient({
   autoConnect: true,
   connectors,
