@@ -64,7 +64,7 @@ const { chains, provider } = configureChains(
 const { connectors } = getDefaultWallets({
   appName: 'ChatXBT',
   // @ts-ignore
-  projectId: 'PROJECT_ID',
+  projectId: '954d1cd106b485e394a1b5b7423a42bd',
   chains
 });
 const wagmiClient = createClient({
