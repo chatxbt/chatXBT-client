@@ -68,7 +68,7 @@ const { chains, publicClient } = configureChains(
   [mainnet, polygon, optimism, arbitrum],
   [
     // alchemyProvider({ apiKey: process.env.ALCHEMY_ID }),
-    alchemyProvider({ apiKey: 'e9w03gynFBVJdeZv_yjvhZHgsUJthowe' }),
+    alchemyProvider({ apiKey: 'e9w03gynFBVJdeZv_yjvhZHgsUJthowe',  }),
     publicProvider()
   ]
 );
