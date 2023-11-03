@@ -48,8 +48,8 @@ export const useChatStore = create<ChatStore>()(
                             dp: '/images/chat/bot.png',
                             from: 'bot',
                             id: chatId,
-                            type: messageData.type,
-                            message: messageData.message,
+                            type: messageData?.type,
+                            message: messageData?.message,
                             metadata: messageData?.metadata,
                         }], status: actionTypes.DONE, 
                     }));
