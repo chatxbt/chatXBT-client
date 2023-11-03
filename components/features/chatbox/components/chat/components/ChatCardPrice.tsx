@@ -36,6 +36,7 @@ const ChatCardPrice = (props: any) => {
   const { dp, prices } = props;
 
   const a = prices?.priceHistory.map((data: any) => data[1]);
+  const coinPrice = prices?.priceHistory[prices?.priceHistory.length - 1][1];
 
   const data = {
     labels: [" ", " ", " ", " ", " ", " ", " "],
@@ -82,7 +83,7 @@ const ChatCardPrice = (props: any) => {
         </h5>
 
         <h1>
-          {prices?.priceHistory[0][1]} <span>USD</span>
+          {coinPrice.toLocaleString()} <span>USD</span>
         </h1>
         <h4>{prices?.mkCapHistory[0][1].toLocaleString()}</h4>
         <div className={style.chat}>
