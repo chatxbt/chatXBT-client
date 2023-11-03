@@ -210,7 +210,11 @@ export class IntentHandler {
           // return toolkit.getPriceFromCoingecko(coin, amount, to); 
       }
     } catch (error: any) {
-      alert(error?.message);
+        return { 
+          status: true,
+          type: 'default-text',
+          message: `Unable to get coin price: ${error?.message}`
+        };
        return false;
     }
   }
@@ -225,8 +229,12 @@ export class IntentHandler {
         default:
           return toolkit.searchTrendingCoinsFromCoinGecko()
       }
-    } catch (error) {
-      return false;
+    } catch (error: any) {
+      return { 
+        status: true,
+        type: 'default-text',
+        message: `Unable to get trending: ${error?.message}`
+      };
     }
   }
 
