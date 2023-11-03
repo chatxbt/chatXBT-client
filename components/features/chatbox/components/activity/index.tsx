@@ -1,11 +1,13 @@
 import React from "react";
 import ChatBoxLayoutV1 from "@components/features/chatbox/layout/ChatBoxLayoutV1";
 import Main from "./Main";
+import ComingSoon from "../ComingSoon";
 
 const ActivityComponent = () => {
   return (
     <ChatBoxLayoutV1>
-      <Main/> 
+        <ComingSoon />
+        {/* <Main /> */}
     </ChatBoxLayoutV1>
   );
 };
