@@ -64,6 +64,20 @@ export const searchTrendingCoinsFromCoinGecko = async () => {
   };
 }
 
+// fetch total marketcap
+export const searchTotalMarketCapFromCoinGecko = async () => {
+  let { data } = await publicApiConnect().get(
+    `https://api.coingecko.com/api/v3/global`,
+  );
+  return {
+    status: true,
+    type: 'total-marketcap',
+    dex: 'coin gecko',
+    message: `total marketcap `,
+    metadata: data?.data || [],
+  };
+}
+
 // fetch coin market chart
 export const getCoinMarketChartFromCoinGecko = async (coin: string, amount: number, to: string = 'usd') => {
   let from = coin?.toLowerCase() as 'dai';

@@ -238,6 +238,21 @@ export class IntentHandler {
     }
   }
 
+  async searchTotalMarketCap({dex}: {dex: string}){
+    try{
+      switch (dex) {
+        case 'coingecko':
+          return await toolkit.searchTotalMarketCapFromCoinGecko()
+        case 'coinmarketcap':
+          return toolkit.searchTotalMarketCapFromCoinGecko()
+        default:
+          return toolkit.searchTotalMarketCapFromCoinGecko()
+      }
+    } catch (error) {
+      return false;
+    }
+  }
+
   async supplyAssets(from: 'usdt', amountIn: string, dex: 'uniswap', provider: string) {
     const router = routers[dex]
     let signer = null;
