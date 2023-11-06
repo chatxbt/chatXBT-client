@@ -1,8 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
 
 export const generateUUID = () => {
-    let id = uuidv4();
-    return id;
+  let id = uuidv4();
+  return id;
 };
 
 /**
@@ -10,11 +10,11 @@ export const generateUUID = () => {
  * @param externalUrl 
  * @returns shortened link
  */
- export const shortenLinkT1 = ( externalUrl: string ) => {
-    if(externalUrl) {
-      return `${externalUrl.slice(0, 10)}...${externalUrl.slice(externalUrl.length-10)}`
-    }
-    return null;
+export const shortenLinkT1 = (externalUrl: string) => {
+  if (externalUrl) {
+    return `${externalUrl.slice(0, 10)}...${externalUrl.slice(externalUrl.length - 10)}`
+  }
+  return null;
 }
 
 // validate mail 
@@ -50,12 +50,26 @@ export const getAuthToken = () => customlocalStorage('connection-storage')?.toke
 // is user signed-in
 export const isAuthed = () => !!customlocalStorage('connection-storage').token;
 
-export const  formatCurrency = (value: any) => {
+export const formatCurrency = (value: any) => {
   const trillion = 1000000000000; // 1 trillion
   if (value >= trillion) {
     const formattedValue = (value / trillion).toFixed(2); // Format to one decimal place
     return `$${formattedValue} Trillion`;
   } else {
     return `$${value.toFixed(2)} USD`;
+  }
+}
+
+export const formatNumberWithMagnitude = (number: number) => {
+  if (number >= 1e12) {
+    return `$${(number / 1e12).toFixed(2)} Trillion`;
+  } else if (number >= 1e9) {
+    return `$${(number / 1e9).toFixed(2)} Billion`;
+  } else if (number >= 1e6) {
+    return `$${(number / 1e6).toFixed(2)} Million`;
+  } else if (number >= 1e3) {
+    return `$${(number / 1e3).toFixed(2)} Thousand`;
+  } else {
+    return `$${number.toFixed(2)}`;
   }
 }

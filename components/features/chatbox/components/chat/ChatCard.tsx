@@ -5,7 +5,10 @@ import { motion } from "framer-motion";
 import { actionTypes } from "@chatxbt-sdk/config/constants";
 import TrendingCoins from "./components/TrendingCoins";
 import CoinPrice from "./components/ChatCardPrice";
-import { formatCurrency } from "@chatxbt-sdk/utils/toolkit";
+import {
+  formatCurrency,
+  formatNumberWithMagnitude,
+} from "@chatxbt-sdk/utils/toolkit";
 
 export const UserChatCard = (props: any) => {
   const { dp, from, id, message, type, metadata } = props;
@@ -130,9 +133,11 @@ export const UserChatCard = (props: any) => {
               <img src={dp} alt="" />
 
               <div className={style.message}>
-                <h1>{formatCurrency(metadata.total_market_cap.usd)}</h1>
+                <h1>
+                  {formatNumberWithMagnitude(metadata.total_market_cap.usd)}
+                </h1>
                 <p>
-                  {`Today, the total market cap of the global cryptocurrency market stands at ${formatCurrency(
+                  {`Today, the total market cap of the global cryptocurrency market stands at ${formatNumberWithMagnitude(
                     metadata.total_market_cap.usd
                   )}. 
                   The total market cap has experienced a ${metadata.market_cap_change_percentage_24h_usd.toFixed(
