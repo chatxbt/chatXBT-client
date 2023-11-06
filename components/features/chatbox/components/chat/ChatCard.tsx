@@ -5,6 +5,10 @@ import { motion } from "framer-motion";
 import { actionTypes } from "@chatxbt-sdk/config/constants";
 import TrendingCoins from "./components/TrendingCoins";
 import CoinPrice from "./components/ChatCardPrice";
+import {
+  formatCurrency,
+  formatNumberWithMagnitude,
+} from "@chatxbt-sdk/utils/toolkit";
 
 export const UserChatCard = (props: any) => {
   const { dp, from, id, message, type, metadata } = props;
@@ -118,9 +122,9 @@ export const UserChatCard = (props: any) => {
             <CoinPrice dp={dp} prices={metadata} />
           )}
 
-          {/* {type === actionTypes.APPROVAL && (
+          {type === actionTypes.TOTAL_MARKETCAP && (
             <motion.div
-              className={style.chatCardBot}
+              className={style.chatCardBotMarketCap}
               id={`${id}`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -129,10 +133,23 @@ export const UserChatCard = (props: any) => {
               <img src={dp} alt="" />
 
               <div className={style.message}>
-                <p>{message}</p>
+                <h1>
+                  {formatNumberWithMagnitude(metadata.total_market_cap.usd)}
+                </h1>
+                <p>
+                  {`Today, the total market cap of the global cryptocurrency market stands at ${formatNumberWithMagnitude(
+                    metadata.total_market_cap.usd
+                  )}. 
+                  The total market cap has experienced a ${metadata.market_cap_change_percentage_24h_usd.toFixed(
+                    2
+                  )}% change in the last 24 hours.
+                  There are currently ${metadata.active_cryptocurrencies.toLocaleString()} active cryptocurrencies in the market, 
+                  with ${metadata.ended_icos.toLocaleString()} ICOs having ended. 
+                  The global market encompasses 922 markets, while ${metadata.ongoing_icos.toLocaleString()} ICOs are ongoing.`}
+                </p>
               </div>
             </motion.div>
-          )} */}
+          )}
 
           {type === actionTypes.ERROR && (
             <motion.div

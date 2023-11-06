@@ -5,7 +5,7 @@ import GoogleAnalytics from "../chatxbt-sdk/utils/google-analytics";
 import PageLoadProgressIndicator from "@components/shared/nprogress";
 import RainBow from "../components/hoc/rainbow";
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }: AppProps | any) {
   return (
     <>
       <PageLoadProgressIndicator>

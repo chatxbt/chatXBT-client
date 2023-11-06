@@ -8,6 +8,7 @@ import {
     cTokenABI,
     comptrollerABI
 } from '../abis'
+import oneInchAbi from "./1inch.json"
 
 export class IntentHandler {
   private contract: any
@@ -32,10 +33,10 @@ export class IntentHandler {
 
   async buyTokenWithEth(to: 'usdt', amountIn: string, dex: 'uniswap', p: string) {
     try {
-      // alert(`to: ${to} \n amountIn: ${amountIn} \n dex: ${dex} \n provider: ${provider}`);
+      // alert(`to: ${to} \n amountIn: ${amountIn} \n dex: ${dex} \n provider: ${p}`);
       let signer = null;
       let address = ""
-      let tx;
+      let tx: any;
       if (p.toLowerCase() === 'metamask') {
         // alert(`to: ${to} \n amountIn: ${amountIn} \n dex: ${dex} \n provider: ${p}`);
         // @ts-ignore
@@ -48,6 +49,7 @@ export class IntentHandler {
         signer = provider.getSigner()
       }
       if (signer) {
+
         let toToken;
         let router;
         if (to.startsWith("0x")) { // it's resolved already
@@ -56,23 +58,34 @@ export class IntentHandler {
           toToken = tokens[to]
         }
 
-        if(dex.startsWith("0x")) {
-          router = dex;
-        } else {
-          router = routers[dex]
-        }
+        //1inch
 
-        const path = [tokens['weth'], toToken];
-        const contract = toolkit.makeContract(router, routerV2ABI, signer)
-        const amountsOut = await contract.getAmountsOut(ethers.utils.parseEther(String(amountIn)), path);
-        const now = new Date()
-        tx = await contract.swapExactETHForTokensSupportingFeeOnTransferTokens(
-          amountsOut[1],
-          path,
+        tx = await this.oneInchSwapTokenWithEth({
+          signer,
           address,
-          new Date(now.setMinutes(now.getMinutes() + 5)).getTime(), { value: ethers.utils.parseEther(String(amountIn)) }
-        )
-        await tx.wait();
+          amountIn,
+          to: toToken
+        })
+
+        //uniswap
+
+        // if(dex.startsWith("0x")) {
+        //   router = dex;
+        // } else {
+        //   router = routers[dex]
+        // }
+
+        // const path = [tokens['weth'], toToken];
+        // const contract = toolkit.makeContract(router, routerV2ABI, signer)
+        // const amountsOut = await contract.getAmountsOut(ethers.utils.parseEther(String(amountIn)), path);
+        // const now = new Date()
+        // tx = await contract.swapExactETHForTokensSupportingFeeOnTransferTokens(
+        //   amountsOut[1],
+        //   path,
+        //   address,
+        //   new Date(now.setMinutes(now.getMinutes() + 5)).getTime(), { value: ethers.utils.parseEther(String(amountIn)) }
+        // )
+        // await tx.wait();
       }
       return { 
         status: true,
@@ -197,7 +210,11 @@ export class IntentHandler {
           // return toolkit.getPriceFromCoingecko(coin, amount, to); 
       }
     } catch (error: any) {
-      alert(error?.message);
+        return { 
+          status: true,
+          type: 'default-text',
+          message: `Unable to get coin price: ${error?.message}`
+        };
        return false;
     }
   }
@@ -211,6 +228,25 @@ export class IntentHandler {
           return toolkit.searchTrendingCoinsFromCoinGecko()
         default:
           return toolkit.searchTrendingCoinsFromCoinGecko()
+      }
+    } catch (error: any) {
+      return { 
+        status: true,
+        type: 'default-text',
+        message: `Unable to get trending: ${error?.message}`
+      };
+    }
+  }
+
+  async searchTotalMarketCap({dex}: {dex: string}){
+    try{
+      switch (dex) {
+        case 'coingecko':
+          return await toolkit.searchTotalMarketCapFromCoinGecko()
+        case 'coinmarketcap':
+          return toolkit.searchTotalMarketCapFromCoinGecko()
+        default:
+          return toolkit.searchTotalMarketCapFromCoinGecko()
       }
     } catch (error) {
       return false;
@@ -382,6 +418,141 @@ async lend(amountInEth: string) {
     };
   }
 }
+
+// async oneInchSwap ({signer, address}: any) {
+//   try {
+//     // Amount of token to swap
+//     const amountIn = '5';
+//     // Expected amount of token to receive
+//     const amountOut = '1';
+//     // Slippage percentage
+//     const slippage = '1'
+//     // Your recipient address
+//     const recipient = address;
+//     // Token to swap from: TOKEN_ADDRESS_HERE
+//     const tokenIn = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
+//     // Token to swap to: TOKEN_ADDRESS_HERE
+//     const tokenOut = '0xdAC17F958D2ee523a2206206994597C13D831ec7';
+//     // 1inch router address (Mainnet address, change for other networks)
+//     const routerAddress = '0x1111111254EEB25477B68fb85Ed929f73A960582';
+//     const router = new ethers.Contract(routerAddress, ['function swapExactTokensForTokens(uint256, uint256, address[], address, uint256)'], signer);
+
+//     const deadline = Math.floor(Date.now() / 1000) + 60 * 5; // 5 minutes from now
+
+//     // // Calculate the minimum amount to receive with slippage tolerance
+//     // const slippagePercentage = parseFloat(slippage) / 100;
+//     // const minAmountOut = ethers.utils.parseUnits(amountOut, 18);
+//     // const slippageAdjustedMinAmountOut = minAmountOut.sub(minAmountOut.mul(slippagePercentage).div(100));
+
+//     // // Ensure that the slippage-adjusted minimum amount is less than or equal to the amount to swap
+//     // if (slippageAdjustedMinAmountOut.gt(ethers.utils.parseUnits(amountIn, 18))) {
+//     //   alert('Slippage-adjusted minimum amount exceeds the amount to swap. Please reduce slippage or adjust your input.');
+//     //   // return;
+//     // }
+
+//     // const tx = await router.swapExactTokensForTokens(
+//     //   ethers.utils.parseUnits(amountIn, 18), // Amount of token to swap (in wei)
+//     //   slippageAdjustedMinAmountOut, // Minimum amount of token to receive with slippage
+//     //   [tokenIn, tokenOut],
+//     //   recipient,
+//     //   deadline,
+//     //   { gasLimit: 4000000 } // Set an appropriate gas limit
+//     // );
+
+//     const tx = await router.swapExactTokensForTokens(
+//       ethers.utils.parseUnits(amountIn, 18), // Amount of token to swap (in wei)
+//       ethers.utils.parseUnits(amountOut, 18), // Minimum amount of token to receive (in wei)
+//       [tokenIn, tokenOut],
+//       recipient,
+//       deadline,
+//       { gasLimit: 4000000 } // Set an appropriate gas limit
+//     );
+
+//     return await tx.wait();
+//     alert('Swap successful!');
+//   } catch (error) {
+//     console.error('Error swapping tokens:', error);
+//   } finally {
+//     // setLoading(false);
+//   }
+
+// }
+
+async oneInchSwapTokenWithEth({ signer, address, amountIn, to }: any) {
+  try {
+    const amountOut = '5';
+    const slippage = '0.1';
+    const recipient = address;
+    const tokenIn = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
+    const tokenOut = to || '0xdAC17F958D2ee523a2206206994597C13D831ec7';
+    const routerAddress = '0x1111111254EEB25477B68fb85Ed929f73A960582';
+    const router = new ethers.Contract(routerAddress, ['function swapExactTokensForTokens(uint256, uint256, address[], address, uint256)'], signer);
+
+    const deadline = Math.floor(Date.now() / 1000) + 60 * 5;
+
+    // const slippagePercentage = parseFloat(slippage) / 100;
+    
+    // const minAmountOut = ethers.utils.parseUnits(amountOut, 6);
+    // const slippageAdjustedMinAmountOut = minAmountOut.sub(minAmountOut.mul(slippagePercentage).div(100));
+
+    // if (slippageAdjustedMinAmountOut.gt(ethers.utils.parseUnits(amountIn, 18))) {
+    //   alert('Slippage-adjusted minimum amount exceeds the amount to swap. Please reduce slippage or adjust your input.');
+    //   return; // Stop execution if slippage-adjusted minimum amount exceeds the amount to swap
+    // }
+
+    // alert(ethers.utils.parseUnits(amountIn, 18))
+
+    const tx = await router.swapExactTokensForTokens(
+      ethers.utils.parseUnits(amountIn, 18),
+      // slippageAdjustedMinAmountOut,
+      0,
+      [tokenIn, tokenOut],
+      recipient,
+      deadline,
+      { gasLimit: 4000000 }
+    );
+
+    // alert('Swap successful!'); // Show success message before returning
+
+    return await tx.wait();
+  } catch (error) {
+    console.error('Error swapping tokens:', error);
+  }
+}
+
+// async oneInchSwap({ signer, address }: any) {
+//   try {
+//     const amountIn = '5';
+//     const amountOut = '5';
+//     const slippage = '0.1';
+//     const recipient = address;
+//     const tokenIn = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
+//     const tokenOut = '0xdAC17F958D2ee523a2206206994597C13D831ec7';
+//     const routerAddress = '0x1111111254EEB25477B68fb85Ed929f73A960582';
+//     const abi: any = oneInchAbi;
+//     const router = new ethers.Contract(routerAddress, abi, signer);
+
+
+//     const tx = await router.swap(
+//       ethers.utils.parseUnits(amountIn, 18),
+//       recipient,
+//       [tokenIn, tokenOut],
+//       recipient,
+//       { gasLimit: 4000000 }
+//     )
+//     // .send({
+//     //   from: accounts[1],
+//     //   value: Web3.utils.toWei('0.02', 'ether'),
+//     // });
+
+//     alert('Swap successful!'); // Show success message before returning
+
+//     return await tx.wait();
+//   } catch (error) {
+//     console.error('Error swapping tokens:', error);
+//   }
+// }
+
 
 
 }

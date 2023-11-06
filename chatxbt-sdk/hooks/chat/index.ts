@@ -6,13 +6,13 @@ export const useChat = (props: any) => {
     const chatServices = chatxbtServices.chat(props);
 
     const {
-        store: { 
-            status, 
-            ref, 
-            messages 
+        store: {
+            status,
+            ref,
+            messages
         },
-        action: { 
-            setPreview, 
+        action: {
+            setPreview,
         }
     } = chatServices;
 

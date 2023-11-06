@@ -5,7 +5,7 @@ import Issue from "../error-handler"
 import axios, { Axios, AxiosInstance } from "axios"
 
 //set up api connect
-export const privateApiConnect = (carrier: 'axios' | 'jquery' | 'super-agent' = 'axios' ): AxiosInstance => {
+export const privateApiConnect = (carrier: 'axios' | 'jquery' | 'super-agent' = 'axios' ): AxiosInstance | any | undefined => {
     try {
        // headers
       let headers: any = {
@@ -28,17 +28,24 @@ export const privateApiConnect = (carrier: 'axios' | 'jquery' | 'super-agent' = 
             break;
          
          default:
-            throw new Issue(500, lang.cantDetectCarrier);
+            return axiosInstance({
+               baseURL: envConfig.aiChatBotUrl,
+               headers
+            })
                
             break;
       }
+      return axiosInstance({
+         baseURL: envConfig.aiChatBotUrl,
+         headers
+      })
     } catch (error: any) {
-      throw new Issue(500, error.message);
+      // throw new Issue(500, error.message);
     }
  };
 
  //set up api connect
-export const publicApiConnect = (carrier: 'axios' | 'jquery' | 'super-agent' = 'axios' ): Axios => {
+export const publicApiConnect = (carrier: 'axios' | 'jquery' | 'super-agent' = 'axios' ): Axios | any | undefined => {
    try {
       switch (carrier) {
          case 'axios':
@@ -46,12 +53,12 @@ export const publicApiConnect = (carrier: 'axios' | 'jquery' | 'super-agent' = '
             break;
         
          default:
-            throw new Issue(500, lang.cantDetectCarrier);
+            return axios
               
             break;
         }
    } catch (error: any) {
-     throw new Issue(500, error.message);
+   //   throw new Issue(500, error.message);
    }
 };
 

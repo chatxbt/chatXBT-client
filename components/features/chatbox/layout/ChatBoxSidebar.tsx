@@ -53,7 +53,9 @@ const ChatBoxSidebar = () => {
             ))}
           </div>
           <div className={style.btn}>
-            <button>Upgrade</button>
+            <button>
+              Upgrades <span>Coming soon</span>
+            </button>
           </div>
         </div>
       </div>

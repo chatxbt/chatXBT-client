@@ -6,3 +6,4 @@ export * from './checkCoinPrice';
 export * from './trendingCoins';
 export * from './borrowCETH';
 export * from './lendCETH';
+export * from './checkMarketCap';

@@ -45,11 +45,11 @@ export const useChatStore = create<ChatStore>()(
                     set((state: { messages: any; }) => ({
                         messages: [...state.messages,
                         {
-                            dp: botDisplayImage.default,
+                            dp: '/images/chat/bot.png',
                             from: 'bot',
                             id: chatId,
-                            type: messageData.type,
-                            message: messageData.message,
+                            type: messageData?.type,
+                            message: messageData?.message,
                             metadata: messageData?.metadata,
                         }], status: actionTypes.DONE, 
                     }));
@@ -77,7 +77,7 @@ export const useChatStore = create<ChatStore>()(
             }),
             {
                 name: chatStorage,
-                getStorage: () => localStorage,
+                storage: createJSONStorage(() => localStorage),
                 partialize: (state) => ({
                 }),
                 onRehydrateStorage: () => (state: any) => {

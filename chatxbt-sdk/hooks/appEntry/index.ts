@@ -5,52 +5,63 @@ import {
 } from "../../../chatxbt-sdk"
 
 export const useAppEntry = (props: any) => {
-    const authService = chatxbtServices.auth(props);
-    const defiService = chatxbtServices.defi(props);
-    const {
-        store: { 
-            _hasHydrated,
-            wagmiData,
-            connected
-        },
-        action: { 
-            handleWalletSignIn,
-            signOut
-        }
-    } = authService;
+    try {
+        const authService = chatxbtServices.auth(props);
+        const defiService = chatxbtServices.defi(props);
+        const {
+            store: { 
+                _hasHydrated,
+                wagmiData,
+                connected
+            },
+            action: { 
+                handleWalletSignIn,
+                signOut
+            }
+        } = authService;
+    
+        const {
+            store: { 
+                configured,
+                lightPool
+            },
+            action: { 
+                loadLightPoolAndInitialiseNlpCoreConfigs
+            }
+        } = defiService
+    
+        useEffect(() => {
+            !connected
+            && _hasHydrated
+            && wagmiData.isConnected 
+            && wagmiData.address 
+            && handleWalletSignIn(wagmiData.address);
+        }, [wagmiData.isConnected, wagmiData.address]);
+    
+        useEffect(() => {
+            // localStorage.clear();
+            // connected && props.history.push('/chat');
+            // !connected && props.history.push('/');
+            // signOut();
+            !configured && connected && loadLightPoolAndInitialiseNlpCoreConfigs()
+        }, [connected]);
 
-    const {
-        store: { 
-            configured,
-            lightPool
-        },
-        action: { 
-            loadLightPoolAndInitialiseNlpCoreConfigs
-        }
-    } = defiService
+        useEffect(() => {
+            // localStorage.clear();
+            wagmiData?.isDisconnected && signOut();
+        }, [wagmiData?.isDisconnected]);
 
-    useEffect(() => {
-        !connected
-        && _hasHydrated
-        && wagmiData.isConnected 
-        && wagmiData.address 
-        && handleWalletSignIn(wagmiData.address);
-    }, [wagmiData.isConnected, wagmiData.address]);
-
-    useEffect(() => {
-        // localStorage.clear();
-        // connected && props.history.push('/chat');
-        // !connected && props.history.push('/');
-        // signOut();
-        !configured && connected && loadLightPoolAndInitialiseNlpCoreConfigs()
-    }, [connected]);
-
-    return {
-        store: {
-            connected
-        },
-        action: {
-            loadLightPoolAndInitialiseNlpCoreConfigs
-        }
-    };
+        
+    
+        return {
+            store: {
+                connected
+            },
+            action: {
+                loadLightPoolAndInitialiseNlpCoreConfigs
+            }
+        };
+    } catch (error) {
+        
+    }
 }

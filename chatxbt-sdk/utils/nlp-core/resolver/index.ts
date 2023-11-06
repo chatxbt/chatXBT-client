@@ -58,153 +58,178 @@ export class ChatXBTResolver {
   };
 
   resolveMsg = async (message: string, provider: any) => {
-    const isCreatingWallet = this.extractMessage(message, this.intents.createWalletIntents);
-    if (isCreatingWallet) {
-      const response = await this.internalResolver.handleWalletCreate();
-      return response
-    }
-
-    const isBuyingWithEth = this.extractMessage(message, this.intents.swapEthForToken);
-    if (isBuyingWithEth) {
-      // alert('buying with Eth');
-      const _doc = this.nlp(isBuyingWithEth); // reconstruct the doc
-      const toToken = _doc.match(`(${this.tokenKeys})`).out('text');
-      let exchange = _doc.match(`(${this.dexKeys})`);
-      const rawAmount = _doc.match('#Value');
-      if (!exchange) {
-        exchange = _doc.match('(#AtMention)').out('text');
+    // alert(message);
+    try {
+      const isCreatingWallet = this.extractMessage(message, this.intents.createWalletIntents);
+      if (isCreatingWallet) {
+        const response = await this.internalResolver.handleWalletCreate();
+        return response
       }
-      // const dex = exchange.text();
-      const dexText = exchange.text();
-      const dex = this.addresses.get(dexText);
-      let amount = rawAmount.text();
-      if (amount.startsWith('$')) {
-        amount = +amount.slice(1);
+  
+      const isBuyingWithEth = this.extractMessage(message, this.intents.swapEthForToken);
+      if (isBuyingWithEth) {
+        const _doc = this.nlp(isBuyingWithEth); // reconstruct the doc
+        const toToken = _doc.match(`(${this.tokenKeys})`).out('text');
+        let exchange = _doc.match(`(${this.dexKeys})`);
+        const rawAmount = _doc.match('#Value');
+        if (!exchange) {
+          exchange = _doc.match('(#AtMention)').out('text');
+        }
+        // const dex = exchange.text();
+        const dexText = exchange.text();
+        const dex = this.addresses.get(dexText);
+        let amount = rawAmount.text();
+        if (amount.startsWith('$')) {
+          amount = +amount.slice(1);
+        }
+        try {
+          const response = await this.internalResolver.buyTokenWithEth('usdt' || toToken, amount, dex, provider)
+          return response;
+        } catch (e: any) {
+          console.log(Object.keys(e))
+          return { 
+            // type: 'error', 
+            // message: `An Error Occurred, I Got This Feedback "${e.reason}"` }
+            type: 'default-text', 
+            status: true, 
+            message: `your instruction is not clear enough: ${e.message}` 
+          }
+        }
       }
-      try {
-        const response = await this.internalResolver.buyTokenWithEth('usdt' || toToken, amount, dex, provider)
+  
+      const isSellingTokenForEth = this.extractMessage(message, this.intents.swapTokenForEth);
+      if (isSellingTokenForEth) {
+        const _doc = this.nlp(isSellingTokenForEth); // reconstruct the doc
+        const fromToken = _doc.match(`(${this.tokenKeys.toLowerCase()})`).out('text');
+        const exchange = _doc.match(`(${this.dexKeys.toLowerCase()})`);
+        const rawAmount = _doc.match('#Value');
+        const dex = exchange.text();
+        let amount = rawAmount.text();
+        if (amount.startsWith('$')) {
+          amount = +amount.slice(1);
+        }
+        const response = await this.internalResolver.sellTokenForEth(fromToken.split(/(\s)/)[0], amount, dex, provider)
         return response;
-      } catch (e: any) {
-        console.log(Object.keys(e))
-        return { type: 'error', message: `An Error Occurred, I Got This Feedback "${e.reason}"` }
       }
-    }
-
-    const isSellingTokenForEth = this.extractMessage(message, this.intents.swapTokenForEth);
-    if (isSellingTokenForEth) {
-      alert('Selling for Eth');
-      const _doc = this.nlp(isSellingTokenForEth); // reconstruct the doc
-      const fromToken = _doc.match(`(${this.tokenKeys.toLowerCase()})`).out('text');
-      const exchange = _doc.match(`(${this.dexKeys.toLowerCase()})`);
-      const rawAmount = _doc.match('#Value');
-      const dex = exchange.text();
-      let amount = rawAmount.text();
-      if (amount.startsWith('$')) {
-        amount = +amount.slice(1);
-      }
-      const response = await this.internalResolver.sellTokenForEth(fromToken.split(/(\s)/)[0], amount, dex, provider)
-      return response;
-    }
-
-    const isApproval = this.extractMessage(message, this.intents.approveTokenSpend);
-    if (isApproval) {
-      const _doc = this.nlp(isApproval); // reconstruct the doc
-      let to = _doc.match('(#AtMention|#Noun)').out('text');
-      let token = _doc.match(`(${this.tokenKeys})`).out('text');
-      const rawAmount = _doc.match('#Value');
-      let amount = rawAmount.text();
-      if (!to.startsWith("0x")) {
-        to = _doc.match(`(${this.dexKeys})`).out('text')
-        to = this.addresses.get(to)
-      }
-      token = this.addresses.get(token)
-      if (amount.startsWith('$')) {
-        amount = +amount.slice(1);
-      }
-      const response = await this.internalResolver.giveTokenSpendApproval(to, token, provider)
-      return response;
-    }
-
-    const isCheckingcoinPrice = this.extractMessage(message, this.intents.checkCoinPrice);
-    if (isCheckingcoinPrice) {
-      const _doc = this.nlp(isCheckingcoinPrice); // reconstruct the doc
-      const coin = _doc.match(`(${this.tokenKeys})`).out('text');
-      const exchange = _doc.match('(coinmarketcap|coingecko)');
-      const dex = exchange.text();
-      const response = await this.internalResolver.getCoinPrice({
-        dex,
-        coin,
-      });
-      return response;
-    }
-
-    const isCheckingTrendingCoins = this.extractMessage(message, this.intents.trendingCoins);
-    if (isCheckingTrendingCoins) {
-      const _doc = this.nlp(isCheckingTrendingCoins); // reconstruct the doc
-      const coin = _doc.match(`(${this.tokenKeys})`).out('text');
-      const exchange = _doc.match('(coinmarketcap|coingecko)');
-      const dex = exchange.text();
-      const response = await this.internalResolver.searchTrendingCoins({
-        dex,
-      });
-      return response;
-    }
-    
-    const isBorrowingEth = this.extractMessage(message, this.intents.borrowEth);
-    if (isBorrowingEth) {
-      const _doc = this.nlp(isBorrowingEth); // reconstruct the doc
-      const toToken = _doc.match(`(${this.tokenKeys})`).out('text');
-      let exchange = _doc.match(`(${this.dexKeys})`);
-      const rawAmount = _doc.match('#Value');
-      if (!exchange) {
-        exchange = _doc.match('(#AtMention)').out('text');
-      }
-      // const dex = exchange.text();
-      const dexText = exchange.text();
-      const dex = this.addresses.get(dexText);
-      let amount = rawAmount.text();
-      if (amount.startsWith('$')) {
-        amount = +amount.slice(1);
-      }
-      try {
-        const response = await this.internalResolver.borrow('9');
+  
+      const isApproval = this.extractMessage(message, this.intents.approveTokenSpend);
+      if (isApproval) {
+        const _doc = this.nlp(isApproval); // reconstruct the doc
+        let to = _doc.match('(#AtMention|#Noun)').out('text');
+        let token = _doc.match(`(${this.tokenKeys})`).out('text');
+        const rawAmount = _doc.match('#Value');
+        let amount = rawAmount.text();
+        if (!to.startsWith("0x")) {
+          to = _doc.match(`(${this.dexKeys})`).out('text')
+          to = this.addresses.get(to)
+        }
+        token = this.addresses.get(token)
+        if (amount.startsWith('$')) {
+          amount = +amount.slice(1);
+        }
+        const response = await this.internalResolver.giveTokenSpendApproval(to, token, provider)
         return response;
-      } catch (e: any) {
-        console.log(Object.keys(e))
-        return { type: 'error', message: `An Error Occurred, I Got This Feedback "${e.reason}"` }
       }
-    }
+  
+      const isCheckingcoinPrice = this.extractMessage(message, this.intents.checkCoinPrice);
+      if (isCheckingcoinPrice) {
+        const _doc = this.nlp(isCheckingcoinPrice); // reconstruct the doc
+        const coin = _doc.match(`(${this.tokenKeys})`).out('text');
+        const exchange = _doc.match('(coinmarketcap|coingecko)');
+        const dex = exchange.text();
 
-    const isLendingEth = this.extractMessage(message, this.intents.lendEth);
-    if (isLendingEth) {
-      const _doc = this.nlp(isLendingEth); // reconstruct the doc
-      const toToken = _doc.match(`(${this.tokenKeys})`).out('text');
-      let exchange = _doc.match(`(${this.dexKeys})`);
-      const rawAmount = _doc.match('#Value');
-      if (!exchange) {
-        exchange = _doc.match('(#AtMention)').out('text');
-      }
-      // const dex = exchange.text();
-      const dexText = exchange.text();
-      const dex = this.addresses.get(dexText);
-      let amount = rawAmount.text();
-      if (amount.startsWith('$')) {
-        amount = +amount.slice(1);
-      }
-      try {
-        const response = await this.internalResolver.lend('9');
+        const response = await this.internalResolver.getCoinPrice({
+          dex,
+          coin,
+        });
         return response;
-      } catch (e: any) {
-        console.log(Object.keys(e))
-        return { type: 'error', message: `An Error Occurred, I Got This Feedback "${e.reason}"` }
       }
-    }
+  
+      const isCheckingTrendingCoins = this.extractMessage(message, this.intents.trendingCoins);
+      if (isCheckingTrendingCoins) {
+        const _doc = this.nlp(isCheckingTrendingCoins); // reconstruct the doc
+        const coin = _doc.match(`(${this.tokenKeys})`).out('text');
+        const exchange = _doc.match('(coinmarketcap|coingecko)');
+        const dex = exchange.text();
+        const response = await this.internalResolver.searchTrendingCoins({
+          dex,
+        });
+        return response;
+      }
 
-    return { 
+      const isCheckingTotalMarketCap = this.extractMessage(message, this.intents.checkMarketCap);
+      if (isCheckingTotalMarketCap) {
+        const _doc = this.nlp(isCheckingTotalMarketCap);
+        const exchange = _doc.match('(coinmarketcap|coingecko)');
+        const dex = exchange.text();
+        const response = await this.internalResolver.searchTotalMarketCap({
+          dex
+        });
+        return response;
+      }
+      
+      const isBorrowingEth = this.extractMessage(message, this.intents.borrowEth);
+      if (isBorrowingEth) {
+        const _doc = this.nlp(isBorrowingEth); // reconstruct the doc
+        const toToken = _doc.match(`(${this.tokenKeys})`).out('text');
+        let exchange = _doc.match(`(${this.dexKeys})`);
+        const rawAmount = _doc.match('#Value');
+        if (!exchange) {
+          exchange = _doc.match('(#AtMention)').out('text');
+        }
+        // const dex = exchange.text();
+        const dexText = exchange.text();
+        const dex = this.addresses.get(dexText);
+        let amount = rawAmount.text();
+        if (amount.startsWith('$')) {
+          amount = +amount.slice(1);
+        }
+        try {
+          const response = await this.internalResolver.borrow('9');
+          return response;
+        } catch (e: any) {
+          console.log(Object.keys(e))
+          return { type: 'error', message: `An Error Occurred, I Got This Feedback "${e.reason}"` }
+        }
+      }
+  
+      const isLendingEth = this.extractMessage(message, this.intents.lendEth);
+      if (isLendingEth) {
+        const _doc = this.nlp(isLendingEth); // reconstruct the doc
+        const toToken = _doc.match(`(${this.tokenKeys})`).out('text');
+        let exchange = _doc.match(`(${this.dexKeys})`);
+        const rawAmount = _doc.match('#Value');
+        if (!exchange) {
+          exchange = _doc.match('(#AtMention)').out('text');
+        }
+        // const dex = exchange.text();
+        const dexText = exchange.text();
+        const dex = this.addresses.get(dexText);
+        let amount = rawAmount.text();
+        if (amount.startsWith('$')) {
+          amount = +amount.slice(1);
+        }
+        try {
+          const response = await this.internalResolver.lend('9');
+          return response;
+        } catch (e: any) {
+          console.log(Object.keys(e))
+          return { type: 'error', message: `An Error Occurred, I Got This Feedback "${e.reason}"` }
+        }
+      }
+  
+      return { 
+          type: 'default-text', 
+          status: true, 
+          message: 'your instruction is not clear enough' 
+      };
+    } catch (error) {
+      return { 
         type: 'default-text', 
-        status: false, 
-        message: '' 
+        status: true, 
+        message: 'your instruction is not clear enough' 
     };
+    }
   }
 
   //   private async handleWalletCreate(password = 'Password-From-User') {
