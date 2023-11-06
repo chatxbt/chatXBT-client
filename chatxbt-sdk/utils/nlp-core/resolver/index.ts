@@ -148,6 +148,17 @@ export class ChatXBTResolver {
       });
       return response;
     }
+
+    const isCheckingTotalMarketCap = this.extractMessage(message, this.intents.checkMarketCap);
+    if (isCheckingTotalMarketCap) {
+      const _doc = this.nlp(isCheckingTotalMarketCap);
+      const exchange = _doc.match('(coinmarketcap|coingecko)');
+      const dex = exchange.text();
+      const response = await this.internalResolver.searchTotalMarketCap({
+        dex
+      });
+      return response;
+    }
     
     const isBorrowingEth = this.extractMessage(message, this.intents.borrowEth);
     if (isBorrowingEth) {

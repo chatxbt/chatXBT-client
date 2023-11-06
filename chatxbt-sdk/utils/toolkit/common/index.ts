@@ -49,3 +49,13 @@ export const getAuthToken = () => customlocalStorage('connection-storage')?.toke
 
 // is user signed-in
 export const isAuthed = () => !!customlocalStorage('connection-storage').token;
+
+export const  formatCurrency = (value: any) => {
+  const trillion = 1000000000000; // 1 trillion
+  if (value >= trillion) {
+    const formattedValue = (value / trillion).toFixed(2); // Format to one decimal place
+    return `$${formattedValue} Trillion`;
+  } else {
+    return `$${value.toFixed(2)} USD`;
+  }
+}
