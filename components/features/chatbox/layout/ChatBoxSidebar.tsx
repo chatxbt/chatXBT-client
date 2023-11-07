@@ -10,6 +10,7 @@ const ChatBoxSidebar = () => {
   const [active, setActive] = useState("");
   const checkRoutePath = (href: any) => {
     router.asPath === href && setActive(href);
+    href === '/dashboard/chat' && setActive(href);
   };
   const handleClick = (url: any) => {
     router.push(url);
@@ -18,7 +19,7 @@ const ChatBoxSidebar = () => {
 
   useEffect(() => {
     let url = router.asPath;
-    checkRoutePath(url);
+    url === "/" ? checkRoutePath("/dashboard/chat") : checkRoutePath(url);
   }, []);
 
   return (
