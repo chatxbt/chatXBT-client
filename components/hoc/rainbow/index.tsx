@@ -48,6 +48,7 @@ import {
   getDefaultWallets,
   RainbowKitProvider,
   connectorsForWallets,
+  midnightTheme
 } from '@rainbow-me/rainbowkit';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import { mainnet, polygon, optimism, arbitrum } from 'wagmi/chains';
@@ -64,7 +65,7 @@ import {
 } from '@rainbow-me/rainbowkit/wallets';
 // import { MetaMaskConnector } from "@wagmi/connectors/metaMask";
 
-const { chains, publicClient } = configureChains(
+const { chains, publicClient, webSocketPublicClient } = configureChains(
   [mainnet, polygon, optimism, arbitrum],
   [
     // alchemyProvider({ apiKey: process.env.ALCHEMY_ID }),
@@ -85,7 +86,7 @@ const connectors = connectorsForWallets([
       groupName: 'Recommended',
       wallets: [
           injectedWallet({ chains, shimDisconnect: true }),
-          metaMaskWallet({ chains, shimDisconnect: true, projectId: '954d1cd106b485e394a1b5b7423a42bd'  }),
+          metaMaskWallet({  chains, shimDisconnect: true, projectId: '954d1cd106b485e394a1b5b7423a42bd'  }),
           coinbaseWallet({ chains, appName: 'Linagee Identity' }),
           ledgerWallet({ chains, projectId: '954d1cd106b485e394a1b5b7423a42bd' }),
           rainbowWallet({ chains, shimDisconnect: true, projectId: '954d1cd106b485e394a1b5b7423a42bd' }),
@@ -103,13 +104,21 @@ const wagmiClient = createConfig({
   autoConnect: true,
   connectors,
   publicClient,
-  // webSocketPublicClient
+  webSocketPublicClient
 })
 
 const RainBow = ({children}: any) => {
     return (
       <WagmiConfig config={wagmiClient}>
-        <RainbowKitProvider chains={chains}>
+        <RainbowKitProvider 
+          appInfo={{
+            appName: 'ChatXBT',
+            learnMoreUrl: 'https://www.chatxbt.com/',
+          }}
+          chains={chains} 
+          theme={midnightTheme()} 
+          coolMode
+        >
           {children}
         </RainbowKitProvider>
       </WagmiConfig>

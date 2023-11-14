@@ -4,6 +4,7 @@ import Web3 from "web3";
 import { useCallback, useMemo } from "react";
 import { ethers } from 'ethers'
 import { useAccount, useSignMessage, useNetwork, useDisconnect } from 'wagmi'
+import { recoverMessageAddress } from 'viem'
 import { 
     chatxbtDataProvider,
     chatxbtStore,
@@ -15,7 +16,7 @@ export const auth = (props: any) => {
         const { disconnect: walletDisconnect } = useDisconnect();
         const wagmiData = useAccount();
         const { chain } = useNetwork();
-        const { signMessageAsync } = useSignMessage();
+        const { data: signMessageData, error: wgmE, isLoading, signMessage: wgsm, variables, signMessageAsync } = useSignMessage();
     
     
         // data provider modules
@@ -109,6 +110,29 @@ export const auth = (props: any) => {
                 throw new chatxbtUtils.Issue(500, error?.message)
             }
         }
+
+        const signAndConnectUser = async (address: string) => {
+            try {
+                const res = await chatxbtApi.getWalletJwt({
+                    address,
+                    signature: `${signMessageData}`
+                });
+            
+                const jwt = res?.data.token;
+                const user = res?.data;
+          
+                if (jwt) {
+                    connect(user, jwt, wagmiData.address, signMessageData, wagmiData.connector?.id);
+                }
+            
+                if (!jwt) {
+                  walletDisconnect();
+                  throw new chatxbtUtils.Issue(401, res.message);
+                }
+            } catch (error) {
+                walletDisconnect();
+            }
+        }
     
         const handleWalletSignIn = async (address: string) => {
             try {
@@ -122,25 +146,10 @@ export const auth = (props: any) => {
                 }
             
                 const web3 = new Web3(Web3.givenProvider);
-                const signature = await web3.eth.personal.sign(messageToSign, address, '');
+                // const signature = await web3.eth.personal.sign(messageToSign, address, '');
+                wgsm({ message: messageToSign })
                 // const signature = await web3.eth.sign(messageToSign, address);
-            
-                const res = await chatxbtApi.getWalletJwt({
-                    address,
-                    signature
-                });
-            
-                const jwt = res?.data.token;
-                const user = res?.data;
-          
-                if (jwt) {
-                    connect(user, jwt, wagmiData.address, signature, wagmiData.connector?.id);
-                }
-            
-                if (!jwt) {
-                  walletDisconnect();
-                  throw new chatxbtUtils.Issue(401, res.message);
-                }
+
             } catch (error: any) {
                 // alert(error.message);
                 walletDisconnect();
@@ -149,7 +158,7 @@ export const auth = (props: any) => {
             }
           };
     
-        //wallet sign in [depreciated] 🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫🚫
+        //wallet sign in [depreciated] 🚫🚫🚫🚫🚫 🚫🚫🚫🚫🚫🚫🚫
         const walletSignIn = () => {
             try {
                 const ethereum = useMemo(() => window.ethereum, []);
@@ -205,6 +214,9 @@ export const auth = (props: any) => {
                 wagmiData,
                 provider,
                 visibleAddress,
+
+                variables,
+                signMessageData,
                 // waitlist store (this has to be refactored)
                 email,
                 message,
@@ -217,6 +229,7 @@ export const auth = (props: any) => {
                 walletSignIn,
                 handleWalletSignIn,
                 getSigner,
+                signAndConnectUser,
                 signOut
             },
             ...props
