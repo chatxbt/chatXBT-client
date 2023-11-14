@@ -12,10 +12,13 @@ export const useAppEntry = (props: any) => {
             store: { 
                 _hasHydrated,
                 wagmiData,
+                variables,
+                signMessageData,
                 connected
             },
             action: { 
                 handleWalletSignIn,
+                signAndConnectUser,
                 signOut
             }
         } = authService;
@@ -51,7 +54,18 @@ export const useAppEntry = (props: any) => {
             wagmiData?.isDisconnected && signOut();
         }, [wagmiData?.isDisconnected]);
 
-        
+        useEffect(() => {
+            ;(async () => {
+              if (variables?.message && signMessageData) {
+                // const recoveredAddress = await recoverMessageAddress({
+                //   message: variables?.message,
+                //   signature: signMessageData,
+                // })
+                // setRecoveredAddress(recoveredAddress)
+                await signAndConnectUser(wagmiData.address)
+              }
+            })()
+        }, [signMessageData, variables?.message])
     
         return {
             store: {
