@@ -28,7 +28,7 @@ const ChatBoxHeader = ({
 
   return (
     <>
-      {click && <MobileSideBar handleToggle={handleToggle} />}
+      {click && <MobileSideBar handleToggle={handleToggle} signOut={signOut} />}
       <div className={style.chatHeader}>
         <div className={classInit.addConClass(style.nav)}>
           <div className={style.mobileHeader}>

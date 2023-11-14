@@ -6,10 +6,22 @@ import Link from "next/link";
 import * as MdIcons from "react-icons/md";
 import Logo from "@components/shared/logo/Logo";
 import { motion } from "framer-motion";
+import { useConnectionStore } from "@chatxbt-sdk/store/zustand/connection";
 
-const MobileSideBar = ({ handleToggle }: any) => {
+const MobileSideBar = ({ handleToggle, signOut }: any) => {
+  console.log(signOut);
   const router = useRouter();
   const handleClick = (url: any) => router.push(url);
+
+  const { visibleAddress, disconnect } = useConnectionStore();
+
+  const startDisconnect = (e: any) => {
+    e.target.innerText = "Disconnect";
+  };
+
+  const stopDisconnect = (e: any) => {
+    e.target.innerText = visibleAddress;
+  };
 
   return (
     <motion.div
@@ -42,10 +54,16 @@ const MobileSideBar = ({ handleToggle }: any) => {
       </ul>
 
       <div className={style.buttons}>
-        <button id={style.first}>Integrate protocol</button>
-        <div id={style.second}>
-          <button>0xwangwu.eth</button>
-        </div>
+        {visibleAddress && (
+          <button
+            id={style.first}
+            onClick={signOut}
+            onMouseEnter={startDisconnect}
+            onMouseLeave={stopDisconnect}
+          >
+            {visibleAddress}
+          </button>
+        )}
       </div>
 
       <div className={style.socialCon}>
@@ -58,7 +76,7 @@ const MobileSideBar = ({ handleToggle }: any) => {
           ))}
         </div>
         <div className={style.btn}>
-          <button>Upgrade</button>
+          <button>Upgrades Coming Soon</button>
         </div>
       </div>
     </motion.div>
