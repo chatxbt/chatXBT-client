@@ -54,7 +54,6 @@ import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import { mainnet, polygon, optimism, arbitrum } from 'wagmi/chains';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
-// import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'; //<<< new RPC
 import {
   injectedWallet,
   rainbowWallet,
@@ -71,7 +70,6 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
     // alchemyProvider({ apiKey: process.env.ALCHEMY_ID }),
     alchemyProvider({ apiKey: 'e9w03gynFBVJdeZv_yjvhZHgsUJthowe',  }),
-    // jsonRpcProvider({ rpc: () => ({ http: "https://rpc.ankr.com/gnosis" }) }),  //<<<< New RPC Provider
     publicProvider()
   ]
 );
@@ -83,12 +81,18 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
 // });
 
 // "wagmi": "0.12.8","@rainbow-me/rainbowkit": "0.12.5",
+const { wallets } = getDefaultWallets({
+  appName: 'ChatXBT',
+  projectId: "954d1cd106b485e394a1b5b7423a42bd",
+  chains,
+});
 const connectors = connectorsForWallets([
+  ...wallets,
   {
       groupName: 'Recommended',
       wallets: [
           injectedWallet({ chains, shimDisconnect: true }),
-          metaMaskWallet({  chains, shimDisconnect: false, projectId: '954d1cd106b485e394a1b5b7423a42bd'  }),
+          metaMaskWallet({  chains, shimDisconnect: true, projectId: '954d1cd106b485e394a1b5b7423a42bd'  }),
           coinbaseWallet({ chains, appName: 'Linagee Identity' }),
           ledgerWallet({ chains, projectId: '954d1cd106b485e394a1b5b7423a42bd' }),
           rainbowWallet({ chains, shimDisconnect: true, projectId: '954d1cd106b485e394a1b5b7423a42bd' }),
@@ -98,7 +102,7 @@ const connectors = connectorsForWallets([
   {
       groupName: 'Other',
       wallets: [
-          trustWallet({ chains, shimDisconnect: false, projectId: '954d1cd106b485e394a1b5b7423a42bd' }),
+          trustWallet({ chains, shimDisconnect: true, projectId: '954d1cd106b485e394a1b5b7423a42bd' }),
       ]
   }
 ]);
@@ -106,7 +110,7 @@ const wagmiClient = createConfig({
   autoConnect: true,
   connectors,
   publicClient,
-  // webSocketPublicClient
+  webSocketPublicClient
 })
 
 const RainBow = ({children}: any) => {
