@@ -22,7 +22,7 @@ const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata })
 // 3. Create modal
 createWeb3Modal({ 
     wagmiConfig, 
-    includeWalletIds:[], 
+    // includeWalletIds:[], 
     projectId, 
     chains, 
     themeMode:'dark',
