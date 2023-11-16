@@ -12,7 +12,7 @@ const projectId = '954d1cd106b485e394a1b5b7423a42bd'
 const metadata = {
   name: 'ChatXBT',
   description: 'ChatXBT',
-  url: 'https://chatxbt.com',
+  url: 'https://dev.chatxbt.com',
   icons: ['https://www.chatxbt.com/images/logo/logo-2.png']
 }
 
@@ -23,6 +23,8 @@ const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata })
 createWeb3Modal({ 
     wagmiConfig, 
     // includeWalletIds:[], 
+    
+    // excludeWalletIds={"ALL"},
     projectId, 
     chains, 
     themeMode:'dark',
