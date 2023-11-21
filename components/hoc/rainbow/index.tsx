@@ -81,7 +81,13 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
 // });
 
 // "wagmi": "0.12.8","@rainbow-me/rainbowkit": "0.12.5",
+const { wallets } = getDefaultWallets({
+  appName: 'ChatXBT',
+  projectId: "954d1cd106b485e394a1b5b7423a42bd",
+  chains,
+});
 const connectors = connectorsForWallets([
+  ...wallets,
   {
       groupName: 'Recommended',
       wallets: [
