@@ -9,6 +9,7 @@ const LogoTwo = () => {
           <Link href={"/"}>
             <div className={`${style.logoWhite}`}>
               <img src="/images/logo/logo-white1.png" alt="" />
+              <span>Alpha</span>
             </div>
           </Link>
         </>

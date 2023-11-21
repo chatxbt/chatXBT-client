@@ -7,15 +7,16 @@
     align-items: center;
     cursor: pointer;
 
-    h1 {
-        font-weight: 400;
-        font-size: 18px;
-        margin: 0px;
-    }
-
     img {
         object-fit: contain;
         margin-right: 10px;
+    }
+
+    span{
+        border-radius: 5px;
+        background: linear-gradient(151.71deg, #FC7916 6.43%, #880EF7 56.45%, #1C4DF0 74.55%);
+        padding: 4px 15px;
+        font-size: 10px;
     }
 
 }
@@ -23,8 +24,9 @@
 .logoWhite {
     width: 140px;
     display: flex;
-    justify-content: left;
+    justify-content: center;
     align-items: center;
+    flex-direction: column;
     cursor: pointer;
 
     img {
@@ -34,6 +36,14 @@
         top: 0;
         left: 0;
         right: 0;
+    }
+
+    span{
+        border-radius: 5px;
+        background: linear-gradient(151.71deg, #FC7916 6.43%, #880EF7 56.45%, #1C4DF0 74.55%);
+        padding: 4px 15px;
+        font-size: 10px;
+        margin-top: 10px;
     }
 
 }
