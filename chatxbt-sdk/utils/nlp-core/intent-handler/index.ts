@@ -1,61 +1,68 @@
-import { ethers } from 'ethers';
-import { toolkit } from '../../../utils';
-import { 
-    routerV2ABI, 
-    routers, 
-    tokens, 
-    tokenABI,
-    cTokenABI,
-    comptrollerABI
-} from '../abis'
-import oneInchAbi from "./1inch.json"
+import { ethers } from "ethers";
+import { toolkit } from "../../../utils";
+import {
+  routerV2ABI,
+  routers,
+  tokens,
+  tokenABI,
+  cTokenABI,
+  comptrollerABI,
+} from "../abis";
+import oneInchAbi from "./1inch.json";
 
 export class IntentHandler {
-  private contract: any
-  constructor({
-    contractConfig
-  }: any) {
+  private contract: any;
+  constructor({ contractConfig }: any) {
     // configure contract
     // this.contract = await toolkit.makeContract()
   }
-  async handleWalletCreate(password = 'Password-From-User') {
+  async handleWalletCreate(password = "Password-From-User") {
     const wallet = ethers.Wallet.createRandom();
     return {
       status: true,
       type: "create-wallet",
       message: `address: ${wallet.address}\n\n\n\nmnemonic: ${wallet.mnemonic.phrase}\n\n\n\n\n\n\n\nPlease keep these phrases safe, we cannot recover them for you if you lose them.`,
       metadata: {
-       ...wallet,
-       mnemonic: wallet.mnemonic.phrase
-     }
-    }
+        ...wallet,
+        mnemonic: wallet.mnemonic.phrase,
+      },
+    };
   }
 
-  async buyTokenWithEth(to: 'usdt', amountIn: string, dex: 'uniswap', p: string) {
+  async buyTokenWithEth(
+    to: string,
+    amountIn: string,
+    dex: "uniswap",
+    p: string
+  ) {
     try {
+      // console.log(to);
+
       // alert(`to: ${to} \n amountIn: ${amountIn} \n dex: ${dex} \n provider: ${p}`);
       let signer = null;
-      let address = ""
+      let address = "";
       let tx: any;
-      if (p.toLowerCase() === 'metamask') {
+      if (p.toLowerCase() === "metamask") {
         // alert(`to: ${to} \n amountIn: ${amountIn} \n dex: ${dex} \n provider: ${p}`);
         // @ts-ignore
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         // @ts-ignore
         const accounts = await window.ethereum.request({
-          method: 'eth_requestAccounts',
+          method: "eth_requestAccounts",
         });
         address = accounts[0];
-        signer = provider.getSigner()
+        signer = provider.getSigner();
       }
       if (signer) {
-
         let toToken;
         let router;
-        if (to.startsWith("0x")) { // it's resolved already
+        if (to.startsWith("0x")) {
+          // it's resolved already
           toToken = to;
+          // console.log(toToken);
         } else {
-          toToken = tokens[to]
+          toToken = tokens[to as keyof typeof tokens];
+          // console.log(toToken);
         }
 
         //1inch
@@ -64,8 +71,8 @@ export class IntentHandler {
           signer,
           address,
           amountIn,
-          to: toToken
-        })
+          to: toToken,
+        });
 
         //uniswap
 
@@ -87,472 +94,578 @@ export class IntentHandler {
         // )
         // await tx.wait();
       }
-      return { 
+      return {
         status: true,
-        type: 'swap', 
-        message: tx.hash, 
+        type: "swap",
+        message: tx.hash,
         metadata: {
-          ...tx
-        }
+          ...tx,
+        },
       };
     } catch (error: any) {
-      return { 
+      if (error?.response?.status === 500 || error?.response?.status === 403)
+        toolkit.slackNotify({
+          message: JSON.stringify(error?.response?.message),
+        });
+
+      return {
         status: true,
-        type: 'default-text',
-        message: `Unable to swap: ${error?.message}`
+        type: "default-text",
+        message: `Unable to swap: ${error?.message}`,
       };
     }
   }
-  async sellTokenForEth(from: 'usdt', amountIn: string, dex: 'uniswap', wallertProvider: string) {
+  async sellTokenForEth(
+    from: "usdt",
+    amountIn: string,
+    dex: "uniswap",
+    wallertProvider: string
+  ) {
     try {
-      const router = routers[dex]
+      const router = routers[dex];
       let signer = null;
-      let address = ""
+      let address = "";
       let tx;
-      if (wallertProvider.toLowerCase() === 'metamask') {
+      if (wallertProvider.toLowerCase() === "metamask") {
         // @ts-ignore
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         // @ts-ignore
         const accounts = await window.ethereum.request({
-          method: 'eth_requestAccounts',
+          method: "eth_requestAccounts",
         });
         address = accounts[0];
-        signer = provider.getSigner()
+        signer = provider.getSigner();
       }
       if (signer) {
-        const path = [tokens[from], tokens['weth']];
+        const path = [tokens[from], tokens["weth"]];
         // alert(path);
-        const contract = toolkit.makeContract(router, routerV2ABI, signer)
-        const amountsIn = await contract.connect(signer).getAmountsOut(ethers.utils.parseEther(String(amountIn)), path);
-        const now = new Date()
+        const contract = toolkit.makeContract(router, routerV2ABI, signer);
+        const amountsIn = await contract
+          .connect(signer)
+          .getAmountsOut(ethers.utils.parseEther(String(amountIn)), path);
+        const now = new Date();
         tx = await contract.swapExactTokensForETHSupportingFeeOnTransferTokens(
           amountsIn[0],
           0,
           path,
           address,
           new Date(now.setMinutes(now.getMinutes() + 5)).getTime()
-        )
+        );
         await tx.wait();
       }
-      return { 
+      return {
         status: true,
-        type: 'swap', 
+        type: "swap",
         message: tx.hash,
         metadata: {
-          ...tx
-        }
+          ...tx,
+        },
       };
     } catch (error: any) {
-      return { 
+      if (error?.response?.status === 500 || error?.response?.status === 403)
+        toolkit.slackNotify({
+          message: JSON.stringify(error?.response?.message),
+        });
+
+      return {
         status: true,
-        type: 'default-text',
-        message: `Unable to swap: ${error?.message}`
+        type: "default-text",
+        message: `Unable to swap: ${error?.message}`,
       };
     }
   }
 
-  async giveTokenSpendApproval(account: string, token: 'usdt', provider: string) {
+  async giveTokenSpendApproval(
+    account: string,
+    token: "usdt",
+    provider: string
+  ) {
     try {
       let signer = null;
-      let address = ""
+      let address = "";
       let value = "0";
       let tx;
-      if (provider === 'metamask') {
+      if (provider === "metamask") {
         // @ts-ignore
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         // @ts-ignore
         const accounts = await window.ethereum.request({
-          method: 'eth_requestAccounts',
+          method: "eth_requestAccounts",
         });
         address = accounts[0];
-        signer = provider.getSigner()
+        signer = provider.getSigner();
       }
       if (signer) {
-        const contract = toolkit.makeContract(token, tokenABI, signer)
+        const contract = toolkit.makeContract(token, tokenABI, signer);
         const allowance = await contract.allowance(address, account);
-  
+
         const decimals = await contract.decimals();
-        value = Number(ethers.utils.formatUnits(allowance, decimals)).toFixed(4);
+        value = Number(ethers.utils.formatUnits(allowance, decimals)).toFixed(
+          4
+        );
         // value = Number(ethers.utils.formatUnits(allowance, decimals)).toFixed(4);
         if (value === "0") {
-          tx = await contract.approve(account, ethers.constants.MaxUint256)
+          tx = await contract.approve(account, ethers.constants.MaxUint256);
           await tx.wait();
         }
       }
-      return { 
-        type: 'approval', 
+      return {
+        type: "approval",
         message: value,
         status: true,
         metadata: {
-          ...tx
-        }
+          ...tx,
+        },
       };
     } catch (error: any) {
-      return { 
+      if (error?.response?.status === 500 || error?.response?.status === 403)
+        toolkit.slackNotify({
+          message: JSON.stringify(error?.response?.message),
+        });
+
+      return {
         status: true,
-        type: 'default-text',
-        message: `Unable to swap: ${error?.message}`
+        type: "default-text",
+        message: `Unable to swap: ${error?.message}`,
       };
     }
   }
 
-  async getCoinPrice({ coin, to = 'usd', dex, amount = 1 }: { coin: string, to?: string, dex: string, amount?: number }) {
+  async getCoinPrice({
+    coin,
+    to = "usd",
+    dex,
+    amount = 1,
+  }: {
+    coin: string;
+    to?: string;
+    dex: string;
+    amount?: number;
+  }) {
     try {
       switch (dex) {
-        case 'coingecko':
-          return await toolkit.getCoinMarketChartFromCoinGecko(coin, amount, to);
-          // return toolkit.getPriceFromCoingecko(coin, amount, to);
-        case 'coinmarketcap':
+        case "coingecko":
+          return await toolkit.getCoinMarketChartFromCoinGecko(
+            coin,
+            amount,
+            to
+          );
+        // return toolkit.getPriceFromCoingecko(coin, amount, to);
+        case "coinmarketcap":
           // return toolkit.getPriceFromCoinmarketCap(coin, amount, to);
-          return await toolkit.getCoinMarketChartFromCoinGecko(coin, amount, to);
+          return await toolkit.getCoinMarketChartFromCoinGecko(
+            coin,
+            amount,
+            to
+          );
         default:
-          return await toolkit.getCoinMarketChartFromCoinGecko(coin, amount, to);
-          // return toolkit.getPriceFromCoingecko(coin, amount, to); 
+          return await toolkit.getCoinMarketChartFromCoinGecko(
+            coin,
+            amount,
+            to
+          );
+        // return toolkit.getPriceFromCoingecko(coin, amount, to);
       }
     } catch (error: any) {
-        return { 
-          status: true,
-          type: 'default-text',
-          message: `Unable to get coin price: ${error?.message}`
-        };
-       return false;
-    }
-  }
+      if (error?.response?.status === 500 || error?.response?.status === 403)
+        toolkit.slackNotify({
+          message: JSON.stringify(error?.response?.message),
+        });
 
-  async searchTrendingCoins({dex}: {dex: string}){
-    try{
-      switch (dex) {
-        case 'coingecko':
-          return await toolkit.searchTrendingCoinsFromCoinGecko()
-        case 'coinmarketcap':
-          return toolkit.searchTrendingCoinsFromCoinGecko()
-        default:
-          return toolkit.searchTrendingCoinsFromCoinGecko()
-      }
-    } catch (error: any) {
-      return { 
+      return {
         status: true,
-        type: 'default-text',
-        message: `Unable to get trending: ${error?.message}`
+        type: "default-text",
+        message: `Unable to get coin price: ${error?.message}`,
       };
-    }
-  }
-
-  async searchTotalMarketCap({dex}: {dex: string}){
-    try{
-      switch (dex) {
-        case 'coingecko':
-          return await toolkit.searchTotalMarketCapFromCoinGecko()
-        case 'coinmarketcap':
-          return toolkit.searchTotalMarketCapFromCoinGecko()
-        default:
-          return toolkit.searchTotalMarketCapFromCoinGecko()
-      }
-    } catch (error) {
       return false;
     }
   }
 
-  async supplyAssets(from: 'usdt', amountIn: string, dex: 'uniswap', provider: string) {
-    const router = routers[dex]
+  async searchTrendingCoins({ dex }: { dex: string }) {
+    try {
+      switch (dex) {
+        case "coingecko":
+          return await toolkit.searchTrendingCoinsFromCoinGecko();
+        case "coinmarketcap":
+          return toolkit.searchTrendingCoinsFromCoinGecko();
+        default:
+          return toolkit.searchTrendingCoinsFromCoinGecko();
+      }
+    } catch (error: any) {
+      if (error?.response?.status === 500 || error?.response?.status === 403)
+        toolkit.slackNotify({
+          message: JSON.stringify(error?.response?.message),
+        });
+
+      return {
+        status: true,
+        type: "default-text",
+        message: `Unable to get trending: ${error?.message}`,
+      };
+    }
+  }
+
+  async searchTotalMarketCap({ dex }: { dex: string }) {
+    try {
+      switch (dex) {
+        case "coingecko":
+          return await toolkit.searchTotalMarketCapFromCoinGecko();
+        case "coinmarketcap":
+          return toolkit.searchTotalMarketCapFromCoinGecko();
+        default:
+          return toolkit.searchTotalMarketCapFromCoinGecko();
+      }
+    } catch (error: any) {
+      if (error?.response?.status === 500 || error?.response?.status === 403)
+        toolkit.slackNotify({
+          message: JSON.stringify(error?.response?.message),
+        });
+      return false;
+    }
+  }
+
+  async supplyAssets(
+    from: "usdt",
+    amountIn: string,
+    dex: "uniswap",
+    provider: string
+  ) {
+    const router = routers[dex];
     let signer = null;
-    let address = ""
+    let address = "";
     let tx;
-    if (provider === 'metamask') {
+    if (provider === "metamask") {
       // @ts-ignore
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       // @ts-ignore
       const accounts = await window.ethereum.request({
-        method: 'eth_requestAccounts',
+        method: "eth_requestAccounts",
       });
       address = accounts[0];
-      signer = provider.getSigner()
+      signer = provider.getSigner();
     }
     if (signer) {
-      const path = [tokens[from], tokens['weth']];
-      const contract = toolkit.makeContract(router, routerV2ABI, signer)
-      const amountsIn = await contract.connect(signer).getAmountsOut(ethers.utils.parseEther(String(amountIn)), path);
-      const now = new Date()
+      const path = [tokens[from], tokens["weth"]];
+      const contract = toolkit.makeContract(router, routerV2ABI, signer);
+      const amountsIn = await contract
+        .connect(signer)
+        .getAmountsOut(ethers.utils.parseEther(String(amountIn)), path);
+      const now = new Date();
       tx = await contract.swapExactTokensForETHSupportingFeeOnTransferTokens(
         amountsIn[0],
         0,
         path,
         address,
         new Date(now.setMinutes(now.getMinutes() + 5)).getTime()
-      )
+      );
       await tx.wait();
     }
-    return { 
+    return {
       status: true,
-      type: 'swap', 
+      type: "swap",
       message: tx.hash,
       metadata: {
-        ...tx
-      }
+        ...tx,
+      },
     };
   }
 
   // Borrow function using MetaMask as the provider
-async borrow(amountInEth: string) {
-  try {
-    // Modern dapp browsers (like MetaMask) automatically provide the injected ethereum object
-    if (window.ethereum) {
-      // @ts-ignore
-      await window.ethereum.enable(); // Requesting user permission to access accounts
+  async borrow(amountInEth: string) {
+    try {
+      // Modern dapp browsers (like MetaMask) automatically provide the injected ethereum object
+      if (window.ethereum) {
+        // @ts-ignore
+        await window.ethereum.enable(); // Requesting user permission to access accounts
 
-      // Use the MetaMask provider
-      // @ts-ignore
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      // const comptrollerABI = require('./path/to/ComptrollerABI.json');
-      // const cTokenABI = require('./path/to/CTokenABI.json');
+        // Use the MetaMask provider
+        // @ts-ignore
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        // const comptrollerABI = require('./path/to/ComptrollerABI.json');
+        // const cTokenABI = require('./path/to/CTokenABI.json');
 
-      const comptrollerAddress = '0x3d9819210A31b4961b30EF54bE2aeD79B9c9Cd3B';
-      const cETHAddress = '0x4Ddc2D193948926D02f9B1fE9e1daa0718270ED5'; // Example: cETH, for other assets, you need to find the respective cToken addresses.
+        const comptrollerAddress = "0x3d9819210A31b4961b30EF54bE2aeD79B9c9Cd3B";
+        const cETHAddress = "0x4Ddc2D193948926D02f9B1fE9e1daa0718270ED5"; // Example: cETH, for other assets, you need to find the respective cToken addresses.
 
-      const comptrollerContract = new ethers.Contract(comptrollerAddress, comptrollerABI, provider.getSigner());
-      const cTokenContract = new ethers.Contract(cETHAddress, cTokenABI, provider.getSigner());
+        const comptrollerContract = new ethers.Contract(
+          comptrollerAddress,
+          comptrollerABI,
+          provider.getSigner()
+        );
+        const cTokenContract = new ethers.Contract(
+          cETHAddress,
+          cTokenABI,
+          provider.getSigner()
+        );
 
-      // Enter the amount you want to borrow in Ether
-      const amountInWei = ethers.utils.parseEther(amountInEth.toString());
+        // Enter the amount you want to borrow in Ether
+        const amountInWei = ethers.utils.parseEther(amountInEth.toString());
 
-      // Check if the user is allowed to borrow
-      // const isAllowed = await comptrollerContract.checkBorrow(cETHAddress, provider.getSigner().getAddress(), amountInWei);
-      // if (!isAllowed) {
-      //   console.log('You are not allowed to borrow this amount.');
-      //   return;
+        // Check if the user is allowed to borrow
+        // const isAllowed = await comptrollerContract.checkBorrow(cETHAddress, provider.getSigner().getAddress(), amountInWei);
+        // if (!isAllowed) {
+        //   console.log('You are not allowed to borrow this amount.');
+        //   return;
+        // }
+
+        // Borrow
+        const tx = await cTokenContract.borrow(amountInWei);
+
+        console.log(`${amountInEth} ETH borrowed successfully.`);
+        return {
+          type: "borrow",
+          message: `${amountInEth} ETH borrowed successfully.`,
+          status: true,
+          metadata: {
+            ...tx,
+          },
+        };
+      } else {
+        console.log(
+          "Please install MetaMask or use a compatible dapp browser."
+        );
+        return {
+          type: "borrow",
+          message: `Please install MetaMask or use a compatible dapp browser.`,
+          status: false,
+          metadata: {
+            // ...tx
+          },
+        };
+      }
+    } catch (error: any) {
+      if (error?.response?.status === 500 || error?.response?.status === 403)
+        toolkit.slackNotify({
+          message: JSON.stringify(error?.response?.message),
+        });
+
+      console.error("Error occurred while borrowing:", error);
+      return {
+        type: "borrow",
+        message: `Error occurred while borrowing.`,
+        status: false,
+        metadata: {
+          // ...tx
+        },
+      };
+    }
+  }
+
+  // Lend function using MetaMask as the provider
+  async lend(amountInEth: string) {
+    try {
+      // Modern dapp browsers (like MetaMask) automatically provide the injected ethereum object
+      if (window.ethereum) {
+        // @ts-ignore
+        await window.ethereum.enable(); // Requesting user permission to access accounts
+
+        // Use the MetaMask provider
+        // @ts-ignore
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        // const cTokenABI = require('./path/to/CTokenABI.json');
+
+        const cETHAddress = "0x4Ddc2D193948926D02f9B1fE9e1daa0718270ED5"; // Example: cETH, for other assets, you need to find the respective cToken addresses.
+
+        const cTokenContract = new ethers.Contract(
+          cETHAddress,
+          cTokenABI,
+          provider.getSigner()
+        );
+
+        // Enter the amount you want to supply in Ether
+        const amountInWei = ethers.utils.parseEther(amountInEth.toString());
+
+        // Approve the cToken contract to spend your tokens
+        const txApprove = await cTokenContract.approve(
+          cETHAddress,
+          amountInWei
+        );
+        await txApprove.wait(); // Wait for the transaction to be mined
+
+        // Supply the tokens to the Compound protocol
+        const txMint = await cTokenContract.mint(amountInWei);
+        const tx = await txMint.wait(); // Wait for the transaction to be mined
+
+        console.log(`${amountInEth} ETH supplied successfully.`);
+        return {
+          type: "lend",
+          message: `${amountInEth} ETH supplied successfully.`,
+          status: true,
+          metadata: {
+            ...tx,
+          },
+        };
+      } else {
+        console.log(
+          "Please install MetaMask or use a compatible dapp browser."
+        );
+        return {
+          type: "lend",
+          message: `Please install MetaMask or use a compatible dapp browser.`,
+          status: false,
+          metadata: {
+            // ...tx
+          },
+        };
+      }
+    } catch (error: any) {
+      if (error?.response?.status === 500 || error?.response?.status === 403)
+        toolkit.slackNotify({
+          message: JSON.stringify(error?.response?.message),
+        });
+
+      console.error("Error occurred while lending:", error);
+      return {
+        type: "lend",
+        message: `Error occurred while lending.`,
+        status: false,
+        metadata: {
+          // ...tx
+        },
+      };
+    }
+  }
+
+  // async oneInchSwap ({signer, address}: any) {
+  //   try {
+  //     // Amount of token to swap
+  //     const amountIn = '5';
+  //     // Expected amount of token to receive
+  //     const amountOut = '1';
+  //     // Slippage percentage
+  //     const slippage = '1'
+  //     // Your recipient address
+  //     const recipient = address;
+  //     // Token to swap from: TOKEN_ADDRESS_HERE
+  //     const tokenIn = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
+  //     // Token to swap to: TOKEN_ADDRESS_HERE
+  //     const tokenOut = '0xdAC17F958D2ee523a2206206994597C13D831ec7';
+  //     // 1inch router address (Mainnet address, change for other networks)
+  //     const routerAddress = '0x1111111254EEB25477B68fb85Ed929f73A960582';
+  //     const router = new ethers.Contract(routerAddress, ['function swapExactTokensForTokens(uint256, uint256, address[], address, uint256)'], signer);
+
+  //     const deadline = Math.floor(Date.now() / 1000) + 60 * 5; // 5 minutes from now
+
+  //     // // Calculate the minimum amount to receive with slippage tolerance
+  //     // const slippagePercentage = parseFloat(slippage) / 100;
+  //     // const minAmountOut = ethers.utils.parseUnits(amountOut, 18);
+  //     // const slippageAdjustedMinAmountOut = minAmountOut.sub(minAmountOut.mul(slippagePercentage).div(100));
+
+  //     // // Ensure that the slippage-adjusted minimum amount is less than or equal to the amount to swap
+  //     // if (slippageAdjustedMinAmountOut.gt(ethers.utils.parseUnits(amountIn, 18))) {
+  //     //   alert('Slippage-adjusted minimum amount exceeds the amount to swap. Please reduce slippage or adjust your input.');
+  //     //   // return;
+  //     // }
+
+  //     // const tx = await router.swapExactTokensForTokens(
+  //     //   ethers.utils.parseUnits(amountIn, 18), // Amount of token to swap (in wei)
+  //     //   slippageAdjustedMinAmountOut, // Minimum amount of token to receive with slippage
+  //     //   [tokenIn, tokenOut],
+  //     //   recipient,
+  //     //   deadline,
+  //     //   { gasLimit: 4000000 } // Set an appropriate gas limit
+  //     // );
+
+  //     const tx = await router.swapExactTokensForTokens(
+  //       ethers.utils.parseUnits(amountIn, 18), // Amount of token to swap (in wei)
+  //       ethers.utils.parseUnits(amountOut, 18), // Minimum amount of token to receive (in wei)
+  //       [tokenIn, tokenOut],
+  //       recipient,
+  //       deadline,
+  //       { gasLimit: 4000000 } // Set an appropriate gas limit
+  //     );
+
+  //     return await tx.wait();
+  //     alert('Swap successful!');
+  //   } catch (error) {
+  //     console.error('Error swapping tokens:', error);
+  //   } finally {
+  //     // setLoading(false);
+  //   }
+
+  // }
+
+  async oneInchSwapTokenWithEth({ signer, address, amountIn, to }: any) {
+    try {
+      const amountOut = "5";
+      const slippage = "0.1";
+      const recipient = address;
+      const tokenIn = "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2";
+      const tokenOut = to || "0xdAC17F958D2ee523a2206206994597C13D831ec7";
+      const routerAddress = "0x1111111254EEB25477B68fb85Ed929f73A960582";
+      const router = new ethers.Contract(
+        routerAddress,
+        [
+          "function swapExactTokensForTokens(uint256, uint256, address[], address, uint256)",
+        ],
+        signer
+      );
+
+      const deadline = Math.floor(Date.now() / 1000) + 60 * 5;
+
+      // const slippagePercentage = parseFloat(slippage) / 100;
+
+      // const minAmountOut = ethers.utils.parseUnits(amountOut, 6);
+      // const slippageAdjustedMinAmountOut = minAmountOut.sub(minAmountOut.mul(slippagePercentage).div(100));
+
+      // if (slippageAdjustedMinAmountOut.gt(ethers.utils.parseUnits(amountIn, 18))) {
+      //   alert('Slippage-adjusted minimum amount exceeds the amount to swap. Please reduce slippage or adjust your input.');
+      //   return; // Stop execution if slippage-adjusted minimum amount exceeds the amount to swap
       // }
 
-      // Borrow
-      const tx = await cTokenContract.borrow(amountInWei);
+      // alert(ethers.utils.parseUnits(amountIn, 18))
 
-      console.log(`${amountInEth} ETH borrowed successfully.`);
-      return { 
-        type: 'borrow', 
-        message: `${amountInEth} ETH borrowed successfully.`,
-        status: true,
-        metadata: {
-          ...tx
-        }
-      };
-    } else {
-      console.log('Please install MetaMask or use a compatible dapp browser.');
-      return { 
-        type: 'borrow', 
-        message: `Please install MetaMask or use a compatible dapp browser.`,
-        status: false,
-        metadata: {
-          // ...tx
-        }
-      };
+      const tx = await router.swapExactTokensForTokens(
+        ethers.utils.parseUnits(amountIn, 18),
+        // slippageAdjustedMinAmountOut,
+        0,
+        [tokenIn, tokenOut],
+        recipient,
+        deadline,
+        { gasLimit: 4000000 }
+      );
+
+      // alert('Swap successful!'); // Show success message before returning
+
+      return await tx.wait();
+    } catch (error: any) {
+      if (error?.response?.status === 500 || error?.response?.status === 403)
+        toolkit.slackNotify({
+          message: JSON.stringify(error?.response?.message),
+        });
+      console.error("Error swapping tokens:", error);
     }
-  } catch (error) {
-    console.error('Error occurred while borrowing:', error);
-    return { 
-      type: 'borrow', 
-      message: `Error occurred while borrowing.`,
-      status: false,
-      metadata: {
-        // ...tx
-      }
-    };
   }
-}
 
-// Lend function using MetaMask as the provider
-async lend(amountInEth: string) {
-  try {
-    // Modern dapp browsers (like MetaMask) automatically provide the injected ethereum object
-    if (window.ethereum) {
-      // @ts-ignore
-      await window.ethereum.enable(); // Requesting user permission to access accounts
+  // async oneInchSwap({ signer, address }: any) {
+  //   try {
+  //     const amountIn = '5';
+  //     const amountOut = '5';
+  //     const slippage = '0.1';
+  //     const recipient = address;
+  //     const tokenIn = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
+  //     const tokenOut = '0xdAC17F958D2ee523a2206206994597C13D831ec7';
+  //     const routerAddress = '0x1111111254EEB25477B68fb85Ed929f73A960582';
+  //     const abi: any = oneInchAbi;
+  //     const router = new ethers.Contract(routerAddress, abi, signer);
 
-      // Use the MetaMask provider
-      // @ts-ignore
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      // const cTokenABI = require('./path/to/CTokenABI.json');
+  //     const tx = await router.swap(
+  //       ethers.utils.parseUnits(amountIn, 18),
+  //       recipient,
+  //       [tokenIn, tokenOut],
+  //       recipient,
+  //       { gasLimit: 4000000 }
+  //     )
+  //     // .send({
+  //     //   from: accounts[1],
+  //     //   value: Web3.utils.toWei('0.02', 'ether'),
+  //     // });
 
-      const cETHAddress = '0x4Ddc2D193948926D02f9B1fE9e1daa0718270ED5'; // Example: cETH, for other assets, you need to find the respective cToken addresses.
+  //     alert('Swap successful!'); // Show success message before returning
 
-      const cTokenContract = new ethers.Contract(cETHAddress, cTokenABI, provider.getSigner());
-
-      // Enter the amount you want to supply in Ether
-      const amountInWei = ethers.utils.parseEther(amountInEth.toString());
-
-      // Approve the cToken contract to spend your tokens
-      const txApprove = await cTokenContract.approve(cETHAddress, amountInWei);
-      await txApprove.wait(); // Wait for the transaction to be mined
-
-      // Supply the tokens to the Compound protocol
-      const txMint = await cTokenContract.mint(amountInWei);
-      const tx = await txMint.wait(); // Wait for the transaction to be mined
-
-      console.log(`${amountInEth} ETH supplied successfully.`);
-      return { 
-        type: 'lend', 
-        message: `${amountInEth} ETH supplied successfully.`,
-        status: true,
-        metadata: {
-          ...tx
-        }
-      };
-    } else {
-      console.log('Please install MetaMask or use a compatible dapp browser.');
-      return { 
-        type: 'lend', 
-        message: `Please install MetaMask or use a compatible dapp browser.`,
-        status: false,
-        metadata: {
-          // ...tx
-        }
-      };
-    }
-  } catch (error) {
-    console.error('Error occurred while lending:', error);
-    return { 
-      type: 'lend', 
-      message: `Error occurred while lending.`,
-      status: false,
-      metadata: {
-        // ...tx
-      }
-    };
-  }
-}
-
-// async oneInchSwap ({signer, address}: any) {
-//   try {
-//     // Amount of token to swap
-//     const amountIn = '5';
-//     // Expected amount of token to receive
-//     const amountOut = '1';
-//     // Slippage percentage
-//     const slippage = '1'
-//     // Your recipient address
-//     const recipient = address;
-//     // Token to swap from: TOKEN_ADDRESS_HERE
-//     const tokenIn = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
-//     // Token to swap to: TOKEN_ADDRESS_HERE
-//     const tokenOut = '0xdAC17F958D2ee523a2206206994597C13D831ec7';
-//     // 1inch router address (Mainnet address, change for other networks)
-//     const routerAddress = '0x1111111254EEB25477B68fb85Ed929f73A960582';
-//     const router = new ethers.Contract(routerAddress, ['function swapExactTokensForTokens(uint256, uint256, address[], address, uint256)'], signer);
-
-//     const deadline = Math.floor(Date.now() / 1000) + 60 * 5; // 5 minutes from now
-
-//     // // Calculate the minimum amount to receive with slippage tolerance
-//     // const slippagePercentage = parseFloat(slippage) / 100;
-//     // const minAmountOut = ethers.utils.parseUnits(amountOut, 18);
-//     // const slippageAdjustedMinAmountOut = minAmountOut.sub(minAmountOut.mul(slippagePercentage).div(100));
-
-//     // // Ensure that the slippage-adjusted minimum amount is less than or equal to the amount to swap
-//     // if (slippageAdjustedMinAmountOut.gt(ethers.utils.parseUnits(amountIn, 18))) {
-//     //   alert('Slippage-adjusted minimum amount exceeds the amount to swap. Please reduce slippage or adjust your input.');
-//     //   // return;
-//     // }
-
-//     // const tx = await router.swapExactTokensForTokens(
-//     //   ethers.utils.parseUnits(amountIn, 18), // Amount of token to swap (in wei)
-//     //   slippageAdjustedMinAmountOut, // Minimum amount of token to receive with slippage
-//     //   [tokenIn, tokenOut],
-//     //   recipient,
-//     //   deadline,
-//     //   { gasLimit: 4000000 } // Set an appropriate gas limit
-//     // );
-
-//     const tx = await router.swapExactTokensForTokens(
-//       ethers.utils.parseUnits(amountIn, 18), // Amount of token to swap (in wei)
-//       ethers.utils.parseUnits(amountOut, 18), // Minimum amount of token to receive (in wei)
-//       [tokenIn, tokenOut],
-//       recipient,
-//       deadline,
-//       { gasLimit: 4000000 } // Set an appropriate gas limit
-//     );
-
-//     return await tx.wait();
-//     alert('Swap successful!');
-//   } catch (error) {
-//     console.error('Error swapping tokens:', error);
-//   } finally {
-//     // setLoading(false);
-//   }
-
-// }
-
-async oneInchSwapTokenWithEth({ signer, address, amountIn, to }: any) {
-  try {
-    const amountOut = '5';
-    const slippage = '0.1';
-    const recipient = address;
-    const tokenIn = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
-    const tokenOut = to || '0xdAC17F958D2ee523a2206206994597C13D831ec7';
-    const routerAddress = '0x1111111254EEB25477B68fb85Ed929f73A960582';
-    const router = new ethers.Contract(routerAddress, ['function swapExactTokensForTokens(uint256, uint256, address[], address, uint256)'], signer);
-
-    const deadline = Math.floor(Date.now() / 1000) + 60 * 5;
-
-    // const slippagePercentage = parseFloat(slippage) / 100;
-    
-    // const minAmountOut = ethers.utils.parseUnits(amountOut, 6);
-    // const slippageAdjustedMinAmountOut = minAmountOut.sub(minAmountOut.mul(slippagePercentage).div(100));
-
-    // if (slippageAdjustedMinAmountOut.gt(ethers.utils.parseUnits(amountIn, 18))) {
-    //   alert('Slippage-adjusted minimum amount exceeds the amount to swap. Please reduce slippage or adjust your input.');
-    //   return; // Stop execution if slippage-adjusted minimum amount exceeds the amount to swap
-    // }
-
-    // alert(ethers.utils.parseUnits(amountIn, 18))
-
-    const tx = await router.swapExactTokensForTokens(
-      ethers.utils.parseUnits(amountIn, 18),
-      // slippageAdjustedMinAmountOut,
-      0,
-      [tokenIn, tokenOut],
-      recipient,
-      deadline,
-      { gasLimit: 4000000 }
-    );
-
-    // alert('Swap successful!'); // Show success message before returning
-
-    return await tx.wait();
-  } catch (error) {
-    console.error('Error swapping tokens:', error);
-  }
-}
-
-// async oneInchSwap({ signer, address }: any) {
-//   try {
-//     const amountIn = '5';
-//     const amountOut = '5';
-//     const slippage = '0.1';
-//     const recipient = address;
-//     const tokenIn = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
-//     const tokenOut = '0xdAC17F958D2ee523a2206206994597C13D831ec7';
-//     const routerAddress = '0x1111111254EEB25477B68fb85Ed929f73A960582';
-//     const abi: any = oneInchAbi;
-//     const router = new ethers.Contract(routerAddress, abi, signer);
-
-
-//     const tx = await router.swap(
-//       ethers.utils.parseUnits(amountIn, 18),
-//       recipient,
-//       [tokenIn, tokenOut],
-//       recipient,
-//       { gasLimit: 4000000 }
-//     )
-//     // .send({
-//     //   from: accounts[1],
-//     //   value: Web3.utils.toWei('0.02', 'ether'),
-//     // });
-
-//     alert('Swap successful!'); // Show success message before returning
-
-//     return await tx.wait();
-//   } catch (error) {
-//     console.error('Error swapping tokens:', error);
-//   }
-// }
-
-
-
+  //     return await tx.wait();
+  //   } catch (error) {
+  //     console.error('Error swapping tokens:', error);
+  //   }
+  // }
 }

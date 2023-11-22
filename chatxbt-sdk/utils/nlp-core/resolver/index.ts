@@ -1,35 +1,27 @@
-import axios from 'axios';
-import { ethers } from 'ethers'
-import { 
-    createWalletIntents, 
-    swapEthForToken, 
-    swapTokenForEth, 
-    approveTokenSpend, 
-    checkCoinPrice 
-} from '../intents'
-import { 
-    IntentHandler 
-} from '../intent-handler';
-import { 
-    envConfig, 
-    lang 
-} from '../../../config'
+import axios from "axios";
+import { ethers } from "ethers";
+import {
+  createWalletIntents,
+  swapEthForToken,
+  swapTokenForEth,
+  approveTokenSpend,
+  checkCoinPrice,
+} from "../intents";
+import { IntentHandler } from "../intent-handler";
+import { envConfig, lang, supportedTokens } from "../../../config";
+
+import { toolkit } from "../../../utils";
 
 export class ChatXBTResolver {
-  private nlp = require('compromise');
+  private nlp = require("compromise");
   private internalResolver = new IntentHandler({});
   // private addresses = new Map()
   private addresses = new Map();
-  private intents: any
+  private intents: any;
   private dexKeys = "";
   private tokenKeys = "";
 
-  constructor({
-    intents,
-    dexKeys,
-    tokenKeys,
-    addresses
-  }: any) {
+  constructor({ intents, dexKeys, tokenKeys, addresses }: any) {
     // this.addresses.set('uniswap', "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D");
     // this.addresses.set('@uniswap', "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D");
     // // this.addresses.set('uniswap', "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D");
@@ -42,7 +34,7 @@ export class ChatXBTResolver {
     this.addresses = new Map(addresses);
 
     // console.log('intents', intents);
-  } 
+  }
 
   private extractMessage = (message: string, intent: { match: string }[]) => {
     // prepare intent
@@ -51,7 +43,7 @@ export class ChatXBTResolver {
     let doc = raw.clone();
     doc.contractions().expand();
     doc.normalize({ plurals: false });
-    doc = this.nlp(doc.out('normal'));
+    doc = this.nlp(doc.out("normal"));
     const net = this.nlp.buildNet(intent);
     const tx = doc.sweep(net);
     return tx.view.settle().text();
@@ -60,82 +52,131 @@ export class ChatXBTResolver {
   resolveMsg = async (message: string, provider: any) => {
     // alert(message);
     try {
-      const isCreatingWallet = this.extractMessage(message, this.intents.createWalletIntents);
+      const isCreatingWallet = this.extractMessage(
+        message,
+        this.intents.createWalletIntents
+      );
       if (isCreatingWallet) {
         const response = await this.internalResolver.handleWalletCreate();
-        return response
+        return response;
       }
-  
-      const isBuyingWithEth = this.extractMessage(message, this.intents.swapEthForToken);
+
+      const isBuyingWithEth = this.extractMessage(
+        message,
+        this.intents.swapEthForToken
+      );
       if (isBuyingWithEth) {
         const _doc = this.nlp(isBuyingWithEth); // reconstruct the doc
-        const toToken = _doc.match(`(${this.tokenKeys})`).out('text');
+        const toToken = _doc.match(`(${this.tokenKeys})`).out("text");
         let exchange = _doc.match(`(${this.dexKeys})`);
-        const rawAmount = _doc.match('#Value');
+        const rawAmount = _doc.match("#Value");
         if (!exchange) {
-          exchange = _doc.match('(#AtMention)').out('text');
+          exchange = _doc.match("(#AtMention)").out("text");
         }
         // const dex = exchange.text();
         const dexText = exchange.text();
         const dex = this.addresses.get(dexText);
         let amount = rawAmount.text();
-        if (amount.startsWith('$')) {
+        if (amount.startsWith("$")) {
           amount = +amount.slice(1);
         }
         try {
-          const response = await this.internalResolver.buyTokenWithEth('usdt' || toToken, amount, dex, provider)
+          const tokens: string[] = toToken.split(" ");
+          // const _nonEthToken = tokens.filter((token) => token !== "eth")[0];
+          const nonEthToken = tokens.find((token) => token !== "eth");
+
+          const nonEthTokenContractAddress = nonEthToken
+            ? supportedTokens[nonEthToken as keyof typeof supportedTokens]
+                .contractAddress
+            : nonEthToken;
+
+          // console.log(toToken);
+          // console.log(nonEthToken);
+          // console.log(nonEthTokenContractAddress);
+
+          const response = await this.internalResolver.buyTokenWithEth(
+            nonEthTokenContractAddress || "usdt",
+            amount,
+            dex,
+            provider
+          );
           return response;
         } catch (e: any) {
-          console.log(Object.keys(e))
-          return { 
-            // type: 'error', 
+          if (e?.response?.status === 500 || e?.response?.status === 403)
+            toolkit.slackNotify({
+              message: JSON.stringify(e?.response?.message),
+            });
+
+          console.log(Object.keys(e));
+          return {
+            // type: 'error',
             // message: `An Error Occurred, I Got This Feedback "${e.reason}"` }
-            type: 'default-text', 
-            status: true, 
-            message: `your instruction is not clear enough: ${e.message}` 
-          }
+            type: "default-text",
+            status: true,
+            message: `your instruction is not clear enough: ${e.message}`,
+          };
         }
       }
-  
-      const isSellingTokenForEth = this.extractMessage(message, this.intents.swapTokenForEth);
+
+      const isSellingTokenForEth = this.extractMessage(
+        message,
+        this.intents.swapTokenForEth
+      );
       if (isSellingTokenForEth) {
         const _doc = this.nlp(isSellingTokenForEth); // reconstruct the doc
-        const fromToken = _doc.match(`(${this.tokenKeys.toLowerCase()})`).out('text');
+        const fromToken = _doc
+          .match(`(${this.tokenKeys.toLowerCase()})`)
+          .out("text");
         const exchange = _doc.match(`(${this.dexKeys.toLowerCase()})`);
-        const rawAmount = _doc.match('#Value');
+        const rawAmount = _doc.match("#Value");
         const dex = exchange.text();
         let amount = rawAmount.text();
-        if (amount.startsWith('$')) {
+        if (amount.startsWith("$")) {
           amount = +amount.slice(1);
         }
-        const response = await this.internalResolver.sellTokenForEth(fromToken.split(/(\s)/)[0], amount, dex, provider)
+        const response = await this.internalResolver.sellTokenForEth(
+          fromToken.split(/(\s)/)[0],
+          amount,
+          dex,
+          provider
+        );
         return response;
       }
-  
-      const isApproval = this.extractMessage(message, this.intents.approveTokenSpend);
+
+      const isApproval = this.extractMessage(
+        message,
+        this.intents.approveTokenSpend
+      );
       if (isApproval) {
         const _doc = this.nlp(isApproval); // reconstruct the doc
-        let to = _doc.match('(#AtMention|#Noun)').out('text');
-        let token = _doc.match(`(${this.tokenKeys})`).out('text');
-        const rawAmount = _doc.match('#Value');
+        let to = _doc.match("(#AtMention|#Noun)").out("text");
+        let token = _doc.match(`(${this.tokenKeys})`).out("text");
+        const rawAmount = _doc.match("#Value");
         let amount = rawAmount.text();
         if (!to.startsWith("0x")) {
-          to = _doc.match(`(${this.dexKeys})`).out('text')
-          to = this.addresses.get(to)
+          to = _doc.match(`(${this.dexKeys})`).out("text");
+          to = this.addresses.get(to);
         }
-        token = this.addresses.get(token)
-        if (amount.startsWith('$')) {
+        token = this.addresses.get(token);
+        if (amount.startsWith("$")) {
           amount = +amount.slice(1);
         }
-        const response = await this.internalResolver.giveTokenSpendApproval(to, token, provider)
+        const response = await this.internalResolver.giveTokenSpendApproval(
+          to,
+          token,
+          provider
+        );
         return response;
       }
-  
-      const isCheckingcoinPrice = this.extractMessage(message, this.intents.checkCoinPrice);
+
+      const isCheckingcoinPrice = this.extractMessage(
+        message,
+        this.intents.checkCoinPrice
+      );
       if (isCheckingcoinPrice) {
         const _doc = this.nlp(isCheckingcoinPrice); // reconstruct the doc
-        const coin = _doc.match(`(${this.tokenKeys})`).out('text');
-        const exchange = _doc.match('(coinmarketcap|coingecko)');
+        const coin = _doc.match(`(${this.tokenKeys})`).out("text");
+        const exchange = _doc.match("(coinmarketcap|coingecko)");
         const dex = exchange.text();
 
         const response = await this.internalResolver.getCoinPrice({
@@ -144,12 +185,15 @@ export class ChatXBTResolver {
         });
         return response;
       }
-  
-      const isCheckingTrendingCoins = this.extractMessage(message, this.intents.trendingCoins);
+
+      const isCheckingTrendingCoins = this.extractMessage(
+        message,
+        this.intents.trendingCoins
+      );
       if (isCheckingTrendingCoins) {
         const _doc = this.nlp(isCheckingTrendingCoins); // reconstruct the doc
-        const coin = _doc.match(`(${this.tokenKeys})`).out('text');
-        const exchange = _doc.match('(coinmarketcap|coingecko)');
+        const coin = _doc.match(`(${this.tokenKeys})`).out("text");
+        const exchange = _doc.match("(coinmarketcap|coingecko)");
         const dex = exchange.text();
         const response = await this.internalResolver.searchTrendingCoins({
           dex,
@@ -157,80 +201,105 @@ export class ChatXBTResolver {
         return response;
       }
 
-      const isCheckingTotalMarketCap = this.extractMessage(message, this.intents.checkMarketCap);
+      const isCheckingTotalMarketCap = this.extractMessage(
+        message,
+        this.intents.checkMarketCap
+      );
       if (isCheckingTotalMarketCap) {
         const _doc = this.nlp(isCheckingTotalMarketCap);
-        const exchange = _doc.match('(coinmarketcap|coingecko)');
+        const exchange = _doc.match("(coinmarketcap|coingecko)");
         const dex = exchange.text();
         const response = await this.internalResolver.searchTotalMarketCap({
-          dex
+          dex,
         });
         return response;
       }
-      
-      const isBorrowingEth = this.extractMessage(message, this.intents.borrowEth);
+
+      const isBorrowingEth = this.extractMessage(
+        message,
+        this.intents.borrowEth
+      );
       if (isBorrowingEth) {
         const _doc = this.nlp(isBorrowingEth); // reconstruct the doc
-        const toToken = _doc.match(`(${this.tokenKeys})`).out('text');
+        const toToken = _doc.match(`(${this.tokenKeys})`).out("text");
         let exchange = _doc.match(`(${this.dexKeys})`);
-        const rawAmount = _doc.match('#Value');
+        const rawAmount = _doc.match("#Value");
         if (!exchange) {
-          exchange = _doc.match('(#AtMention)').out('text');
+          exchange = _doc.match("(#AtMention)").out("text");
         }
         // const dex = exchange.text();
         const dexText = exchange.text();
         const dex = this.addresses.get(dexText);
         let amount = rawAmount.text();
-        if (amount.startsWith('$')) {
+        if (amount.startsWith("$")) {
           amount = +amount.slice(1);
         }
         try {
-          const response = await this.internalResolver.borrow('9');
+          const response = await this.internalResolver.borrow("9");
           return response;
         } catch (e: any) {
-          console.log(Object.keys(e))
-          return { type: 'error', message: `An Error Occurred, I Got This Feedback "${e.reason}"` }
+          if (e?.response?.status === 500 || e?.response?.status === 403)
+            toolkit.slackNotify({
+              message: JSON.stringify(e?.response?.message),
+            });
+
+          console.log(Object.keys(e));
+          return {
+            type: "error",
+            message: `An Error Occurred, I Got This Feedback "${e.reason}"`,
+          };
         }
       }
-  
+
       const isLendingEth = this.extractMessage(message, this.intents.lendEth);
       if (isLendingEth) {
         const _doc = this.nlp(isLendingEth); // reconstruct the doc
-        const toToken = _doc.match(`(${this.tokenKeys})`).out('text');
+        const toToken = _doc.match(`(${this.tokenKeys})`).out("text");
         let exchange = _doc.match(`(${this.dexKeys})`);
-        const rawAmount = _doc.match('#Value');
+        const rawAmount = _doc.match("#Value");
         if (!exchange) {
-          exchange = _doc.match('(#AtMention)').out('text');
+          exchange = _doc.match("(#AtMention)").out("text");
         }
         // const dex = exchange.text();
         const dexText = exchange.text();
         const dex = this.addresses.get(dexText);
         let amount = rawAmount.text();
-        if (amount.startsWith('$')) {
+        if (amount.startsWith("$")) {
           amount = +amount.slice(1);
         }
         try {
-          const response = await this.internalResolver.lend('9');
+          const response = await this.internalResolver.lend("9");
           return response;
         } catch (e: any) {
-          console.log(Object.keys(e))
-          return { type: 'error', message: `An Error Occurred, I Got This Feedback "${e.reason}"` }
+          if (e?.response?.status === 500 || e?.response?.status === 403)
+            toolkit.slackNotify({
+              message: JSON.stringify(e?.response?.message),
+            });
+          console.log(Object.keys(e));
+          return {
+            type: "error",
+            message: `An Error Occurred, I Got This Feedback "${e.reason}"`,
+          };
         }
       }
-  
-      return { 
-          type: 'default-text', 
-          status: true, 
-          message: 'your instruction is not clear enough' 
+
+      return {
+        type: "default-text",
+        status: true,
+        message: "your instruction is not clear enough",
       };
-    } catch (error) {
-      return { 
-        type: 'default-text', 
-        status: true, 
-        message: 'your instruction is not clear enough' 
-    };
+    } catch (e: any) {
+      if (e?.response?.status === 500 || e?.response?.status === 403)
+        toolkit.slackNotify({
+          message: JSON.stringify(e?.response?.message),
+        });
+      return {
+        type: "default-text",
+        status: true,
+        message: "your instruction is not clear enough",
+      };
     }
-  }
+  };
 
   //   private async handleWalletCreate(password = 'Password-From-User') {
   //     const wallet = ethers.Wallet.createRandom();
@@ -249,6 +318,6 @@ export class ChatXBTResolver {
   // }
 
   isEth(value: string) {
-    return value === 'eth' || value === 'ethereum'
+    return value === "eth" || value === "ethereum";
   }
 }
