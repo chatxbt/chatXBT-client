@@ -8,7 +8,7 @@ import {
   checkCoinPrice,
 } from "../intents";
 import { IntentHandler } from "../intent-handler";
-import { envConfig, lang } from "../../../config";
+import { envConfig, lang, supportedTokens } from "../../../config";
 
 import { toolkit } from "../../../utils";
 
@@ -81,8 +81,21 @@ export class ChatXBTResolver {
           amount = +amount.slice(1);
         }
         try {
+          const tokens: string[] = toToken.split(" ");
+          // const _nonEthToken = tokens.filter((token) => token !== "eth")[0];
+          const nonEthToken = tokens.find((token) => token !== "eth");
+
+          const nonEthTokenContractAddress = nonEthToken
+            ? supportedTokens[nonEthToken as keyof typeof supportedTokens]
+                .contractAddress
+            : nonEthToken;
+
+          // console.log(toToken);
+          // console.log(nonEthToken);
+          // console.log(nonEthTokenContractAddress);
+
           const response = await this.internalResolver.buyTokenWithEth(
-            "usdt" || toToken,
+            nonEthTokenContractAddress || "usdt",
             amount,
             dex,
             provider
