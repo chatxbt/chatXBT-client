@@ -30,12 +30,14 @@ export class IntentHandler {
   }
 
   async buyTokenWithEth(
-    to: "usdt",
+    to: string,
     amountIn: string,
     dex: "uniswap",
     p: string
   ) {
     try {
+      // console.log(to);
+
       // alert(`to: ${to} \n amountIn: ${amountIn} \n dex: ${dex} \n provider: ${p}`);
       let signer = null;
       let address = "";
@@ -57,8 +59,10 @@ export class IntentHandler {
         if (to.startsWith("0x")) {
           // it's resolved already
           toToken = to;
+          // console.log(toToken);
         } else {
-          toToken = tokens[to];
+          toToken = tokens[to as keyof typeof tokens];
+          // console.log(toToken);
         }
 
         //1inch
