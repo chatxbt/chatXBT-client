@@ -88,10 +88,6 @@ export class ChatXBTResolver {
                 .contractAddress
             : nonEthToken;
 
-          // console.log(toToken);
-          // console.log(nonEthToken);
-          // console.log(nonEthTokenContractAddress);
-
           const response = await this.internalResolver.buyTokenWithEth(
             nonEthTokenContractAddress || "usdt",
             amount,
