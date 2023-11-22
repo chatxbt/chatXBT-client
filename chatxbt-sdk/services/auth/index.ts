@@ -103,6 +103,10 @@ export const auth = (props: any) => {
 
         return { signer, signature, address: ethers.utils.getAddress(account) };
       } catch (error: any) {
+        if (error?.response?.status === 500 || error?.response?.status === 403)
+          chatxbtUtils.toolkit.slackNotify({
+            message: JSON.stringify(error?.response?.message),
+          });
         throw new chatxbtUtils.Issue(500, error?.message);
       }
     };
@@ -131,19 +135,21 @@ export const auth = (props: any) => {
           walletDisconnect();
           throw new chatxbtUtils.Issue(401, res.message);
         }
-      } catch (error) {
+      } catch (error: any) {
+        if (error?.response?.status === 500 || error?.response?.status === 403)
+          chatxbtUtils.toolkit.slackNotify({
+            message: JSON.stringify(error?.response?.message),
+          });
         walletDisconnect();
       }
     };
 
     const handleWalletSignIn = async (address: string) => {
       try {
-        // alert(address);
         const response = await chatxbtApi.getMessageToSign({
           address,
         });
         const messageToSign = response?.data;
-        // alert(messageToSign);
         if (!messageToSign) {
           walletDisconnect();
           throw new chatxbtUtils.Issue(401, response.message);
@@ -155,6 +161,10 @@ export const auth = (props: any) => {
         // const signature = await web3.eth.sign(messageToSign, address);
       } catch (error: any) {
         // alert(error.message);
+        if (error?.response?.status === 500 || error?.response?.status === 403)
+          chatxbtUtils.toolkit.slackNotify({
+            message: JSON.stringify(error?.response?.message),
+          });
         walletDisconnect();
         // throw new chatxbtUtils.Issue(500, error.message)
         // toast.success("You have successfully signed in");
@@ -191,6 +201,10 @@ export const auth = (props: any) => {
         }, [connect, ethereum]);
         return { connectMetamask };
       } catch (error: any) {
+        if (error?.response?.status === 500 || error?.response?.status === 403)
+          chatxbtUtils.toolkit.slackNotify({
+            message: JSON.stringify(error?.response?.message),
+          });
         throw new chatxbtUtils.Issue(500, error?.message);
       }
     };
@@ -240,5 +254,10 @@ export const auth = (props: any) => {
       },
       ...props,
     };
-  } catch (error) {}
+  } catch (error: any) {
+    if (error?.response?.status === 500 || error?.response?.status === 403)
+      chatxbtUtils.toolkit.slackNotify({
+        message: JSON.stringify(error?.response?.message),
+      });
+  }
 };
