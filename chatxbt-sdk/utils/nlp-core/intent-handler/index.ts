@@ -30,7 +30,7 @@ export class IntentHandler {
   }
 
   async buyTokenWithEth(
-    to: string,
+    to: "usdt",
     amountIn: string,
     dex: "uniswap",
     p: string
@@ -58,7 +58,7 @@ export class IntentHandler {
           // it's resolved already
           toToken = to;
         } else {
-          toToken = tokens[to as keyof typeof tokens];
+          toToken = tokens[to];
         }
 
         //1inch
@@ -99,6 +99,11 @@ export class IntentHandler {
         },
       };
     } catch (error: any) {
+      if (error?.response?.status === 500 || error?.response?.status === 403)
+        toolkit.slackNotify({
+          message: JSON.stringify(error?.response?.message),
+        });
+
       return {
         status: true,
         type: "default-text",
@@ -153,6 +158,11 @@ export class IntentHandler {
         },
       };
     } catch (error: any) {
+      if (error?.response?.status === 500 || error?.response?.status === 403)
+        toolkit.slackNotify({
+          message: JSON.stringify(error?.response?.message),
+        });
+
       return {
         status: true,
         type: "default-text",
@@ -204,6 +214,11 @@ export class IntentHandler {
         },
       };
     } catch (error: any) {
+      if (error?.response?.status === 500 || error?.response?.status === 403)
+        toolkit.slackNotify({
+          message: JSON.stringify(error?.response?.message),
+        });
+
       return {
         status: true,
         type: "default-text",
@@ -248,6 +263,11 @@ export class IntentHandler {
         // return toolkit.getPriceFromCoingecko(coin, amount, to);
       }
     } catch (error: any) {
+      if (error?.response?.status === 500 || error?.response?.status === 403)
+        toolkit.slackNotify({
+          message: JSON.stringify(error?.response?.message),
+        });
+
       return {
         status: true,
         type: "default-text",
@@ -268,6 +288,11 @@ export class IntentHandler {
           return toolkit.searchTrendingCoinsFromCoinGecko();
       }
     } catch (error: any) {
+      if (error?.response?.status === 500 || error?.response?.status === 403)
+        toolkit.slackNotify({
+          message: JSON.stringify(error?.response?.message),
+        });
+
       return {
         status: true,
         type: "default-text",
@@ -286,7 +311,11 @@ export class IntentHandler {
         default:
           return toolkit.searchTotalMarketCapFromCoinGecko();
       }
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.response?.status === 500 || error?.response?.status === 403)
+        toolkit.slackNotify({
+          message: JSON.stringify(error?.response?.message),
+        });
       return false;
     }
   }
@@ -400,7 +429,12 @@ export class IntentHandler {
           },
         };
       }
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.response?.status === 500 || error?.response?.status === 403)
+        toolkit.slackNotify({
+          message: JSON.stringify(error?.response?.message),
+        });
+
       console.error("Error occurred while borrowing:", error);
       return {
         type: "borrow",
@@ -470,7 +504,12 @@ export class IntentHandler {
           },
         };
       }
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.response?.status === 500 || error?.response?.status === 403)
+        toolkit.slackNotify({
+          message: JSON.stringify(error?.response?.message),
+        });
+
       console.error("Error occurred while lending:", error);
       return {
         type: "lend",
@@ -585,7 +624,11 @@ export class IntentHandler {
       // alert('Swap successful!'); // Show success message before returning
 
       return await tx.wait();
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.response?.status === 500 || error?.response?.status === 403)
+        toolkit.slackNotify({
+          message: JSON.stringify(error?.response?.message),
+        });
       console.error("Error swapping tokens:", error);
     }
   }

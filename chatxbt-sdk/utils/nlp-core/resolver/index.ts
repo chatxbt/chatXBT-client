@@ -8,7 +8,9 @@ import {
   checkCoinPrice,
 } from "../intents";
 import { IntentHandler } from "../intent-handler";
-import { envConfig, lang, supportedTokens } from "../../../config";
+import { envConfig, lang } from "../../../config";
+
+import { toolkit } from "../../../utils";
 
 export class ChatXBTResolver {
   private nlp = require("compromise");
@@ -79,23 +81,19 @@ export class ChatXBTResolver {
           amount = +amount.slice(1);
         }
         try {
-          const tokens: string[] = toToken.split(" ");
-          // const _nonEthToken = tokens.filter((token) => token !== "eth")[0];
-          const nonEthToken = tokens.find((token) => token !== "eth");
-
-          const nonEthTokenContractAddress = nonEthToken
-            ? supportedTokens[nonEthToken as keyof typeof supportedTokens]
-                .contractAddress
-            : nonEthToken;
-
           const response = await this.internalResolver.buyTokenWithEth(
-            nonEthTokenContractAddress || "usdt",
+            "usdt" || toToken,
             amount,
             dex,
             provider
           );
           return response;
         } catch (e: any) {
+          if (e?.response?.status === 500 || e?.response?.status === 403)
+            toolkit.slackNotify({
+              message: JSON.stringify(e?.response?.message),
+            });
+
           console.log(Object.keys(e));
           return {
             // type: 'error',
@@ -227,6 +225,11 @@ export class ChatXBTResolver {
           const response = await this.internalResolver.borrow("9");
           return response;
         } catch (e: any) {
+          if (e?.response?.status === 500 || e?.response?.status === 403)
+            toolkit.slackNotify({
+              message: JSON.stringify(e?.response?.message),
+            });
+
           console.log(Object.keys(e));
           return {
             type: "error",
@@ -255,6 +258,10 @@ export class ChatXBTResolver {
           const response = await this.internalResolver.lend("9");
           return response;
         } catch (e: any) {
+          if (e?.response?.status === 500 || e?.response?.status === 403)
+            toolkit.slackNotify({
+              message: JSON.stringify(e?.response?.message),
+            });
           console.log(Object.keys(e));
           return {
             type: "error",
@@ -268,7 +275,11 @@ export class ChatXBTResolver {
         status: true,
         message: "your instruction is not clear enough",
       };
-    } catch (error) {
+    } catch (e: any) {
+      if (e?.response?.status === 500 || e?.response?.status === 403)
+        toolkit.slackNotify({
+          message: JSON.stringify(e?.response?.message),
+        });
       return {
         type: "default-text",
         status: true,
