@@ -86,7 +86,9 @@ export const slackNotify = async ({
   message: string;
   channel?: string;
 }) => {
-  const slack = SlackNotify(channel || credentials?.slackWebhooks?.defaultLog);
+  const slack = SlackNotify(
+    "https://hooks.slack.com/services/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"
+  );
   await slack.send({
     channel: "#earnathon-support-telegram",
     text: `

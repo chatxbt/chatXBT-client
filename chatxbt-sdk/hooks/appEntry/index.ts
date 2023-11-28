@@ -17,6 +17,7 @@ export const useAppEntry = (props: any) => {
     } = defiService;
 
     useEffect(() => {
+      //   alert(wagmiData.address);
       !connected &&
         _hasHydrated &&
         wagmiData.isConnected &&

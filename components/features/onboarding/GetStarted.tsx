@@ -5,6 +5,10 @@ import { icons } from "./data";
 import { motion } from "framer-motion";
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 
+export const Web3Button = () => {
+  return <w3m-button />
+}
+
 export const RainBow = () => {
   return <ConnectButton/>;
 };
@@ -34,7 +38,8 @@ const GetStarted = ({ handleEmail, handleMeta }: any) => {
       <h4>OR</h4> */}
 
       <div className={style.wallets}>
-        <RainBow/>
+        {/* <RainBow/> */}
+        <Web3Button/>
         {/* <button onClick={handleMeta}>
           <img src="/images/get-started/meta.png" alt="" />
           <p>Metamask</p>

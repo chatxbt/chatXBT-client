@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactDevOverlay: false,
   reactStrictMode: true,
   swcMinify: true,
   images: {
@@ -10,6 +11,10 @@ const nextConfig = {
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
+  webpack: config => {
+    config.externals.push('pino-pretty', 'lokijs', 'encoding')
+    return config
+  }
 }
 
 module.exports = nextConfig

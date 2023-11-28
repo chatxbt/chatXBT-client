@@ -135,7 +135,7 @@ export const auth = (props: any) => {
           walletDisconnect();
           throw new chatxbtUtils.Issue(401, res.message);
         }
-      } catch (error) {
+      } catch (error: any) {
         if (error?.response?.status === 500 || error?.response?.status === 403)
           chatxbtUtils.toolkit.slackNotify({
             message: JSON.stringify(error?.response?.message),
