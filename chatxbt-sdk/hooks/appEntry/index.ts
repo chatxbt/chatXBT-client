@@ -1,4 +1,4 @@
-import { handleRefs } from "@chatxbt-sdk/utils";
+import { handleRefs } from "../../utils";
 import { useEffect } from "react";
 import { chatxbtServices } from "../../../chatxbt-sdk";
 
