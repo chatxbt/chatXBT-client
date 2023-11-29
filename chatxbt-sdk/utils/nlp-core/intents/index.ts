@@ -7,3 +7,4 @@ export * from './trendingCoins';
 export * from './borrowCETH';
 export * from './lendCETH';
 export * from './checkMarketCap';
+export * from './crossChainSwap';
