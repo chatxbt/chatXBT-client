@@ -3,17 +3,21 @@ import Image from "next/image";
 import style from "@styles/get-started/index.module.scss";
 import { icons } from "./data";
 import { motion } from "framer-motion";
-import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useGoogleLogin, GoogleLogin } from "@react-oauth/google";
 
 export const Web3Button = () => {
-  return <w3m-button />
-}
-
-export const RainBow = () => {
-  return <ConnectButton/>;
+  return <w3m-button />;
 };
 
-const GetStarted = ({ handleEmail, handleMeta }: any) => {
+export const RainBow = () => {
+  return <ConnectButton />;
+};
+
+const GetStarted = (props: any) => {
+  const {
+    store: { googleLogin },
+  } = props;
   return (
     <motion.div
       className={style.init}
@@ -25,21 +29,29 @@ const GetStarted = ({ handleEmail, handleMeta }: any) => {
       <h1>Get started</h1>
       <h3>Welcome to ChatXBT - Where AI meets Defi</h3>
 
-      {/* <div className={style.socials}>
+      <div className={style.socials}>
         <p>Sign Up with socials:</p>
         <div>
           {icons.map((data: any, index: any) => (
-            <img src={data} alt="" key={index} />
+            <img src={data} alt="" key={index} onClick={() => googleLogin()} />
           ))}
         </div>
-        <button onClick={handleEmail}>Sign up with email</button>
+        {/* <button onClick={handleEmail}>Sign up with email</button> */}
+        {/* <GoogleLogin
+          onSuccess={(credentialResponse: any) => {
+            console.log(credentialResponse);
+          }}
+          onError={() => {
+            console.log("Login Failed");
+          }}
+        /> */}
       </div>
 
-      <h4>OR</h4> */}
+      <h4>OR</h4>
 
       <div className={style.wallets}>
         {/* <RainBow/> */}
-        <Web3Button/>
+        <Web3Button />
         {/* <button onClick={handleMeta}>
           <img src="/images/get-started/meta.png" alt="" />
           <p>Metamask</p>

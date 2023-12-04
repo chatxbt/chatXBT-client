@@ -6,6 +6,8 @@ import { ethers } from "ethers";
 import { useAccount, useSignMessage, useNetwork, useDisconnect } from "wagmi";
 import { recoverMessageAddress } from "viem";
 import { chatxbtDataProvider, chatxbtStore, chatxbtUtils } from "../..";
+import { useGoogleLogin } from "@react-oauth/google";
+import axios from "axios";
 
 export const auth = (props: any) => {
   try {
@@ -209,6 +211,51 @@ export const auth = (props: any) => {
       }
     };
 
+    const googleLogin = useGoogleLogin({
+      onSuccess: async (tokenResponse: any) => {
+        console.log(tokenResponse, '[Google authentication successful]');
+        const userInfo = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${tokenResponse.access_token}`, {
+          headers: {
+            Authorization: `Bearer ${tokenResponse.access_token}`,
+            Accept: 'application/json'
+          },
+        }).then(res => res);
+
+        console.log(userInfo);
+      //   // handleGoogleAuth(tokenResponse.access_token);
+      },
+      onError: () => {
+        console.log("[Google authentication failed]");
+      },
+    });
+
+    //google auth
+    const handleGoogleAuth = async (token: any) => {
+      try {
+        const response = await chatxbtApi.authWithGoogle(token);
+        console.log(response);
+
+        // const jwt = response?.data.token;
+        // const user = response?.data;
+
+        // if (jwt) {
+        //   connect(
+        //     user,
+        //     jwt,
+        //   );
+        // }
+
+
+        // if (!jwt) {
+        //   walletDisconnect();
+        //   throw new chatxbtUtils.Issue(401, response.message);
+        // }
+
+      } catch (error: any) {
+        console.log(error);
+      }
+    }
+
     /**
      * join waitlist
      */
@@ -234,6 +281,7 @@ export const auth = (props: any) => {
         wagmiData,
         provider,
         visibleAddress,
+        googleLogin,
 
         variables,
         signMessageData,
@@ -251,6 +299,7 @@ export const auth = (props: any) => {
         getSigner,
         signAndConnectUser,
         signOut,
+        handleGoogleAuth
       },
       ...props,
     };

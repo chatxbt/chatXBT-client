@@ -4,12 +4,12 @@ import style from "@styles/get-started/index.module.scss";
 import GetStartedLayout from "@components/app-layout/layout/GetStartedLayout";
 import Main from "./Main";
 
-const OnboardingComponent = () => {
+const OnboardingComponent = (props: any) => {
   return (
     <>
       <GetStartedLayout>
         <div className={classInit.addConClass(style.getStartedCon)}>
-          <Main />
+          <Main {...props} />
         </div>
       </GetStartedLayout>
     </>
