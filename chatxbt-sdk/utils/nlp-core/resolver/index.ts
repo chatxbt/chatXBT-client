@@ -21,7 +21,7 @@ export class ChatXBTResolver {
   private dexKeys = "";
   private tokenKeys = "";
 
-  constructor({ intents, dexKeys, tokenKeys, addresses }: any) {
+  constructor({ intents, dexKeys, tokenKeys, addresses, address, signer }: any) {
     // this.addresses.set('uniswap', "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D");
     // this.addresses.set('@uniswap', "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D");
     // // this.addresses.set('uniswap', "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D");
@@ -32,6 +32,7 @@ export class ChatXBTResolver {
     this.dexKeys = dexKeys;
     this.tokenKeys = tokenKeys;
     this.addresses = new Map(addresses);
+    this.internalResolver = new IntentHandler({signer, address});
 
     // console.log('intents', intents);
   }
@@ -50,7 +51,6 @@ export class ChatXBTResolver {
   };
 
   resolveMsg = async (message: string, provider: any) => {
-    // alert(message);
     try {
       const isCreatingWallet = this.extractMessage(
         message,
@@ -59,6 +59,51 @@ export class ChatXBTResolver {
       if (isCreatingWallet) {
         const response = await this.internalResolver.handleWalletCreate();
         return response;
+      }
+
+      const isBridging = this.extractMessage(
+        message,
+        this.intents.crossChainSwap
+      );
+      if (isBridging) {
+        const _doc = this.nlp(isBridging); // reconstruct the doc
+        const toToken = _doc.match(`(${this.tokenKeys})`).out("text");
+        let exchange = _doc.match(`(${this.dexKeys})`);
+        const rawAmount = _doc.match("#Value");
+        if (!exchange) {
+          exchange = _doc.match("(#AtMention)").out("text");
+        }
+        // const dex = exchange.text();
+        const dexText = exchange.text();
+        const dex = this.addresses.get(dexText);
+        let amount = rawAmount.text();
+        if (amount.startsWith("$")) {
+          amount = +amount.slice(1);
+        }
+        try {
+          const response = await this.internalResolver.sendToL2Chain(
+            "eth",
+            amount,
+            'hop',
+            'polygon',
+            provider
+          );
+          return response;
+        } catch (e: any) {
+          if (e?.response?.status === 500 || e?.response?.status === 403)
+            toolkit.slackNotify({
+              message: JSON.stringify(e?.response?.message),
+            });
+
+          console.log(Object.keys(e));
+          return {
+            // type: 'error',
+            // message: `An Error Occurred, I Got This Feedback "${e.reason}"` }
+            type: "default-text",
+            status: true,
+            message: `your instruction is not clear enough: ${e.message}`,
+          };
+        }
       }
 
       const isBuyingWithEth = this.extractMessage(
