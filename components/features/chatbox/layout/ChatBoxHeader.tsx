@@ -8,6 +8,7 @@ import Logo from "@components/shared/logo/Logo";
 import MobileSideBar from "./MobileSideBar";
 import { useConnectionStore } from "@chatxbt-sdk/store/zustand/connection";
 import { chatxbtServices } from "../../../../chatxbt-sdk"
+import { Web3Button } from "../../onboarding/GetStarted"
 
 const ChatBoxHeader = ({
   action: {
@@ -63,6 +64,7 @@ const ChatBoxHeader = ({
                 {visibleAddress}
               </button>
             )}
+            <Web3Button />
           </div>
         </div>
       </div>
