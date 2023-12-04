@@ -108,23 +108,22 @@ export const chat = (props: any) => {
     signMessageAsync,
   } = useSignMessage();
 
-  const publicClient = usePublicClient();
-  console.log('publicClient', publicClient);
+  // const publicClient = usePublicClient();
 
-  const { data: walletClient } = useWalletClient()
-
-  console.log('walletClient', walletClient);
+  const { data: walletClient } = useWalletClient({chainId: 5})
 
   const ref = useRef<null | HTMLDivElement>(null);
   const chatInputRef = useRef<null | HTMLInputElement>(null);
 
   const walletClientToSigner = (walletClient: WalletClient) => {
     const { account, chain, transport } = walletClient
+    console.log('chain', chain);
     const network = {
       chainId: chain.id,
       name: chain.name,
       ensAddress: chain.contracts?.ensRegistry?.address,
     }
+    console.log('network', network)
     const provider = new providers.Web3Provider(transport, network)
     const signer = provider.getSigner(account.address)
     return signer
@@ -267,6 +266,7 @@ export const chat = (props: any) => {
 
   const resolvePrompt = async (): Promise<any> => {
     try {
+      console.log('walletClient', walletClient)
       const signer = walletClientToSigner(walletClient as any)
 
       const resolver = new chatxbtUtils.ChatXBTResolver({

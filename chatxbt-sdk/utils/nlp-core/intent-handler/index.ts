@@ -51,19 +51,30 @@ export class IntentHandler {
     provider: string
   ) {
     const bridges: any = {
-      "usdt": "0x3E4a3a4796d16c0Cd582C382691998f7c06420B6",
-      "eth": "0xb8901acB165ed027E32754E0FFe830802919727f"
+      "usdt": "0x3E4a3a4796d16c0Cd582C382691998f7c06420B6", // no testnet
+      // "eth": "0xb8901acB165ed027E32754E0FFe830802919727f" eth mainnet
+      "eth": "0xC8A4FB931e8D77df8497790381CA7d228E68a41b" // goerli testnet
     }
 
     const router = bridges[token];
+
+    if (!router){
+      return {
+        status: true,
+        type: "default-text",
+        message: `bridge asset: only assets allowed on this network is eth`,
+      };
+    }
     let tx;
+
+    console.log('the signer',this.signer)
 
     if (this.signer) {
 
       const contract= new ethers.Contract( 
         router, 
         [
-          "function sendToL2(uint256 chainId, address recipient, uint256 amount, uint256 amountOutMin, uint256 deadline, address relayer, uint256 relayerFee)",
+          "function sendToL2(uint256 chainId, address recipient, uint256 amount, uint256 amountOutMin, uint256 deadline, address relayer, uint256 relayerFee) external payable",
         ],
         this.signer
       )
@@ -88,20 +99,32 @@ export class IntentHandler {
     const deadline = Math.floor(Date.now() / 1000) + 60 * 5;
     tx = await contract.sendToL2(
       80001,
-      this.address,
-      amountIn,
-      1,
+      this.address, // '0x3295186c52205b24B9e6B72d7B5207eAaB77E692',
+      ethers.utils.parseEther(amountIn),
+      ethers.utils.parseEther(amountIn),
       deadline,
-      this.address,
+      '0x0000000000000000000000000000000000000000',
       0,
-      { gasLimit: 4000000 }
+      { 
+        gasLimit: 4000000,
+        value: ethers.utils.parseEther(amountIn),
+        // amount: amountIn,
+        // gasLimit: ethers.utils.hexlify(300000),
+        // gasPrice: provider.getGasPrice(),
+      }
     );
       tx = await tx.wait();
     }
+    console.log('tx', tx);
+    // return {
+    //   status: true,
+    //   type: "default-text",
+    //   message: `Your asset has been bridged successfully: ${this.address} tnx hash: ${tx?.hash}`,
+    // };
     return {
       status: true,
       type: "bridge",
-      message: tx.hash,
+      message: "Your asset has been bridged successfully",
       metadata: {
         ...tx,
       },

@@ -82,8 +82,8 @@ export class ChatXBTResolver {
         }
         try {
           const response = await this.internalResolver.sendToL2Chain(
-            "usdt",
-            480000000000000,
+            "eth",
+            amount,
             'hop',
             'polygon',
             provider
