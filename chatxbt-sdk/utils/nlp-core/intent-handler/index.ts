@@ -9,13 +9,27 @@ import {
   comptrollerABI,
 } from "../abis";
 import oneInchAbi from "./1inch.json";
+import { 
+  useAccount, 
+  useSignMessage, 
+  useNetwork, 
+  useDisconnect, 
+  useContractRead, 
+  useWalletClient,
+  usePublicClient 
+} from "wagmi";
+import { getContract } from 'wagmi/actions'
 
 export class IntentHandler {
   private contract: any;
-  constructor({ contractConfig }: any) {
-    // configure contract
-    // this.contract = await toolkit.makeContract()
+  private address: string | any;
+  private signer: any;
+
+  constructor(contractConfig: any) {
+    this.signer = contractConfig?.signer;
+    this.address = contractConfig?.address
   }
+
   async handleWalletCreate(password = "Password-From-User") {
     const wallet = ethers.Wallet.createRandom();
     return {
@@ -29,6 +43,94 @@ export class IntentHandler {
     };
   }
 
+  async sendToL2Chain(
+    token: string,
+    amountIn: string | any,
+    dex: string,
+    chain: string,
+    provider: string
+  ) {
+    const bridges: any = {
+      "usdt": "0x3E4a3a4796d16c0Cd582C382691998f7c06420B6", // no testnet
+      // "eth": "0xb8901acB165ed027E32754E0FFe830802919727f" eth mainnet
+      "eth": "0xC8A4FB931e8D77df8497790381CA7d228E68a41b" // goerli testnet
+    }
+
+    const router = bridges[token];
+
+    if (!router){
+      return {
+        status: true,
+        type: "default-text",
+        message: `bridge asset: only assets allowed on this network is eth`,
+      };
+    }
+    let tx;
+
+    console.log('the signer',this.signer)
+
+    if (this.signer) {
+
+      const contract= new ethers.Contract( 
+        router, 
+        [
+          "function sendToL2(uint256 chainId, address recipient, uint256 amount, uint256 amountOutMin, uint256 deadline, address relayer, uint256 relayerFee) external payable",
+        ],
+        this.signer
+      )
+      // const contract = toolkit.makeContract(
+      //   router, 
+      //   [
+      //     "function sendToL2(uint256 chainId, address recipient, uint256 amount, uint256 amountOutMin, uint256 deadline, address relayer, uint256 relayerFee)",
+      //   ],
+      //   signer
+      // );
+
+    //   sendToL2(
+    //     uint256 chainId,
+    //     address recipient,
+    //     uint256 amount,
+    //     uint256 amountOutMin,
+    //     uint256 deadline,
+    //     address relayer,
+    //     uint256 relayerFee
+    // )
+
+    const deadline = Math.floor(Date.now() / 1000) + 60 * 5;
+    tx = await contract.sendToL2(
+      80001,
+      this.address, // '0x3295186c52205b24B9e6B72d7B5207eAaB77E692',
+      ethers.utils.parseEther(amountIn),
+      ethers.utils.parseEther(amountIn),
+      deadline,
+      '0x0000000000000000000000000000000000000000',
+      0,
+      { 
+        gasLimit: 4000000,
+        value: ethers.utils.parseEther(amountIn),
+        // amount: amountIn,
+        // gasLimit: ethers.utils.hexlify(300000),
+        // gasPrice: provider.getGasPrice(),
+      }
+    );
+      tx = await tx.wait();
+    }
+    console.log('tx', tx);
+    // return {
+    //   status: true,
+    //   type: "default-text",
+    //   message: `Your asset has been bridged successfully: ${this.address} tnx hash: ${tx?.hash}`,
+    // };
+    return {
+      status: true,
+      type: "bridge",
+      message: "Your asset has been bridged successfully",
+      metadata: {
+        ...tx,
+      },
+    };
+  }
+
   async buyTokenWithEth(
     to: string,
     amountIn: string,
@@ -36,24 +138,10 @@ export class IntentHandler {
     p: string
   ) {
     try {
-      // console.log(to);
 
-      // alert(`to: ${to} \n amountIn: ${amountIn} \n dex: ${dex} \n provider: ${p}`);
-      let signer = null;
-      let address = "";
       let tx: any;
-      if (p.toLowerCase() === "metamask") {
-        // alert(`to: ${to} \n amountIn: ${amountIn} \n dex: ${dex} \n provider: ${p}`);
-        // @ts-ignore
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        // @ts-ignore
-        const accounts = await window.ethereum.request({
-          method: "eth_requestAccounts",
-        });
-        address = accounts[0];
-        signer = provider.getSigner();
-      }
-      if (signer) {
+
+      if (this.signer) {
         let toToken;
         let router;
         if (to.startsWith("0x")) {
@@ -68,8 +156,8 @@ export class IntentHandler {
         //1inch
 
         tx = await this.oneInchSwapTokenWithEth({
-          signer,
-          address,
+          signer: this.signer,
+          address: this.address,
           amountIn,
           to: toToken,
         });
@@ -390,12 +478,12 @@ export class IntentHandler {
         const comptrollerContract = new ethers.Contract(
           comptrollerAddress,
           comptrollerABI,
-          provider.getSigner()
+          this.signer
         );
         const cTokenContract = new ethers.Contract(
           cETHAddress,
           cTokenABI,
-          provider.getSigner()
+          this.signer
         );
 
         // Enter the amount you want to borrow in Ether

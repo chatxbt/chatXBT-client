@@ -1,28 +1,22 @@
-import { chatxbtServices } from "@chatxbt-sdk/index";
-import { handleRefs } from "@chatxbt-sdk/utils";
+import { chatxbtServices } from "../../index";
+import { handleRefs } from "../../utils";
 import { useEffect } from "react";
 
 export const useChat = (props: any) => {
-    const chatServices = chatxbtServices.chat(props);
+  const chatServices = chatxbtServices.chat(props);
 
-    const {
-        store: {
-            status,
-            ref,
-            messages
-        },
-        action: {
-            setPreview,
-        }
-    } = chatServices;
+  const {
+    store: { status, ref, messages },
+    action: { setPreview },
+  } = chatServices;
 
-    useEffect(() => {
-        messages.length > 0 && setPreview(false);
-    }, [messages]);
+  useEffect(() => {
+    messages.length > 0 && setPreview(false);
+  }, [messages]);
 
-    useEffect(() => {
-        handleRefs.default().scrollToLastChat(ref);
-    }, [status]);
+  useEffect(() => {
+    handleRefs.default().scrollToLastChat(ref);
+  }, [status]);
 
-    return chatServices;
-}
+  return chatServices;
+};

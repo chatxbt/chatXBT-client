@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import {
   chatxbtStore,
   chatxbtUtils,
@@ -6,6 +6,19 @@ import {
   chatxbtConfig,
 } from "../..";
 import { actionTypes } from "@chatxbt-sdk/config/constants";
+
+import { 
+  useAccount, 
+  useSignMessage, 
+  useNetwork, 
+  useDisconnect, 
+  useContractRead, 
+  useWalletClient,
+  usePublicClient,
+  type WalletClient,
+} from "wagmi";
+import { getContract } from 'wagmi/actions'
+import { providers } from 'ethers'
 
 export const chat = (props: any) => {
   // data provider modules
@@ -83,8 +96,47 @@ export const chat = (props: any) => {
     _hasHydrated: state._hasHydrated,
   }));
 
+
+  const wagmiData = useAccount();
+  const { chain } = useNetwork();
+  const {
+    data: signMessageData,
+    error: wgmE,
+    isLoading,
+    signMessage: wgsm,
+    variables,
+    signMessageAsync,
+  } = useSignMessage();
+
+  // const publicClient = usePublicClient();
+
+  const { data: walletClient } = useWalletClient({chainId: 5})
+
   const ref = useRef<null | HTMLDivElement>(null);
   const chatInputRef = useRef<null | HTMLInputElement>(null);
+
+  const walletClientToSigner = (walletClient: WalletClient) => {
+    const { account, chain, transport } = walletClient
+    console.log('chain', chain);
+    const network = {
+      chainId: chain.id,
+      name: chain.name,
+      ensAddress: chain.contracts?.ensRegistry?.address,
+    }
+    console.log('network', network)
+    const provider = new providers.Web3Provider(transport, network)
+    const signer = provider.getSigner(account.address)
+    return signer
+  }
+   
+  /** Hook to convert a viem Wallet Client to an ethers.js Signer. */
+  const useEthersSigner = ({ chainId }: { chainId?: number } = {}) => {
+    // const { data: walletClient } = useWalletClient({ chainId })
+    return React.useMemo(
+      () => (walletClient ? walletClientToSigner(walletClient) : undefined),
+      [walletClient],
+    )
+  }
 
   const sendResponse = (message: string) => {
     generateResponse(message);
@@ -212,13 +264,18 @@ export const chat = (props: any) => {
     }
   };
 
-  const resolvePrompt = async () => {
+  const resolvePrompt = async (): Promise<any> => {
     try {
+      console.log('walletClient', walletClient)
+      const signer = walletClientToSigner(walletClient as any)
+
       const resolver = new chatxbtUtils.ChatXBTResolver({
         intents,
         dexKeys,
         tokenKeys,
         addresses,
+        address: wagmiData.address,
+        signer,
       });
       const xbtResolve = async (message: string) => {
         // cv prompting
@@ -234,18 +291,18 @@ export const chat = (props: any) => {
         // nlp prompting
         const { message: msg } = await nlpAiBot(message);
         // alert(msg);
+        // const resolvedMessage: any = await resolver.resolveMsg(message, provider);
+
         const resolvedMessage: any = await resolver.resolveMsg(msg, provider);
-        const internalHandler = new chatxbtUtils.IntentHandler({});
-        console.log(resolvedMessage);
         if (resolvedMessage?.status) {
           return resolvedMessage;
         }
         //   return await queryAiChatBot(message);
-        // return {
-        //     status: true,
-        //     type: 'default-text',
-        //     message: 'please try again'
-        // }
+        return {
+            status: true,
+            type: 'default-text',
+            message: 'please try again'
+        }
       };
       return { xbtResolve };
     } catch (error: any) {
@@ -254,7 +311,9 @@ export const chat = (props: any) => {
           message: JSON.stringify(error?.response?.message),
         });
 
-      throw new chatxbtUtils.Issue(500, error?.message);
+        console.log(error?.message);
+
+      // throw new chatxbtUtils.Issue(500, error?.message);
     }
   };
 
