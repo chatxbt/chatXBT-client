@@ -13,6 +13,8 @@ const Main = (props: any) => {
     action: { scrollDown, rePrompt },
   } = useChat(props);
 
+  console.log(messages);
+
   return (
     <div className={style.chatCon} ref={ref}>
       {status === actionTypes.DONE && scroll && (
