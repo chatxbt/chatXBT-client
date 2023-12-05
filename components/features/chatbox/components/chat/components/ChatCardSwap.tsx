@@ -4,10 +4,14 @@ import ChatCardButtons from "./utils/ChatCardButtons";
 import { BiRefresh } from "react-icons/bi";
 import Image from "next/image";
 import Link from "next/link";
+import useCopyToClipboard from "@chatxbt-sdk/utils/copy-clipboard";
+import * as IoIcons from "react-icons/io";
+import * as IoIcons2 from "react-icons/io5";
 
 const ChatCardSwap = (props: any) => {
-  console.log(props);
   const { metadata, dp, message } = props;
+  const { isCopied, handleCopy, copiedData } = useCopyToClipboard();
+
   return (
     <motion.div
       className={style.chatCardWrapper}
@@ -31,19 +35,39 @@ const ChatCardSwap = (props: any) => {
             </h4>
           </div>
           <div>
-            <h4>0.1 ETH</h4>
+            <h4>{`${metadata.amount} ${metadata.token.toUpperCase()}`}</h4>
           </div>
         </div>
         <div className={`${style.chatCardSwapRow} ${style.chatCardRow}`}>
           <div>
             <h2>From</h2>
-            <h5>{metadata.from}</h5>
+            <h5>
+              {metadata.from}{" "}
+              {isCopied && copiedData === metadata.from ? (
+                <IoIcons2.IoCopy className={style.iconCopy} />
+              ) : (
+                <IoIcons2.IoCopyOutline
+                  className={style.iconCopy}
+                  onClick={() => handleCopy(metadata.from)}
+                />
+              )}
+            </h5>
           </div>
         </div>
         <div className={`${style.chatCardSwapRow} ${style.chatCardRow}`}>
           <div>
             <h2>To</h2>
-            <h5>{metadata.to}</h5>
+            <h5>
+              {metadata.to}{" "}
+              {isCopied && copiedData === metadata.to ? (
+                <IoIcons2.IoCopy className={style.iconCopy} />
+              ) : (
+                <IoIcons2.IoCopyOutline
+                  className={style.iconCopy}
+                  onClick={() => handleCopy(metadata.to)}
+                />
+              )}
+            </h5>
           </div>
         </div>
         <div className={style.chatCardBtns}>

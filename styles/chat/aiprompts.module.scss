@@ -147,6 +147,18 @@
     font-weight: 400;
   }
 
+  .iconCopy {
+    font-size: 1.3rem;
+    // color: $primary-color;
+    cursor: pointer;
+    margin-left: 20px;
+    // margin-bottom: 4px;
+
+    @include responsivePro(mobile) {
+        font-size: 2.5rem;
+    }
+}
+
   @include responsivePro(tab) {
     flex-direction: column;
 
@@ -157,10 +169,14 @@
 }
 
 #success{
-  background: rgba(3, 114, 3, 0.2);
+  background: rgba(3, 114, 3, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 
   h2{
-    color: green;
+    color: rgb(12, 155, 12);
     font-weight: 100;
   }
 }
