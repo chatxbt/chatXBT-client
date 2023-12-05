@@ -127,6 +127,9 @@ export class IntentHandler {
       message: "Your asset has been bridged successfully",
       metadata: {
         ...tx,
+        token,
+        dex,
+        chain,
         amount: amountIn,
       },
     };
