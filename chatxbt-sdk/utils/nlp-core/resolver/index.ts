@@ -95,7 +95,10 @@ export class ChatXBTResolver {
               message: JSON.stringify(e?.response?.message),
             });
 
-          console.log(Object.keys(e));
+          // console.log(Object.keys(e));
+          const errorMessage = JSON.parse(e);
+          console.log(errorMessage);
+
           return {
             // type: 'error',
             // message: `An Error Occurred, I Got This Feedback "${e.reason}"` }

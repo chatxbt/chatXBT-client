@@ -3,8 +3,15 @@ import { motion } from "framer-motion";
 import ChatCardButtons from "./utils/ChatCardButtons";
 import { BiRefresh } from "react-icons/bi";
 import Image from "next/image";
+import Link from "next/link";
+import useCopyToClipboard from "@chatxbt-sdk/utils/copy-clipboard";
+import * as IoIcons from "react-icons/io";
+import * as IoIcons2 from "react-icons/io5";
 
 const ChatCardSwap = (props: any) => {
+  const { metadata, dp, message } = props;
+  const { isCopied, handleCopy, copiedData } = useCopyToClipboard();
+
   return (
     <motion.div
       className={style.chatCardWrapper}
@@ -12,41 +19,67 @@ const ChatCardSwap = (props: any) => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
     >
-      <div className={`${style.chatCardSwapRow} ${style.chatCardRow}`}>
-        <div>
-          <h2>Pay</h2>
-          <h4>
-            <img src={"/images/chat/eth.png"} alt="right arrow" />
-            <span>ETH</span>
-          </h4>
-          <h5>Balance: 20</h5>
-        </div>
-        <div>
-          <h4>0.1 ETH</h4>
-        </div>
-      </div>
-      <div
-        className={`${style.chatCardSwapRow} ${style.chatCardRow}`}
-        style={{ marginBottom: "8px" }}
-      >
-        <div>
-          <h2>Receive</h2>
-          <h4>
-            <img src={"/images/chat/eth.png"} alt="right arrow" />
-            <span>PEPE</span>
-          </h4>
-          <h5>Balance: 0</h5>
-        </div>
-        <div>
-          <h4>9,905,161.87 PEPE</h4>
-          <h5>0x1e2a...1cd3</h5>
-        </div>
-        <span>
-          <BiRefresh />
-        </span>
-      </div>
+      <img src={dp} alt={"Bot Icon"} />
 
-      <ChatCardButtons handleConfirm={() => {}} handleCancel={() => {}} />
+      <div className={style.chatCardWrapperMain}>
+        <div
+          className={`${style.chatCardSwapRow} ${style.chatCardRow}`}
+          id={style.success}
+        >
+          <h2>{message}</h2>
+        </div>
+        <div className={`${style.chatCardSwapRow} ${style.chatCardRow}`}>
+          <div>
+            <h4>
+              <span>Amount</span>
+            </h4>
+          </div>
+          <div>
+            <h4>{`${metadata.amount} ${metadata.token.toUpperCase()}`}</h4>
+          </div>
+        </div>
+        <div className={`${style.chatCardSwapRow} ${style.chatCardRow}`}>
+          <div>
+            <h2>From</h2>
+            <h5>
+              {metadata.from}{" "}
+              {isCopied && copiedData === metadata.from ? (
+                <IoIcons2.IoCopy className={style.iconCopy} />
+              ) : (
+                <IoIcons2.IoCopyOutline
+                  className={style.iconCopy}
+                  onClick={() => handleCopy(metadata.from)}
+                />
+              )}
+            </h5>
+          </div>
+        </div>
+        <div className={`${style.chatCardSwapRow} ${style.chatCardRow}`}>
+          <div>
+            <h2>To</h2>
+            <h5>
+              {metadata.to}{" "}
+              {isCopied && copiedData === metadata.to ? (
+                <IoIcons2.IoCopy className={style.iconCopy} />
+              ) : (
+                <IoIcons2.IoCopyOutline
+                  className={style.iconCopy}
+                  onClick={() => handleCopy(metadata.to)}
+                />
+              )}
+            </h5>
+          </div>
+        </div>
+        <div className={style.chatCardBtns}>
+          <Link
+            href={`https://goerli.etherscan.io/tx/${metadata.transactionHash}`}
+          >
+            <a target="_blank">
+              <button type="button">View on block explorer</button>
+            </a>
+          </Link>
+        </div>
+      </div>
     </motion.div>
   );
 };

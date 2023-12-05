@@ -9,6 +9,7 @@ import {
   formatCurrency,
   formatNumberWithMagnitude,
 } from "@chatxbt-sdk/utils/toolkit";
+import ChatCardSwap from "./components/ChatCardSwap";
 
 export const UserChatCard = (props: any) => {
   const { dp, from, id, message, type, metadata } = props;
@@ -82,20 +83,8 @@ export const UserChatCard = (props: any) => {
             </motion.div>
           )}
 
-          {type === actionTypes.SWAP && (
-            <motion.div
-              className={style.chatCardBot}
-              id={`${id}`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
-            >
-              <img src={dp} alt="" />
-
-              <div className={style.message}>
-                <p>{message}</p>
-              </div>
-            </motion.div>
+          {type === actionTypes.BRIDGE && (
+            <ChatCardSwap dp={dp} metadata={metadata} message={message} />
           )}
 
           {type === actionTypes.APPROVAL && (

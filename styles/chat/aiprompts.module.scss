@@ -2,31 +2,68 @@
 
 // COMMON WRAPPER STYLE
 .chatCardWrapper {
-  font-family: $primaryFontLight;
-
-  background: linear-gradient(180deg,
-      rgba(94, 148, 255, 0.16) 0%,
-      rgba(84, 142, 254, 0.1) 100%);
-  width: 504px;
-  height: fit-content;
-  display: inline-flex;
-  flex-direction: column;
-  padding: 18px 22px;
-  gap: 8px;
-  align-items: center;
-  justify-content: flex-start;
-  border-radius: 5px;
+  margin-top: 10px;
+  width: 90%;
+  display: flex;
+  justify-content: left;
+  align-items: flex-start;
 
   @include responsivePro(mobile) {
     width: 100%;
+    flex-direction: column;
+  }
+
+  @include responsivePro(exception) {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 10px;
+
+    @include responsivePro(mobile) {
+      margin-bottom: 10px;
+    }
+
+    @include responsivePro(exception) {
+      margin-bottom: 10px;
+    }
+  }
+
+  .chatCardWrapperMain {
+    font-family: $primaryFontLight;
+
+    background: linear-gradient(
+      180deg,
+      rgba(94, 148, 255, 0.16) 0%,
+      rgba(84, 142, 254, 0.1) 100%
+    );
+    width: 600px;
+    height: fit-content;
+    display: inline-flex;
+    flex-direction: column;
+    padding: 18px 22px;
+    gap: 8px;
+    align-items: center;
+    justify-content: flex-start;
+    border-radius: 5px;
+
+    @include responsivePro(mobile) {
+      width: 100%;
+    }
   }
 }
 
 // REUSABLE ROW COMPONENT STYLE
 .chatCardRow {
-  background: linear-gradient(180deg,
-      rgba(205, 207, 255, 0.08) 0%,
-      rgba(205, 207, 255, 0.05) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(205, 207, 255, 0.08) 0%,
+    rgba(205, 207, 255, 0.05) 100%
+  );
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -43,7 +80,7 @@
     gap: 4px;
   }
 
-  >div:last-of-type {
+  > div:last-of-type {
     text-align: right;
     justify-content: center;
     gap: 4px;
@@ -65,10 +102,12 @@
         width: 40px;
         border-radius: 50%;
 
-        background: linear-gradient(152deg,
-            #fc7916 0%,
-            #880ef7 73.44%,
-            #1c4df0 100%);
+        background: linear-gradient(
+          152deg,
+          #fc7916 0%,
+          #880ef7 73.44%,
+          #1c4df0 100%
+        );
 
         @include responsivePro(small) {
           display: none;
@@ -108,12 +147,37 @@
     font-weight: 400;
   }
 
+  .iconCopy {
+    font-size: 1.3rem;
+    // color: $primary-color;
+    cursor: pointer;
+    margin-left: 20px;
+    // margin-bottom: 4px;
+
+    @include responsivePro(mobile) {
+        font-size: 2.5rem;
+    }
+}
+
   @include responsivePro(tab) {
     flex-direction: column;
 
-    >div:last-of-type {
+    > div:last-of-type {
       text-align: left;
     }
+  }
+}
+
+#success{
+  background: rgba(3, 114, 3, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  h2{
+    color: rgb(12, 155, 12);
+    font-weight: 100;
   }
 }
 
@@ -124,6 +188,11 @@
   gap: 12px;
   width: 100%;
 
+  @include responsivePro(mobile) {
+    width: 100%;
+    flex-direction: column-reverse;
+  }
+
   button {
     cursor: pointer;
     text-transform: capitalize;
@@ -133,9 +202,17 @@
     border: none;
     flex: 1;
     color: #fff;
-    background: linear-gradient(180deg,
-        rgba(255, 255, 255, 0.16) 0%,
-        rgba(255, 255, 255, 0.1) 100%);
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.16) 0%,
+      rgba(255, 255, 255, 0.1) 100%
+    );
+
+    @include responsivePro(mobile) {
+      margin: 3px auto;
+      width: 100%;
+      // flex-direction: column;
+    }
   }
 
   button:first-child {
@@ -212,13 +289,15 @@
     gap: 6px;
   }
 
-  >span {
+  > span {
     width: 40px;
     height: 40px;
-    background: linear-gradient(152deg,
-        #ffb57d 0%,
-        #880ef7 73.44%,
-        #1c4df0 100%);
+    background: linear-gradient(
+      152deg,
+      #ffb57d 0%,
+      #880ef7 73.44%,
+      #1c4df0 100%
+    );
     border-radius: 50%;
     position: absolute;
     top: 0;
@@ -270,7 +349,11 @@
     height: auto;
     width: 600px;
     padding: 20px;
-    background: linear-gradient(180deg, rgba(94, 148, 255, 0.16) 0%, rgba(84, 142, 254, 0.1) 100%);
+    background: linear-gradient(
+      180deg,
+      rgba(94, 148, 255, 0.16) 0%,
+      rgba(84, 142, 254, 0.1) 100%
+    );
     border-radius: 8px;
     display: flex;
     flex-direction: column;
@@ -312,8 +395,6 @@
       }
     }
 
-    
-
     h4 {
       font-size: 14px;
       color: #ffb57d;
@@ -343,10 +424,8 @@
         height: auto;
         width: 100%;
       }
-
     }
   }
-
 }
 
 .chatCardBotTrending {
@@ -383,9 +462,11 @@
 
   .trendCoinsCon {
     border-radius: 10px;
-    background: linear-gradient(180deg,
-        rgba(94, 148, 255, 0.16) 0%,
-        rgba(84, 142, 254, 0.1) 100%);
+    background: linear-gradient(
+      180deg,
+      rgba(94, 148, 255, 0.16) 0%,
+      rgba(84, 142, 254, 0.1) 100%
+    );
     // width: 100%;
     width: 600px;
     padding: 10px;
