@@ -9,5 +9,6 @@ export const COINPRICE = 'coin-price';
 export const TRENDINGCOINS = 'trending-coins';
 export const TOTAL_MARKETCAP = 'total-marketcap';
 export const BRIDGE = 'bridge';
+export const BORROW = 'borrow';
 export const DEFAULT_TEXT = 'default-text';
 export const ERROR = 'error';

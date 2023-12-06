@@ -10,6 +10,7 @@ import {
   formatNumberWithMagnitude,
 } from "@chatxbt-sdk/utils/toolkit";
 import ChatCardSwap from "./components/ChatCardSwap";
+import ChatCardBorrow from "./components/ChatCardBorrow";
 
 export const UserChatCard = (props: any) => {
   const { dp, from, id, message, type, metadata } = props;
@@ -85,6 +86,10 @@ export const UserChatCard = (props: any) => {
 
           {type === actionTypes.BRIDGE && (
             <ChatCardSwap dp={dp} metadata={metadata} message={message} />
+          )}
+
+          {type === actionTypes.BORROW && (
+            <ChatCardBorrow dp={dp} metadata={metadata} message={message} />
           )}
 
           {type === actionTypes.APPROVAL && (

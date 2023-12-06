@@ -1,16 +1,13 @@
 import style from "@styles/chat/aiprompts.module.scss";
 import { motion } from "framer-motion";
-import ChatCardRow from "./utils/ChatCardRow";
-import ChatCardButtons from "./utils/ChatCardButtons";
-import GasFee from "./utils/GasFee";
-import Image from "next/image";
+import Link from "next/link";
+import useCopyToClipboard from "@chatxbt-sdk/utils/copy-clipboard";
+import * as IoIcons from "react-icons/io";
+import * as IoIcons2 from "react-icons/io5";
 
 const ChatCardBorrow = (props: any) => {
-  // simulating error
-  const error = {
-    message: "There was an error. Please try again later!",
-  };
-  // const error = false;
+  const { metadata, dp, message } = props;
+  const { isCopied, handleCopy, copiedData } = useCopyToClipboard();
 
   return (
     <motion.div
@@ -19,40 +16,67 @@ const ChatCardBorrow = (props: any) => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
     >
-      <ChatCardRow
-        icon={"/images/chat/eth.png"}
-        symbol={"ETH"}
-        quantity={0.38576}
-        equivalent={233.0}
-        balance={2.03}
-      />
-      <div className={style.chatCardRow}>
-        <div>
-          <h2>Health factor</h2>
-          <h4>
-            <img src={"/images/chat/ArrowRight.svg"} alt="right arrow" />
-            <span style={{ color: error ? "#D63252" : "#058F58" }}>1.34</span>
-          </h4>
+      <img src={dp} alt={"Bot Icon"} />
+
+      <div className={style.chatCardWrapperMain}>
+        <div
+          className={`${style.chatCardSwapRow} ${style.chatCardRow}`}
+          id={style.success}
+        >
+          <h2>{message}</h2>
         </div>
-        <div>
-          <h4>Liquidation at</h4>
-          <h5>&lt;1.0</h5>
+        <div className={`${style.chatCardSwapRow} ${style.chatCardRow}`}>
+          <div>
+            <h4>
+              <span>Amount</span>
+            </h4>
+          </div>
+          <div>
+            {/* <h4>{`${metadata?.amount} ${metadata?.token.toUpperCase()}`}</h4> */}
+          </div>
+        </div>
+        <div className={`${style.chatCardSwapRow} ${style.chatCardRow}`}>
+          <div>
+            <h2>From</h2>
+            <h5>
+              {metadata.from}{" "}
+              {isCopied && copiedData === metadata.from ? (
+                <IoIcons2.IoCopy className={style.iconCopy} />
+              ) : (
+                <IoIcons2.IoCopyOutline
+                  className={style.iconCopy}
+                  onClick={() => handleCopy(metadata.from)}
+                />
+              )}
+            </h5>
+          </div>
+        </div>
+        <div className={`${style.chatCardSwapRow} ${style.chatCardRow}`}>
+          <div>
+            <h2>To</h2>
+            <h5>
+              {metadata.to}{" "}
+              {isCopied && copiedData === metadata.to ? (
+                <IoIcons2.IoCopy className={style.iconCopy} />
+              ) : (
+                <IoIcons2.IoCopyOutline
+                  className={style.iconCopy}
+                  onClick={() => handleCopy(metadata.to)}
+                />
+              )}
+            </h5>
+          </div>
+        </div>
+        <div className={style.chatCardBtns}>
+          <Link
+            href={`https://goerli.etherscan.io/tx/${metadata.hash}`}
+          >
+            <a target="_blank">
+              <button type="button">View on block explorer</button>
+            </a>
+          </Link>
         </div>
       </div>
-
-      <GasFee amount={12} />
-
-      {error && (
-        <p className={style.chatErrorMsg}>
-          <img src="/images/chat/Warning.png" alt="warning" />
-          <span>
-            {error?.message ||
-              "Borrowing this amount will reduce your health factor and increase risk of liquidation"}
-          </span>
-        </p>
-      )}
-
-      <ChatCardButtons handleConfirm={() => {}} handleCancel={() => {}} />
     </motion.div>
   );
 };
