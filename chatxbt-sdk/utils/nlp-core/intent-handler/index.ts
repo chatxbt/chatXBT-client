@@ -510,6 +510,8 @@ export class IntentHandler {
           status: true,
           metadata: {
             ...tx,
+            amount: amountInEth,
+            token: "ETH"
           },
         };
       } else {
