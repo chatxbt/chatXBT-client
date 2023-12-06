@@ -32,7 +32,7 @@ const ChatCardBorrow = (props: any) => {
             </h4>
           </div>
           <div>
-            {/* <h4>{`${metadata?.amount} ${metadata?.token.toUpperCase()}`}</h4> */}
+            <h4>{`${metadata?.amount} ${metadata?.token.toUpperCase()}`}</h4>
           </div>
         </div>
         <div className={`${style.chatCardSwapRow} ${style.chatCardRow}`}>
