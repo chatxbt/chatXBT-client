@@ -127,6 +127,10 @@ export class IntentHandler {
       message: "Your asset has been bridged successfully",
       metadata: {
         ...tx,
+        token,
+        dex,
+        chain,
+        amount: amountIn,
       },
     };
   }
@@ -506,6 +510,8 @@ export class IntentHandler {
           status: true,
           metadata: {
             ...tx,
+            amount: amountInEth,
+            token: "ETH"
           },
         };
       } else {
