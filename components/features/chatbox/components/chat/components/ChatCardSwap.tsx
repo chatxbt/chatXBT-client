@@ -7,6 +7,7 @@ import Link from "next/link";
 import useCopyToClipboard from "@chatxbt-sdk/utils/copy-clipboard";
 import * as IoIcons from "react-icons/io";
 import * as IoIcons2 from "react-icons/io5";
+import { formatAddress } from "@chatxbt-sdk/utils/formatter";
 
 const ChatCardSwap = (props: any) => {
   const { metadata, dp, message } = props;
@@ -26,7 +27,7 @@ const ChatCardSwap = (props: any) => {
           className={`${style.chatCardSwapRow} ${style.chatCardRow}`}
           id={style.success}
         >
-          <h2>{message}</h2>
+          <h2>{message.toUpperCase()}</h2>
         </div>
         <div className={`${style.chatCardSwapRow} ${style.chatCardRow}`}>
           <div>
@@ -35,14 +36,14 @@ const ChatCardSwap = (props: any) => {
             </h4>
           </div>
           <div>
-            <h4>{`${metadata.amount} ${metadata.token.toUpperCase()}`}</h4>
+            <h4>{`${metadata.amount} ${metadata?.token.toUpperCase()}`}</h4>
           </div>
         </div>
-        <div className={`${style.chatCardSwapRow} ${style.chatCardRow}`}>
-          <div>
-            <h2>From</h2>
+        <div className={`${style.chatCardSwapRow} ${style.chatCardRow2}`}>
+          <div id={style.one}>
+            <h3>From</h3>
             <h5>
-              {metadata.from}{" "}
+              {formatAddress(metadata.from, 10)}{" "}
               {isCopied && copiedData === metadata.from ? (
                 <IoIcons2.IoCopy className={style.iconCopy} />
               ) : (
@@ -53,12 +54,15 @@ const ChatCardSwap = (props: any) => {
               )}
             </h5>
           </div>
-        </div>
-        <div className={`${style.chatCardSwapRow} ${style.chatCardRow}`}>
-          <div>
-            <h2>To</h2>
+
+          <div id={style.from}>
+            <IoIcons2.IoArrowForwardOutline />
+          </div>
+
+          <div id={style.two}>
+            <h3>To</h3>
             <h5>
-              {metadata.to}{" "}
+              {formatAddress(metadata.to, 10)}{" "}
               {isCopied && copiedData === metadata.to ? (
                 <IoIcons2.IoCopy className={style.iconCopy} />
               ) : (
@@ -75,7 +79,10 @@ const ChatCardSwap = (props: any) => {
             href={`https://goerli.etherscan.io/tx/${metadata.transactionHash}`}
           >
             <a target="_blank">
-              <button type="button">View on block explorer</button>
+              <button type="button">
+                View on block explorer{" "}
+                <IoIcons2.IoOpenOutline className={style.iconCopy} />
+              </button>
             </a>
           </Link>
         </div>
