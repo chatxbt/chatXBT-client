@@ -214,15 +214,7 @@ export const auth = (props: any) => {
     const googleLogin = useGoogleLogin({
       onSuccess: async (tokenResponse: any) => {
         console.log(tokenResponse, '[Google authentication successful]');
-        const userInfo = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${tokenResponse.access_token}`, {
-          headers: {
-            Authorization: `Bearer ${tokenResponse.access_token}`,
-            Accept: 'application/json'
-          },
-        }).then(res => res);
-
-        console.log(userInfo);
-      //   // handleGoogleAuth(tokenResponse.access_token);
+        handleGoogleAuth(tokenResponse.access_token);
       },
       onError: () => {
         console.log("[Google authentication failed]");
@@ -235,15 +227,15 @@ export const auth = (props: any) => {
         const response = await chatxbtApi.authWithGoogle(token);
         console.log(response);
 
-        // const jwt = response?.data.token;
-        // const user = response?.data;
+        const jwt = response?.data.token;
+        const user = response?.data;
 
-        // if (jwt) {
-        //   connect(
-        //     user,
-        //     jwt,
-        //   );
-        // }
+        if (jwt) {
+          connect(
+            user,
+            jwt,
+          );
+        }
 
 
         // if (!jwt) {

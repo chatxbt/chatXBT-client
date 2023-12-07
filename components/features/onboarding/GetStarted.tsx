@@ -37,14 +37,6 @@ const GetStarted = (props: any) => {
           ))}
         </div>
         {/* <button onClick={handleEmail}>Sign up with email</button> */}
-        {/* <GoogleLogin
-          onSuccess={(credentialResponse: any) => {
-            console.log(credentialResponse);
-          }}
-          onError={() => {
-            console.log("Login Failed");
-          }}
-        /> */}
       </div>
 
       <h4>OR</h4>
