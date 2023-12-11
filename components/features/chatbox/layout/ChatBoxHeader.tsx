@@ -53,7 +53,7 @@ const ChatBoxHeader = ({
           </div>
           <div className={style.buttons}>
             <button id={style.first}>Integrate protocol</button>
-            {visibleAddress && (
+            {/* {visibleAddress && (
               <button
                 id={style.second}
                 // onClick={disconnect}
@@ -63,7 +63,7 @@ const ChatBoxHeader = ({
               >
                 {visibleAddress}
               </button>
-            )}
+            )} */}
             <Web3Button />
           </div>
         </div>
