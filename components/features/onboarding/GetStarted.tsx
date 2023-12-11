@@ -29,29 +29,16 @@ const GetStarted = (props: any) => {
       <h1>Get started</h1>
       <h3>Welcome to ChatXBT - Where AI meets Defi</h3>
 
-      {/* <div className={style.socials}>
+      <div className={style.socials}>
         <p>Sign Up with socials:</p>
         <div>
           {icons.map((data: any, index: any) => (
             <img src={data} alt="" key={index} onClick={() => googleLogin()} />
           ))}
         </div>
-<<<<<<< HEAD
-        {/* <button onClick={handleEmail}>Sign up with email</button> */}
-=======
-        <button onClick={handleEmail}>Sign up with email</button>
-        <GoogleLogin
-          onSuccess={(credentialResponse: any) => {
-            console.log(credentialResponse);
-          }}
-          onError={() => {
-            console.log("Login Failed");
-          }}
-        />
->>>>>>> 14102d0e4ce13300a1bc4ce54b072071c1b83274
       </div>
 
-      <h4>OR</h4> */}
+      <h4>OR</h4>
 
       <div className={style.wallets}>
         {/* <RainBow/> */}

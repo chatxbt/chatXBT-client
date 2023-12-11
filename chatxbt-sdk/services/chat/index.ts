@@ -311,7 +311,7 @@ export const chat = (props: any) => {
           message: JSON.stringify(error?.response?.message),
         });
 
-        console.log(error?.message);
+        console.log('XBT Resolve function',error?.message);
 
       // throw new chatxbtUtils.Issue(500, error?.message);
     }

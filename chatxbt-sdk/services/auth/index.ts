@@ -41,6 +41,7 @@ export const auth = (props: any) => {
       signMessage,
       connect,
       disconnect,
+      userInfo
     } = useConnectionStore((state: any) => ({
       signature: state.signature,
       connected: state.connected,
@@ -51,6 +52,7 @@ export const auth = (props: any) => {
       signMessage: state.signMessage,
       connect: state.connect,
       disconnect: state.disconnect,
+      userInfo: state.userInfo
     }));
 
     // waitlist store
@@ -213,7 +215,6 @@ export const auth = (props: any) => {
 
     const googleLogin = useGoogleLogin({
       onSuccess: async (tokenResponse: any) => {
-        console.log(tokenResponse, '[Google authentication successful]');
         handleGoogleAuth(tokenResponse.access_token);
       },
       onError: () => {
@@ -225,10 +226,8 @@ export const auth = (props: any) => {
     const handleGoogleAuth = async (token: any) => {
       try {
         const response = await chatxbtApi.authWithGoogle(token);
-        console.log(response);
-
-        const jwt = response?.data.token;
-        const user = response?.data;
+        const jwt = response?.data?.data?.token;
+        const user = response?.data?.data;
 
         if (jwt) {
           connect(
@@ -238,10 +237,11 @@ export const auth = (props: any) => {
         }
 
 
-        // if (!jwt) {
-        //   walletDisconnect();
-        //   throw new chatxbtUtils.Issue(401, response.message);
-        // }
+
+        if (!jwt) {
+          walletDisconnect();
+          throw new chatxbtUtils.Issue(401, response.message);
+        }
 
       } catch (error: any) {
         console.log(error);
