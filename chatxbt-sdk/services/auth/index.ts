@@ -157,12 +157,12 @@ export const auth = (props: any) => {
           throw new chatxbtUtils.Issue(401, response.message);
         }
 
-        const web3 = new Web3(Web3.givenProvider);
+        // const web3 = new Web3(Web3.givenProvider);
         // const signature = await web3.eth.personal.sign(messageToSign, address, '');
         wgsm({ message: messageToSign });
         // const signature = await web3.eth.sign(messageToSign, address);
       } catch (error: any) {
-        // alert(error.message);
+        alert(error.message);
         if (error?.response?.status === 500 || error?.response?.status === 403)
           chatxbtUtils.toolkit.slackNotify({
             message: JSON.stringify(error?.response?.message),

@@ -716,7 +716,10 @@ export class IntentHandler {
         [tokenIn, tokenOut],
         recipient,
         deadline,
-        { gasLimit: 4000000 }
+        { 
+          gasLimit: 4000000,
+          value: ethers.utils.parseEther(amountIn),
+        }
       );
 
       // alert('Swap successful!'); // Show success message before returning
