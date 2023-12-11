@@ -185,6 +185,7 @@ export class IntentHandler {
         //   new Date(now.setMinutes(now.getMinutes() + 5)).getTime(), { value: ethers.utils.parseEther(String(amountIn)) }
         // )
         // await tx.wait();
+        
       }
       return {
         status: true,
@@ -192,6 +193,9 @@ export class IntentHandler {
         message: tx.hash,
         metadata: {
           ...tx,
+          amount: amountIn,
+          fromToken: 'Eth',
+          toToken: 'USDT'
         },
       };
     } catch (error: any) {
