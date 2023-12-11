@@ -722,7 +722,8 @@ export class IntentHandler {
         deadline,
         { 
           gasLimit: 4000000,
-          value: ethers.utils.parseEther(amountIn),
+          // value: ethers.utils.parseEther(amountIn),
+          // value: 1
         }
       );
 
