@@ -40,7 +40,7 @@ const ChatCardSwap = (props: any) => {
           </div>
           <div>
             <h4>{`${metadata.amount} ${
-              metadata?.token && metadata?.token.toUpperCase()
+              metadata?.toToken && metadata?.toToken.toUpperCase()
             }`}</h4>
           </div>
         </div>
