@@ -23,12 +23,15 @@ const ChatCardSwap = (props: any) => {
       <img src={dp} alt={"Bot Icon"} />
 
       <div className={style.chatCardWrapperMain}>
-        <div
-          className={`${style.chatCardSwapRow} ${style.chatCardRow}`}
-          id={style.success}
-        >
-          <h2>{message.toUpperCase()}</h2>
-        </div>
+        {message && (
+          <div
+            className={`${style.chatCardSwapRow} ${style.chatCardRow}`}
+            id={style.success}
+          >
+            <h2>{message && message.toUpperCase()}</h2>
+          </div>
+        )}
+
         <div className={`${style.chatCardSwapRow} ${style.chatCardRow}`}>
           <div>
             <h4>
@@ -36,7 +39,9 @@ const ChatCardSwap = (props: any) => {
             </h4>
           </div>
           <div>
-            <h4>{`${metadata.amount} ${metadata?.token.toUpperCase()}`}</h4>
+            <h4>{`${metadata.amount} ${
+              metadata?.token && metadata?.token.toUpperCase()
+            }`}</h4>
           </div>
         </div>
         <div className={`${style.chatCardSwapRow} ${style.chatCardRow2}`}>

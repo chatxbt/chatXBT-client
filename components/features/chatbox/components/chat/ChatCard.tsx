@@ -11,6 +11,7 @@ import {
 } from "@chatxbt-sdk/utils/toolkit";
 import ChatCardSwap from "./components/ChatCardSwap";
 import ChatCardBorrow from "./components/ChatCardBorrow";
+import ChatCardBridge from "./components/ChatCardBridge";
 
 export const UserChatCard = (props: any) => {
   const { dp, from, id, message, type, metadata } = props;
@@ -85,6 +86,10 @@ export const UserChatCard = (props: any) => {
           )}
 
           {type === actionTypes.BRIDGE && (
+            <ChatCardBridge dp={dp} metadata={metadata} message={message} />
+          )}
+
+          {type === actionTypes.SWAP && (
             <ChatCardSwap dp={dp} metadata={metadata} message={message} />
           )}
 
