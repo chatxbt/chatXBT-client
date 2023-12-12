@@ -7,8 +7,10 @@ export const useAppEntry = (props: any) => {
     const authService = chatxbtServices.auth(props);
     const defiService = chatxbtServices.defi(props);
     const {
-      store: { _hasHydrated, wagmiData, variables, signMessageData, connected, googleLogin },
-      action: { handleWalletSignIn, signAndConnectUser, signOut },
+      store: { _hasHydrated, wagmiData, variables, signMessageData, connected, googleLogin,
+        userInfo,
+      },
+      action: { handleWalletSignIn, signAndConnectUser, signOut, handleGoogleSignout },
     } = authService;
 
     const {
@@ -55,10 +57,12 @@ export const useAppEntry = (props: any) => {
       store: {
         connected,
         googleLogin,
+        userInfo,
       },
       action: {
         loadLightPoolAndInitialiseNlpCoreConfigs,
+        handleGoogleSignout
       },
     };
-  } catch (error) {}
+  } catch (error) { }
 };

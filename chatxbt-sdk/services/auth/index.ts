@@ -6,7 +6,7 @@ import { ethers } from "ethers";
 import { useAccount, useSignMessage, useNetwork, useDisconnect } from "wagmi";
 import { recoverMessageAddress } from "viem";
 import { chatxbtDataProvider, chatxbtStore, chatxbtUtils } from "../..";
-import { useGoogleLogin } from "@react-oauth/google";
+import { useGoogleLogin, googleLogout } from "@react-oauth/google";
 import axios from "axios";
 
 export const auth = (props: any) => {
@@ -41,7 +41,9 @@ export const auth = (props: any) => {
       signMessage,
       connect,
       disconnect,
-      userInfo
+      userInfo,
+      googleAuth,
+      signGoogleAuth
     } = useConnectionStore((state: any) => ({
       signature: state.signature,
       connected: state.connected,
@@ -52,7 +54,9 @@ export const auth = (props: any) => {
       signMessage: state.signMessage,
       connect: state.connect,
       disconnect: state.disconnect,
-      userInfo: state.userInfo
+      userInfo: state.userInfo,
+      googleAuth: state.googleAuth,
+      signGoogleAuth: state.signGoogleAuth
     }));
 
     // waitlist store
@@ -234,9 +238,8 @@ export const auth = (props: any) => {
             user,
             jwt,
           );
+          signGoogleAuth(true);
         }
-
-
 
         if (!jwt) {
           walletDisconnect();
@@ -247,6 +250,13 @@ export const auth = (props: any) => {
         console.log(error);
       }
     }
+
+    //google signout
+    const handleGoogleSignout = () => {
+      googleLogout();
+      signGoogleAuth(false);
+      signOut();
+    };
 
     /**
      * join waitlist
@@ -273,7 +283,9 @@ export const auth = (props: any) => {
         wagmiData,
         provider,
         visibleAddress,
+        userInfo,
         googleLogin,
+        googleAuth,
 
         variables,
         signMessageData,
@@ -291,7 +303,8 @@ export const auth = (props: any) => {
         getSigner,
         signAndConnectUser,
         signOut,
-        handleGoogleAuth
+        handleGoogleAuth,
+        handleGoogleSignout,
       },
       ...props,
     };

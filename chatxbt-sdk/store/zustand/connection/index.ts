@@ -18,6 +18,7 @@ export const useConnectionStore = create<ConnectionStore>()(
         provider: '',
         visibleAddress: "",
         _hasHydrated: false,
+        googleAuth: false,
         signMessage: (signature: string) => {
           set({ signature })
         },
@@ -32,6 +33,9 @@ export const useConnectionStore = create<ConnectionStore>()(
           set({
             _hasHydrated: state,
           });
+        },
+        signGoogleAuth: (param: boolean) => {
+          set({googleAuth: param})
         },
       }),
       {
