@@ -7,18 +7,18 @@ import {
 } from "../..";
 import { actionTypes } from "@chatxbt-sdk/config/constants";
 
-import { 
-  useAccount, 
-  useSignMessage, 
-  useNetwork, 
-  useDisconnect, 
-  useContractRead, 
+import {
+  useAccount,
+  useSignMessage,
+  useNetwork,
+  useDisconnect,
+  useContractRead,
   useWalletClient,
   usePublicClient,
   type WalletClient,
 } from "wagmi";
-import { getContract } from 'wagmi/actions'
-import { providers } from 'ethers'
+import { getContract } from "wagmi/actions";
+import { providers } from "ethers";
 
 export const chat = (props: any) => {
   // data provider modules
@@ -96,7 +96,6 @@ export const chat = (props: any) => {
     _hasHydrated: state._hasHydrated,
   }));
 
-
   const wagmiData = useAccount();
   const { chain } = useNetwork();
   const {
@@ -110,36 +109,82 @@ export const chat = (props: any) => {
 
   // const publicClient = usePublicClient();
 
-  const { data: walletClient } = useWalletClient({chainId: 5})
+  const { data: walletClient } = useWalletClient({ chainId: 5 });
 
   const ref = useRef<null | HTMLDivElement>(null);
   const chatInputRef = useRef<null | HTMLInputElement>(null);
 
   const walletClientToSigner = (walletClient: WalletClient) => {
-    const { account, chain, transport } = walletClient
-    console.log('chain', chain);
+    const { account, chain, transport } = walletClient;
+    console.log("chain", chain);
     const network = {
       chainId: chain.id,
       name: chain.name,
       ensAddress: chain.contracts?.ensRegistry?.address,
-    }
-    console.log('network', network)
-    const provider = new providers.Web3Provider(transport, network)
-    const signer = provider.getSigner(account.address)
-    return signer
-  }
-   
+    };
+    console.log("network", network);
+    const provider = new providers.Web3Provider(transport, network);
+    const signer = provider.getSigner(account.address);
+    return signer;
+  };
+
   /** Hook to convert a viem Wallet Client to an ethers.js Signer. */
   const useEthersSigner = ({ chainId }: { chainId?: number } = {}) => {
     // const { data: walletClient } = useWalletClient({ chainId })
     return React.useMemo(
       () => (walletClient ? walletClientToSigner(walletClient) : undefined),
-      [walletClient],
-    )
-  }
+      [walletClient]
+    );
+  };
 
   const sendResponse = (message: string) => {
     generateResponse(message);
+  };
+
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [suggestions, setSuggestions] = useState<any>([]);
+  const [mentionStartIndex, setMentionStartIndex] = useState<any>(null);
+
+  const fetchSuggestions = (query: string) => {
+    return chatxbtUtils.promptData.default.Mentions.filter((suggestion) =>
+      suggestion.toLowerCase().includes(query.toLowerCase())
+    );
+  };
+
+  const handleUserInput = () => {
+
+    const atIndex = message.lastIndexOf("@");
+    if (atIndex !== -1) {
+      setMentionStartIndex(atIndex + 1);
+
+      const fetchedSuggestions = fetchSuggestions(
+        message.substring(atIndex + 1)
+      );
+      setSuggestions(fetchedSuggestions);
+
+      setShowSuggestions(true);
+    } else {
+      setShowSuggestions(false);
+      setMentionStartIndex(null);
+    }
+  };
+
+  const handleSuggestionClick = (suggestion: any) => {
+    const updatedMessage =
+      message.slice(0, mentionStartIndex - 1) +
+      `@${suggestion}` +
+      message.slice(mentionStartIndex + suggestion.length - 1);
+
+    setMessage(updatedMessage);
+    chatxbtUtils.handleRefs.default().handleChatInputFocus(chatInputRef);
+
+    setShowSuggestions(false);
+    setMentionStartIndex(null);
+  };
+
+  const handleBlur = () => {
+    setShowSuggestions(false);
+    setMentionStartIndex(null);
   };
 
   const addHint = (param: any) => {
@@ -183,6 +228,7 @@ export const chat = (props: any) => {
   const hints = chatxbtUtils.promptData.default.AIPrompts.filter((word) => {
     const typedCommand = message.toLowerCase();
     const keyword = word.prompt.toLowerCase();
+
     return (
       typedCommand &&
       keyword.startsWith(typedCommand) &&
@@ -221,7 +267,7 @@ export const chat = (props: any) => {
       const botReply =
         botRes?.data ||
         chatxbtConfig.lang.defaultRelies[
-          Math.floor(Math.random() * chatxbtConfig.lang.defaultRelies.length)
+        Math.floor(Math.random() * chatxbtConfig.lang.defaultRelies.length)
         ];
       return {
         status: true,
@@ -247,7 +293,7 @@ export const chat = (props: any) => {
       const botReply =
         botRes?.data ||
         chatxbtConfig.lang.defaultRelies[
-          Math.floor(Math.random() * chatxbtConfig.lang.defaultRelies.length)
+        Math.floor(Math.random() * chatxbtConfig.lang.defaultRelies.length)
         ];
       return {
         status: true,
@@ -266,8 +312,8 @@ export const chat = (props: any) => {
 
   const resolvePrompt = async (): Promise<any> => {
     try {
-      console.log('walletClient', walletClient)
-      const signer = walletClientToSigner(walletClient as any)
+      console.log("walletClient", walletClient);
+      const signer = walletClientToSigner(walletClient as any);
 
       const resolver = new chatxbtUtils.ChatXBTResolver({
         intents,
@@ -299,10 +345,10 @@ export const chat = (props: any) => {
         }
         //   return await queryAiChatBot(message);
         return {
-            status: true,
-            type: 'default-text',
-            message: 'please try again'
-        }
+          status: true,
+          type: "default-text",
+          message: "please try again",
+        };
       };
       return { xbtResolve };
     } catch (error: any) {
@@ -311,7 +357,7 @@ export const chat = (props: any) => {
           message: JSON.stringify(error?.response?.message),
         });
 
-        console.log(error?.message);
+      console.log(error?.message);
 
       // throw new chatxbtUtils.Issue(500, error?.message);
     }
@@ -330,6 +376,8 @@ export const chat = (props: any) => {
       botReply,
       hints,
       scroll,
+      showSuggestions,
+      suggestions,
     },
     action: {
       resolvePrompt,
@@ -343,6 +391,10 @@ export const chat = (props: any) => {
       connectResolver,
       addHint,
       rePrompt,
+      handleUserInput,
+      handleSuggestionClick,
+      handleBlur,
+      fetchSuggestions,
       // handleScroll
       setScroll,
     },
