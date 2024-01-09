@@ -4,6 +4,7 @@ import style from "@styles/get-started/index.module.scss";
 import { icons } from "./data";
 import { motion } from "framer-motion";
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { Web3WebWalletButton } from "../../shared/web3Auth"
 
 export const Web3Button = () => {
   return <w3m-button />
@@ -52,6 +53,7 @@ const GetStarted = ({ handleEmail, handleMeta }: any) => {
           <img src="/images/get-started/trust.png" alt="" />
           <p>Trust Wallet</p>
         </button> */}
+        {/* <Web3WebWalletButton /> */}
       </div>
     </motion.div>
   );
