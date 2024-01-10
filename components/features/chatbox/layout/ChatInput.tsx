@@ -8,12 +8,25 @@ import * as BsIcons from "react-icons/bs";
 
 const ChatInput = (props: any) => {
   const {
-    store: { message, hints, chatInputRef },
-    action: { setMessage, sendMessage, addHint },
+    store: {
+      message,
+      hints,
+      chatInputRef,
+      showSuggestions,
+      suggestions,
+    },
+    action: {
+      setMessage,
+      sendMessage,
+      addHint,
+      handleSuggestionClick,
+      handleBlur,
+    },
   } = useChat(props);
+
   return (
     <div className={style.chatInput}>
-      {hints.length > 0 && (
+      {hints?.length > 0 && (
         <motion.div
           className={style.hints}
           initial={{ opacity: 0, y: 20 }}
@@ -21,12 +34,34 @@ const ChatInput = (props: any) => {
           exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
         >
           {hints.map((data: any, index: any) => (
-            <div id={style.card} key={index}>
+            <div id={style.card} key={index} onClick={() => addHint(data.prompt)}>
               <BsIcons.BsRobot id={style.icon} />
-              <p onClick={() => addHint(data.prompt)}>{data.prompt}</p>
+              <p>{data.prompt}</p>
             </div>
           ))}
         </motion.div>
+      )}
+
+      {showSuggestions && suggestions?.length > 0 && (
+        <motion.ul
+          className={style.hints}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
+        >
+          {suggestions.map((data: any, index: any) => {
+            return (
+              <li
+                id={style.card}
+                key={index}
+                onClick={() => handleSuggestionClick(data)}
+              >
+                <BsIcons.BsRobot id={style.icon} />
+                <p>{data}</p>
+              </li>
+            );
+          })}
+        </motion.ul>
       )}
 
       <form>
@@ -37,6 +72,7 @@ const ChatInput = (props: any) => {
             value={message}
             ref={chatInputRef}
             onChange={(e) => setMessage(e.target.value)}
+            // onBlur={handleBlur}
           />
           <button onClick={sendMessage}>
             <IoIcons.IoPaperPlaneOutline />

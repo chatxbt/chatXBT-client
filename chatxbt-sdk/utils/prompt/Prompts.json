@@ -60,5 +60,11 @@
         {
             "prompt": "give approval to (uniswap) to spend #Value of (usdt|dai)"
         }
+    ],
+    "Mentions": [
+        "1inch",
+        "UniSwap",
+        "Coingecko",
+        "CoinMarkeCap"
     ]
 }

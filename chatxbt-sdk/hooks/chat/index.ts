@@ -6,8 +6,10 @@ export const useChat = (props: any) => {
   const chatServices = chatxbtServices.chat(props);
 
   const {
-    store: { status, ref, messages },
-    action: { setPreview },
+    store: { status, ref, message, messages
+    },
+    action: { setPreview, handleUserInput,
+    },
   } = chatServices;
 
   useEffect(() => {
@@ -17,6 +19,10 @@ export const useChat = (props: any) => {
   useEffect(() => {
     handleRefs.default().scrollToLastChat(ref);
   }, [status]);
+
+  useEffect(() => {
+    handleUserInput();
+  }, [message])
 
   return chatServices;
 };
