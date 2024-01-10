@@ -146,7 +146,8 @@ export const chat = (props: any) => {
   const [mentionStartIndex, setMentionStartIndex] = useState<any>(null);
 
   const fetchSuggestions = (query: string) => {
-    return chatxbtUtils.promptData.default.Mentions.filter((suggestion) =>
+    let dexesSuggestions = dexKeys?.split('|');
+    return dexesSuggestions?.filter((suggestion: string) =>
       suggestion.toLowerCase().includes(query.toLowerCase())
     );
   };
@@ -176,10 +177,11 @@ export const chat = (props: any) => {
       message.slice(mentionStartIndex + suggestion.length - 1);
 
     setMessage(updatedMessage);
-    chatxbtUtils.handleRefs.default().handleChatInputFocus(chatInputRef);
-
+    setSuggestions([]);
     setShowSuggestions(false);
     setMentionStartIndex(null);
+
+    chatxbtUtils.handleRefs.default().handleChatInputFocus(chatInputRef);
   };
 
   const handleBlur = () => {

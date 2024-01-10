@@ -26,7 +26,7 @@ const ChatInput = (props: any) => {
 
   return (
     <div className={style.chatInput}>
-      {hints.length > 0 && (
+      {hints?.length > 0 && (
         <motion.div
           className={style.hints}
           initial={{ opacity: 0, y: 20 }}
@@ -42,7 +42,7 @@ const ChatInput = (props: any) => {
         </motion.div>
       )}
 
-      {showSuggestions && suggestions.length > 0 && (
+      {showSuggestions && suggestions?.length > 0 && (
         <motion.ul
           className={style.hints}
           initial={{ opacity: 0, y: 20 }}

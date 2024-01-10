@@ -15,6 +15,20 @@ import ChatCardBridge from "./components/ChatCardBridge";
 
 export const UserChatCard = (props: any) => {
   const { dp, from, id, message, type, metadata } = props;
+
+  const highlightAtWords = (sentence: string) => {
+    const words = sentence.split(" ");
+    return words.map((word: any, index: any) =>
+      word.startsWith("@") ? (
+        <span key={index} style={{ color: "blue" }}>
+          {word}{" "}
+        </span>
+      ) : (
+        `${word} `
+      )
+    );
+  };
+
   return (
     <>
       {from === "user" && (
@@ -28,7 +42,7 @@ export const UserChatCard = (props: any) => {
           <img src={dp} alt="" />
 
           <div className={style.message}>
-            <p>{message}</p>
+            <p>{highlightAtWords(message)}</p>
           </div>
         </motion.div>
       )}
