@@ -8,13 +8,7 @@ import * as BsIcons from "react-icons/bs";
 
 const ChatInput = (props: any) => {
   const {
-    store: {
-      message,
-      hints,
-      chatInputRef,
-      showSuggestions,
-      suggestions,
-    },
+    store: { message, hints, chatInputRef, showSuggestions, suggestions },
     action: {
       setMessage,
       sendMessage,
@@ -34,7 +28,11 @@ const ChatInput = (props: any) => {
           exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
         >
           {hints.map((data: any, index: any) => (
-            <div id={style.card} key={index} onClick={() => addHint(data.prompt)}>
+            <div
+              id={style.card}
+              key={index}
+              onClick={() => addHint(data.prompt)}
+            >
               <BsIcons.BsRobot id={style.icon} />
               <p>{data.prompt}</p>
             </div>

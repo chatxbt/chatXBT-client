@@ -171,9 +171,10 @@ export const chat = (props: any) => {
   };
 
   const handleSuggestionClick = (suggestion: any) => {
+
     const updatedMessage =
       message.slice(0, mentionStartIndex - 1) +
-      `@${suggestion}` +
+      `@${suggestion} ` +
       message.slice(mentionStartIndex + suggestion.length - 1);
 
     setMessage(updatedMessage);
