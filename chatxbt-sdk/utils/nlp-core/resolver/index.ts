@@ -19,6 +19,7 @@ export class ChatXBTResolver {
   private addresses = new Map();
   private intents: any;
   private dexKeys = "";
+  // private dexKeys: any;
   private tokenKeys = "";
 
   constructor({ intents, dexKeys, tokenKeys, addresses, address, signer }: any) {
@@ -33,8 +34,6 @@ export class ChatXBTResolver {
     this.tokenKeys = tokenKeys;
     this.addresses = new Map(addresses);
     this.internalResolver = new IntentHandler({signer, address});
-
-    // console.log('intents', intents);
   }
 
   private extractMessage = (message: string, intent: { match: string }[]) => {
@@ -51,7 +50,12 @@ export class ChatXBTResolver {
   };
 
   resolveMsg = async (message: string, provider: any) => {
+
+    console.log(message, provider);
+
     try {
+      const dexesSuggestions = this.dexKeys?.split('|');
+
       const isCreatingWallet = this.extractMessage(
         message,
         this.intents.createWalletIntents
@@ -66,6 +70,8 @@ export class ChatXBTResolver {
         this.intents.crossChainSwap
       );
       if (isBridging) {
+        console.log('isBridging', isBridging);
+
         const _doc = this.nlp(isBridging); // reconstruct the doc
         const toToken = _doc.match(`(${this.tokenKeys})`).out("text");
         let exchange = _doc.match(`(${this.dexKeys})`);
@@ -80,6 +86,8 @@ export class ChatXBTResolver {
         if (amount.startsWith("$")) {
           amount = +amount.slice(1);
         }
+
+        console.log(dex);
         try {
           const response = await this.internalResolver.sendToL2Chain(
             "eth",
@@ -114,6 +122,9 @@ export class ChatXBTResolver {
         this.intents.swapEthForToken
       );
       if (isBuyingWithEth) {
+        console.log('isBuyingWithEth', isBuyingWithEth);
+
+
         const _doc = this.nlp(isBuyingWithEth); // reconstruct the doc
         const toToken = _doc.match(`(${this.tokenKeys})`).out("text");
         let exchange = _doc.match(`(${this.dexKeys})`);
@@ -141,6 +152,10 @@ export class ChatXBTResolver {
           // console.log(toToken);
           // console.log(nonEthToken);
           // console.log(nonEthTokenContractAddress);
+
+          // const checkDexText = await this.internalResolver.getDexes(dexText, dexesSuggestions);
+
+          const interactCheck = await this.internalResolver.interactWithProtocol('buyTokenWithEth');
 
           const response = await this.internalResolver.buyTokenWithEth(
             nonEthTokenContractAddress || "usdt",
@@ -171,6 +186,8 @@ export class ChatXBTResolver {
         this.intents.swapTokenForEth
       );
       if (isSellingTokenForEth) {
+        console.log('isSellingTokenForEth', isSellingTokenForEth);
+
         const _doc = this.nlp(isSellingTokenForEth); // reconstruct the doc
         const fromToken = _doc
           .match(`(${this.tokenKeys.toLowerCase()})`)
@@ -196,6 +213,8 @@ export class ChatXBTResolver {
         this.intents.approveTokenSpend
       );
       if (isApproval) {
+        console.log('isApproval', isApproval);
+
         const _doc = this.nlp(isApproval); // reconstruct the doc
         let to = _doc.match("(#AtMention|#Noun)").out("text");
         let token = _doc.match(`(${this.tokenKeys})`).out("text");
@@ -268,6 +287,8 @@ export class ChatXBTResolver {
         this.intents.borrowEth
       );
       if (isBorrowingEth) {
+        console.log('isBorrowingEth', isBorrowingEth);
+
         const _doc = this.nlp(isBorrowingEth); // reconstruct the doc
         const toToken = _doc.match(`(${this.tokenKeys})`).out("text");
         let exchange = _doc.match(`(${this.dexKeys})`);
@@ -301,6 +322,8 @@ export class ChatXBTResolver {
 
       const isLendingEth = this.extractMessage(message, this.intents.lendEth);
       if (isLendingEth) {
+        console.log('isLendingEth', isLendingEth);
+
         const _doc = this.nlp(isLendingEth); // reconstruct the doc
         const toToken = _doc.match(`(${this.tokenKeys})`).out("text");
         let exchange = _doc.match(`(${this.dexKeys})`);

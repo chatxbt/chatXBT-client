@@ -227,6 +227,7 @@ export const chat = (props: any) => {
         });
     }
   };
+  
 
   const hints = chatxbtUtils.promptData.default.AIPrompts.filter((word) => {
     const typedCommand = message.toLowerCase();
@@ -326,6 +327,7 @@ export const chat = (props: any) => {
         address: wagmiData.address,
         signer,
       });
+
       const xbtResolve = async (message: string) => {
         // cv prompting
         const { message: cv } = await conversationAiBot(message);

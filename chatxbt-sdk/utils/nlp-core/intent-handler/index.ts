@@ -9,14 +9,14 @@ import {
   comptrollerABI,
 } from "../abis";
 import oneInchAbi from "./1inch.json";
-import { 
-  useAccount, 
-  useSignMessage, 
-  useNetwork, 
-  useDisconnect, 
-  useContractRead, 
+import {
+  useAccount,
+  useSignMessage,
+  useNetwork,
+  useDisconnect,
+  useContractRead,
   useWalletClient,
-  usePublicClient 
+  usePublicClient
 } from "wagmi";
 import { getContract } from 'wagmi/actions'
 
@@ -29,6 +29,7 @@ export class IntentHandler {
     this.signer = contractConfig?.signer;
     this.address = contractConfig?.address
   }
+
 
   async handleWalletCreate(password = "Password-From-User") {
     const wallet = ethers.Wallet.createRandom();
@@ -58,7 +59,7 @@ export class IntentHandler {
 
     const router = bridges[token];
 
-    if (!router){
+    if (!router) {
       return {
         status: true,
         type: "default-text",
@@ -67,12 +68,12 @@ export class IntentHandler {
     }
     let tx;
 
-    console.log('the signer',this.signer)
+    console.log('the signer', this.signer)
 
     if (this.signer) {
 
-      const contract= new ethers.Contract( 
-        router, 
+      const contract = new ethers.Contract(
+        router,
         [
           "function sendToL2(uint256 chainId, address recipient, uint256 amount, uint256 amountOutMin, uint256 deadline, address relayer, uint256 relayerFee) external payable",
         ],
@@ -86,33 +87,33 @@ export class IntentHandler {
       //   signer
       // );
 
-    //   sendToL2(
-    //     uint256 chainId,
-    //     address recipient,
-    //     uint256 amount,
-    //     uint256 amountOutMin,
-    //     uint256 deadline,
-    //     address relayer,
-    //     uint256 relayerFee
-    // )
+      //   sendToL2(
+      //     uint256 chainId,
+      //     address recipient,
+      //     uint256 amount,
+      //     uint256 amountOutMin,
+      //     uint256 deadline,
+      //     address relayer,
+      //     uint256 relayerFee
+      // )
 
-    const deadline = Math.floor(Date.now() / 1000) + 60 * 5;
-    tx = await contract.sendToL2(
-      80001,
-      this.address, // '0x3295186c52205b24B9e6B72d7B5207eAaB77E692',
-      ethers.utils.parseEther(amountIn),
-      ethers.utils.parseEther(amountIn),
-      deadline,
-      '0x0000000000000000000000000000000000000000',
-      0,
-      { 
-        gasLimit: 4000000,
-        value: ethers.utils.parseEther(amountIn),
-        // amount: amountIn,
-        // gasLimit: ethers.utils.hexlify(300000),
-        // gasPrice: provider.getGasPrice(),
-      }
-    );
+      const deadline = Math.floor(Date.now() / 1000) + 60 * 5;
+      tx = await contract.sendToL2(
+        80001,
+        this.address, // '0x3295186c52205b24B9e6B72d7B5207eAaB77E692',
+        ethers.utils.parseEther(amountIn),
+        ethers.utils.parseEther(amountIn),
+        deadline,
+        '0x0000000000000000000000000000000000000000',
+        0,
+        {
+          gasLimit: 4000000,
+          value: ethers.utils.parseEther(amountIn),
+          // amount: amountIn,
+          // gasLimit: ethers.utils.hexlify(300000),
+          // gasPrice: provider.getGasPrice(),
+        }
+      );
       tx = await tx.wait();
     }
     console.log('tx', tx);
@@ -138,6 +139,7 @@ export class IntentHandler {
   async buyTokenWithEth(
     to: string,
     amountIn: string,
+    // dex: string,
     dex: "uniswap",
     p: string
   ) {
@@ -185,7 +187,7 @@ export class IntentHandler {
         //   new Date(now.setMinutes(now.getMinutes() + 5)).getTime(), { value: ethers.utils.parseEther(String(amountIn)) }
         // )
         // await tx.wait();
-        
+
       }
       return {
         status: true,
@@ -211,12 +213,16 @@ export class IntentHandler {
       };
     }
   }
+
   async sellTokenForEth(
     from: "usdt",
     amountIn: string,
     dex: "uniswap",
     wallertProvider: string
   ) {
+
+    console.log(dex);
+
     try {
       const router = routers[dex];
       let signer = null;
@@ -426,6 +432,9 @@ export class IntentHandler {
     dex: "uniswap",
     provider: string
   ) {
+
+    console.log(dex);
+
     const router = routers[dex];
     let signer = null;
     let address = "";
@@ -720,11 +729,11 @@ export class IntentHandler {
         [tokenIn, tokenOut],
         recipient,
         deadline,
-        { 
+        {
           gasLimit: 4000000,
           // value: ethers.utils.parseEther(amountIn),
           // value: 1
-          
+
         }
       );
 
@@ -771,4 +780,44 @@ export class IntentHandler {
   //     console.error('Error swapping tokens:', error);
   //   }
   // }
+
+  async getDexes(selectedDex: string, supportedDexes: any[]) {
+    const isDexSupported = supportedDexes?.filter((newDex: string) =>
+      newDex.toLowerCase().includes(selectedDex.toLowerCase()));
+    const defaultDex = 'hop';
+
+    if (isDexSupported) {
+      console.log(`Performing DeFi action with ${selectedDex}`);
+      return selectedDex;
+    } else {
+      console.log(`Selected DEX (${selectedDex}) not supported. Defaulting to ${defaultDex}.`);
+      return defaultDex;
+    }
+  }
+
+  async interactWithProtocol(methodName: string, params: any[] = []) {
+    try {
+      
+      const contractInstance = new ethers.Contract(this.address, cTokenABI, this.signer);
+
+      if (!contractInstance) {
+        console.log("Contract not initialized.");
+        return;
+      }
+
+      console.log(contractInstance);
+
+      const method = contractInstance.methods[methodName];
+      if (!method) {
+        console.log(`Method ${methodName} not found in the contract.`);
+        return;
+      }
+
+      const result = await method(...params).call();
+      console.log(`Result from ${methodName} call:`, result);
+
+    } catch (error) {
+      console.error(`Error interacting with contract:`, error);
+    }
+  }
 }
