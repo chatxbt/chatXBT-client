@@ -317,7 +317,10 @@ export const chat = (props: any) => {
   const resolvePrompt = async (): Promise<any> => {
     try {
       console.log("walletClient", walletClient);
+      
       const signer = walletClientToSigner(walletClient as any);
+
+      const {protocols } = lightPool;
 
       const resolver = new chatxbtUtils.ChatXBTResolver({
         intents,
@@ -326,6 +329,7 @@ export const chat = (props: any) => {
         addresses,
         address: wagmiData.address,
         signer,
+        protocols
       });
 
       const xbtResolve = async (message: string) => {

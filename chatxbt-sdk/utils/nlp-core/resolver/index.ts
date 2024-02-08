@@ -11,6 +11,8 @@ import { IntentHandler } from "../intent-handler";
 import { envConfig, lang, supportedTokens } from "../../../config";
 
 import { toolkit } from "../../../utils";
+import { NewIntentHandler } from "../intent-handler/intentHandler";
+import { INewIntentHandler } from "@chatxbt-sdk/interface/intent-handler";
 
 export class ChatXBTResolver {
   private nlp = require("compromise");
@@ -21,8 +23,10 @@ export class ChatXBTResolver {
   private dexKeys = "";
   // private dexKeys: any;
   private tokenKeys = "";
+  private protocols: any;
+  private handler: any;
 
-  constructor({ intents, dexKeys, tokenKeys, addresses, address, signer }: any) {
+  constructor({ intents, dexKeys, tokenKeys, addresses, address, signer, protocols }: any) {
     // this.addresses.set('uniswap', "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D");
     // this.addresses.set('@uniswap', "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D");
     // // this.addresses.set('uniswap', "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D");
@@ -33,7 +37,9 @@ export class ChatXBTResolver {
     this.dexKeys = dexKeys;
     this.tokenKeys = tokenKeys;
     this.addresses = new Map(addresses);
-    this.internalResolver = new IntentHandler({signer, address});
+    this.internalResolver = new IntentHandler({ signer, address });
+    this.protocols = protocols;
+    this.handler = new NewIntentHandler({ dex: dexKeys, protocols, signer });
   }
 
   private extractMessage = (message: string, intent: { match: string }[]) => {
@@ -152,10 +158,6 @@ export class ChatXBTResolver {
           // console.log(toToken);
           // console.log(nonEthToken);
           // console.log(nonEthTokenContractAddress);
-
-          // const checkDexText = await this.internalResolver.getDexes(dexText, dexesSuggestions);
-
-          const interactCheck = await this.internalResolver.interactWithProtocol('buyTokenWithEth');
 
           const response = await this.internalResolver.buyTokenWithEth(
             nonEthTokenContractAddress || "usdt",
