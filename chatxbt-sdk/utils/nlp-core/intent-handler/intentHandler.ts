@@ -8,6 +8,8 @@ export class NewIntentHandler {
 
     private protocol: any;
 
+    private address: string | undefined;
+
     constructor(contractConfig: any) {
 
         this.contractConfig = contractConfig;
@@ -42,11 +44,14 @@ export class NewIntentHandler {
 
         this.contract = new ethers.Contract(this.protocol.contractAddress, this.protocol.abi, signer);
 
+        this.setRecipientAddress(this.protocol.contractAddress);
+
         console.log('[Contract initialized]');
 
     };
+    
 
-    async validateDexAndMethod(methodName: string) {
+    private async validateDexAndMethod(methodName: string) {
 
         const { dex } = this.contractConfig;
 
@@ -68,6 +73,36 @@ export class NewIntentHandler {
         };
 
         return { methodInfo };
+
+    };
+
+    setRecipientAddress(address: string) {
+
+        this.address = address;
+
+    }
+
+    async createWallet(): Promise<any> {
+
+        const wallet = ethers.Wallet.createRandom();
+
+        return {
+
+            status: true,
+
+            type: "create-wallet",
+
+            message: `Address: ${wallet.address}\n\n\n\nmnemonic: ${wallet.mnemonic.phrase}\n\n\n\n\n\n\n\nPlease keep these phrases safe, we cannot recover them for you if you lose them.`,
+            
+            metadata: {
+
+                ...wallet,
+
+                mnemonic: wallet.mnemonic.phrase,
+
+            },
+
+        };
 
     };
 
@@ -108,6 +143,28 @@ export class NewIntentHandler {
         };
 
         const result = await this.contract[methodInfo.method](...args);
+
+        return result;
+
+    };
+
+    async bridge(...args: any[]): Promise<any> {
+
+        if (!this.contract) {
+
+            throw new Error('Contract not initialized.');
+        };
+
+        const { methodInfo } = await this.validateDexAndMethod('bridge');
+
+        if (args.length !== methodInfo.arg.length) {
+
+            throw new Error(`Incorrect number of arguments provided. Expected ${methodInfo.arg.length}, got ${args.length}.`);
+        };
+
+        const params = [this.address, ...args];
+
+        const result = await this.contract[methodInfo.method](...params);
 
         return result;
 

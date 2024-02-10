@@ -19,6 +19,7 @@ import {
 } from "wagmi";
 import { getContract } from "wagmi/actions";
 import { providers } from "ethers";
+import { NewResolver } from "@chatxbt-sdk/utils/nlp-core/resolver/Resolver";
 
 export const chat = (props: any) => {
   // data provider modules
@@ -332,6 +333,16 @@ export const chat = (props: any) => {
         protocols
       });
 
+      const newResolver = new NewResolver({
+        intents,
+        dexKeys,
+        tokenKeys,
+        addresses,
+        address: wagmiData.address,
+        signer,
+        protocols
+      });
+
       const xbtResolve = async (message: string) => {
         // cv prompting
         const { message: cv } = await conversationAiBot(message);
@@ -348,7 +359,10 @@ export const chat = (props: any) => {
         // alert(msg);
         // const resolvedMessage: any = await resolver.resolveMsg(message, provider);
 
-        const resolvedMessage: any = await resolver.resolveMsg(msg, provider);
+        // const resolvedMessage: any = await resolver.resolveMsg(msg, provider);
+        // const resolvedMessage: any = await resolver.resolveMsg(message, provider);
+        const resolvedMessage: any = await newResolver.resolveMsg(message, provider, protocols, signer);
+
         if (resolvedMessage?.status) {
           return resolvedMessage;
         }

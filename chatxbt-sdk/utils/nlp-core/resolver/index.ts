@@ -24,7 +24,6 @@ export class ChatXBTResolver {
   // private dexKeys: any;
   private tokenKeys = "";
   private protocols: any;
-  private handler: any;
 
   constructor({ intents, dexKeys, tokenKeys, addresses, address, signer, protocols }: any) {
     // this.addresses.set('uniswap', "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D");
@@ -39,7 +38,6 @@ export class ChatXBTResolver {
     this.addresses = new Map(addresses);
     this.internalResolver = new IntentHandler({ signer, address });
     this.protocols = protocols;
-    this.handler = new NewIntentHandler({ dex: dexKeys, protocols, signer });
   }
 
   private extractMessage = (message: string, intent: { match: string }[]) => {
@@ -165,6 +163,7 @@ export class ChatXBTResolver {
             dex,
             provider
           );
+          
           return response;
         } catch (e: any) {
           if (e?.response?.status === 500 || e?.response?.status === 403)
