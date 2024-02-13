@@ -228,7 +228,7 @@ export const chat = (props: any) => {
         });
     }
   };
-  
+
 
   const hints = chatxbtUtils.promptData.default.AIPrompts.filter((word) => {
     const typedCommand = message.toLowerCase();
@@ -318,10 +318,10 @@ export const chat = (props: any) => {
   const resolvePrompt = async (): Promise<any> => {
     try {
       console.log("walletClient", walletClient);
-      
+
       const signer = walletClientToSigner(walletClient as any);
 
-      const {protocols } = lightPool;
+      const { protocols } = lightPool;
 
       const resolver = new chatxbtUtils.ChatXBTResolver({
         intents,
@@ -333,35 +333,35 @@ export const chat = (props: any) => {
         protocols
       });
 
-      const newResolver = new NewResolver({
-        intents,
-        dexKeys,
-        tokenKeys,
-        addresses,
-        address: wagmiData.address,
-        signer,
-        protocols
-      });
+      // const resolver = new NewResolver({
+      //   intents,
+      //   dexKeys,
+      //   tokenKeys,
+      //   addresses,
+      //   address: wagmiData.address,
+      //   signer,
+      //   protocols
+      // });
 
       const xbtResolve = async (message: string) => {
         // cv prompting
-        const { message: cv } = await conversationAiBot(message);
+        // const { message: cv } = await conversationAiBot(message);
 
-        if (chatxbtUtils.toolkit.doesNotContainWord(cv, "DEFI-DETECTED")) {
-          return {
-            status: true,
-            type: "default-text",
-            message: cv,
-          };
-        }
-        // nlp prompting
-        const { message: msg } = await nlpAiBot(message);
+        // if (chatxbtUtils.toolkit.doesNotContainWord(cv, "DEFI-DETECTED")) {
+        //   return {
+        //     status: true,
+        //     type: "default-text",
+        //     message: cv,
+        //   };
+        // }
+        // // nlp prompting
+        // const { message: msg } = await nlpAiBot(message);
         // alert(msg);
         // const resolvedMessage: any = await resolver.resolveMsg(message, provider);
 
         // const resolvedMessage: any = await resolver.resolveMsg(msg, provider);
-        // const resolvedMessage: any = await resolver.resolveMsg(message, provider);
-        const resolvedMessage: any = await newResolver.resolveMsg(message, provider, protocols, signer);
+        const resolvedMessage: any = await resolver.resolveMsg(message, provider);
+        // const resolvedMessage: any = await resolver.resolveMsg(message, provider, signer, protocols);
 
         if (resolvedMessage?.status) {
           return resolvedMessage;
