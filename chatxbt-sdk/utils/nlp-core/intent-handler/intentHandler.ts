@@ -1,4 +1,5 @@
 import { ContractConfig } from "@chatxbt-sdk/interface/intent-handler";
+import { toolkit } from "@chatxbt-sdk/utils";
 import { ethers } from "ethers";
 
 export class NewIntentHandler {
@@ -21,6 +22,8 @@ export class NewIntentHandler {
 
             this.protocol = this.getProtocol();
 
+            console.log(this.protocol, ' this is the protocol');
+
             this.initialize();
 
         };
@@ -30,8 +33,6 @@ export class NewIntentHandler {
     private getProtocol() {
 
         try {
-
-            if (!this.contractConfig) return undefined;
 
             const { dex, protocols } = this.contractConfig;
 
@@ -50,6 +51,12 @@ export class NewIntentHandler {
 
             const { signer } = this.contractConfig;
 
+            if (this.protocol.abi === "" || !this.protocol.abi) {
+
+                throw new Error('Protocol ABI not found.');
+
+            };
+
             this.contract = new ethers.Contract(this.protocol.contractAddress, this.protocol.abi, signer);
 
             this.setRecipientAddress(this.protocol.contractAddress);
@@ -61,6 +68,24 @@ export class NewIntentHandler {
             console.log(e);
 
         };
+
+    };
+
+    async exposeVariablesFromHandler() {
+
+        let address: string | undefined;
+
+        let config: any;
+
+        if (this.contractConfig) {
+
+            address = this.address;
+
+            config = this.contractConfig;
+
+        };
+
+        return { address, config };
 
     };
 
@@ -130,7 +155,7 @@ export class NewIntentHandler {
 
     };
 
-    async swap(...args: any[]): Promise<any> {
+    async swap(...args: any): Promise<any> {
 
         try {
 
@@ -149,7 +174,7 @@ export class NewIntentHandler {
 
             };
 
-            const result = await this.contract[methodInfo.method](...args);
+            const result = await this.contract[methodInfo.method]([...args]);
 
             return result;
 
@@ -160,7 +185,7 @@ export class NewIntentHandler {
 
     };
 
-    async borrow(...args: any[]): Promise<any> {
+    async borrow(...args: any): Promise<any> {
 
         try {
 
@@ -179,7 +204,7 @@ export class NewIntentHandler {
 
             };
 
-            const result = await this.contract[methodInfo.method](...args);
+            const result = await this.contract[methodInfo.method]([...args]);
 
             return result;
 
@@ -190,7 +215,7 @@ export class NewIntentHandler {
 
     };
 
-    async bridge(...args: any[]): Promise<any> {
+    async bridge(...args: any): Promise<any> {
 
         try {
 
@@ -208,15 +233,151 @@ export class NewIntentHandler {
                 throw new Error(`Incorrect number of arguments provided. Expected ${methodInfo.arg.length}, got ${args.length}.`);
             };
 
-            const params = [this.address, ...args];
+            const result = await this.contract[methodInfo.method]([...args]);
 
-            const result = await this.contract[methodInfo.method](...params);
+            console.log(result);
 
             return result;
 
         } catch (e) {
 
             console.log(e);
+        };
+
+    };
+
+
+    async searchTrendingCoins({ dex }: { dex: string }) {
+
+        try {
+
+            switch (dex) {
+
+                case "coingecko":
+
+                    return await toolkit.searchTrendingCoinsFromCoinGecko();
+
+                case "coinmarketcap":
+
+                    return toolkit.searchTrendingCoinsFromCoinGecko();
+
+                default:
+
+                    return toolkit.searchTrendingCoinsFromCoinGecko();
+            };
+
+        } catch (error: any) {
+
+            if (error?.response?.status === 500 || error?.response?.status === 403)
+                toolkit.slackNotify({
+                    message: JSON.stringify(error?.response?.message),
+                });
+
+            return {
+
+                status: true,
+
+                type: "default-text",
+
+                message: `Unable to get trending: ${error?.message}`,
+
+            };
+
+        };
+
+    };
+
+    async getCoinPrice({
+        coin,
+        to = "usd",
+        dex,
+        amount = 1,
+    }: {
+        coin: string;
+        to?: string;
+        dex: string;
+        amount?: number;
+    }) {
+
+        try {
+
+            switch (dex) {
+
+                case "coingecko":
+
+                    return await toolkit.getCoinMarketChartFromCoinGecko(
+                        coin,
+                        amount,
+                        to
+                    );
+
+                case "coinmarketcap":
+
+                    return await toolkit.getCoinMarketChartFromCoinGecko(
+                        coin,
+                        amount,
+                        to
+                    );
+
+                default:
+
+                    return await toolkit.getCoinMarketChartFromCoinGecko(
+                        coin,
+                        amount,
+                        to
+                    );
+
+            }
+        } catch (error: any) {
+
+            if (error?.response?.status === 500 || error?.response?.status === 403)
+                toolkit.slackNotify({
+                    message: JSON.stringify(error?.response?.message),
+                });
+
+            return {
+
+                status: true,
+
+                type: "default-text",
+
+                message: `Unable to get coin price: ${error?.message}`,
+
+            };
+
+        };
+
+    };
+
+    async searchTotalMarketCap({ dex }: { dex: string }) {
+
+        try {
+
+            switch (dex) {
+
+                case "coingecko":
+
+                    return await toolkit.searchTotalMarketCapFromCoinGecko();
+
+                case "coinmarketcap":
+
+                    return toolkit.searchTotalMarketCapFromCoinGecko();
+
+                default:
+
+                    return toolkit.searchTotalMarketCapFromCoinGecko();
+
+            };
+
+        } catch (error: any) {
+
+            if (error?.response?.status === 500 || error?.response?.status === 403)
+                toolkit.slackNotify({
+                    message: JSON.stringify(error?.response?.message),
+                });
+
+            return false;
+
         };
 
     };
