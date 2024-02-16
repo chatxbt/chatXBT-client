@@ -48,6 +48,10 @@ export const doesNotContainWord = (str: string, word: string) => {
   return str.indexOf(word) === -1;
 };
 
+export const doesNotContainKeyword = (str: string, keyword: string) => {
+  return !str.toLowerCase().includes(keyword.toLowerCase());
+}
+
 // get bearer token
 export const getAuthToken = () =>
   customlocalStorage("connection-storage")?.token;
