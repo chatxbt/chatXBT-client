@@ -19,7 +19,7 @@ export const useAppEntry = (props: any) => {
     useEffect(() => {
       //   alert(wagmiData.address);
       !connected &&
-        _hasHydrated &&
+        // _hasHydrated &&
         wagmiData.isConnected &&
         wagmiData.address &&
         handleWalletSignIn(wagmiData.address);
