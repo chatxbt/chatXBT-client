@@ -25,49 +25,77 @@ export class NewResolver {
 
     async handleAction(messageObject: any) {
 
-        const handler = new NewIntentHandler();
+        try{
 
-        if (messageObject.Action.toLowerCase().includes('create wallet')) {
+            const handler = new NewIntentHandler();
 
-            const response = await handler.createWallet();
+            const action = messageObject.Action.toLowerCase();
+    
+            if (action.includes('create wallet')) {
+    
+                const response = await handler.createWallet();
+    
+                return response;
+    
+            };
+    
+            if (action.includes('trending coins')) {
+    
+                const dex = 'coingecko';
+    
+                const response = await handler.searchTrendingCoins({ dex });
+    
+                return response;
+    
+            };
+    
+            if (action.includes('get price')) {
+    
+                const dex = 'coingecko';
+    
+                const coin = messageObject.Value.toLowerCase() || messageObject.value.toLowerCase();
+    
+                const response = await handler.getCoinPrice({ dex, coin });
+    
+                return response;
+    
+            };
+    
+            if (action.includes('total market cap')) {
+    
+                const dex = 'coingecko';
+    
+                const response = await handler.searchTotalMarketCap({ dex });
+    
+                return response;
+    
+            };
+    
+            return {
 
-            return response;
+                type: "default-text",
+
+                status: true,
+
+                message: "Action not recognized",
+
+            };
+
+        } catch (e) {
+            
+            console.log(e);
+
+            return {
+                
+                type: "default-text",
+
+                status: true,
+
+                message: "your instruction is not clear enough",
+
+            };
 
         };
-
-        if (messageObject.Action.toLowerCase().includes('trending coins')) {
-
-            const dex = 'coingecko';
-
-            const response = await handler.searchTrendingCoins({ dex });
-
-            return response;
-
-        };
-
-        if (messageObject.Action.toLowerCase().includes('get price')) {
-
-            const dex = 'coingecko';
-
-            const coin = messageObject.Value.toLowerCase() || messageObject.value.toLowerCase();
-
-            const response = await handler.getCoinPrice({ dex, coin });
-
-            return response;
-
-        };
-
-        if (messageObject.Action.toLowerCase().includes('total market cap')) {
-
-            const dex = 'coingecko';
-
-            const response = await handler.searchTotalMarketCap({ dex });
-
-            return response;
-
-        };
-
-        return 'Action not recognized';
 
     };
 
