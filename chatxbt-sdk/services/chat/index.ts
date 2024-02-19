@@ -323,17 +323,7 @@ export const chat = (props: any) => {
 
       const { protocols } = lightPool;
 
-      const resolver = new chatxbtUtils.ChatXBTResolver({
-        intents,
-        dexKeys,
-        tokenKeys,
-        addresses,
-        address: wagmiData.address,
-        signer,
-        protocols
-      });
-
-      // const resolver = new NewResolver({
+      // const resolver = new chatxbtUtils.ChatXBTResolver({
       //   intents,
       //   dexKeys,
       //   tokenKeys,
@@ -343,25 +333,34 @@ export const chat = (props: any) => {
       //   protocols
       // });
 
+      const resolver = new NewResolver({
+        intents,
+        dexKeys,
+        tokenKeys,
+        addresses,
+        address: wagmiData.address,
+        signer,
+        protocols
+      });
+
       const xbtResolve = async (message: string) => {
         // cv prompting
-        // const { message: cv } = await conversationAiBot(message);
+        const { message: cv } = await conversationAiBot(message);
 
-        // if (chatxbtUtils.toolkit.doesNotContainWord(cv, "DEFI-DETECTED")) {
-        //   return {
-        //     status: true,
-        //     type: "default-text",
-        //     message: cv,
-        //   };
-        // }
+        if (chatxbtUtils.toolkit.doesNotContainWord(cv, "DEFI-DETECTED")) {
+          return {
+            status: true,
+            type: "default-text",
+            message: cv,
+          };
+        }
         // // nlp prompting
-        // const { message: msg } = await nlpAiBot(message);
+        const { message: msg } = await nlpAiBot(message);
+
         // alert(msg);
-        // const resolvedMessage: any = await resolver.resolveMsg(message, provider);
 
         // const resolvedMessage: any = await resolver.resolveMsg(msg, provider);
-        const resolvedMessage: any = await resolver.resolveMsg(message, provider);
-        // const resolvedMessage: any = await resolver.resolveMsg(message, provider, signer, protocols);
+        const resolvedMessage: any = await resolver.resolveMsg(msg, provider, signer, protocols);
 
         if (resolvedMessage?.status) {
           return resolvedMessage;
