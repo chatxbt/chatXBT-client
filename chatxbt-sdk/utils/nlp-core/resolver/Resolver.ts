@@ -25,52 +25,48 @@ export class NewResolver {
 
     async handleAction(messageObject: any) {
 
-        try{
+        try {
 
             const handler = new NewIntentHandler();
 
-            const action = messageObject.Action.toLowerCase();
-    
+            const action = messageObject.Action.toLowerCase() || messageObject.action.toLowerCase();
+
+            let dex = 'coingecko';
+
             if (action.includes('create wallet')) {
-    
+
                 const response = await handler.createWallet();
-    
+
                 return response;
-    
+
             };
-    
+
             if (action.includes('trending coins')) {
-    
-                const dex = 'coingecko';
-    
+
                 const response = await handler.searchTrendingCoins({ dex });
-    
+
                 return response;
-    
+
             };
-    
+
             if (action.includes('get price')) {
-    
-                const dex = 'coingecko';
-    
+
                 const coin = messageObject.Value.toLowerCase() || messageObject.value.toLowerCase();
-    
+
                 const response = await handler.getCoinPrice({ dex, coin });
-    
+
                 return response;
-    
+
             };
-    
+
             if (action.includes('total market cap')) {
-    
-                const dex = 'coingecko';
-    
+
                 const response = await handler.searchTotalMarketCap({ dex });
-    
+
                 return response;
-    
+
             };
-    
+
             return {
 
                 type: "default-text",
@@ -82,11 +78,11 @@ export class NewResolver {
             };
 
         } catch (e) {
-            
+
             console.log(e);
 
             return {
-                
+
                 type: "default-text",
 
                 status: true,
@@ -129,7 +125,7 @@ export class NewResolver {
                 toolkit.slackNotify({
                     message: JSON.stringify(e?.response?.message),
                 });
-            
+
             return {
                 type: "default-text",
 
