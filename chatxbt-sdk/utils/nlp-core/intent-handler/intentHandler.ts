@@ -240,7 +240,7 @@ export class NewIntentHandler {
                         token: "ETH"
 
                     },
-                    
+
                 };
 
 
@@ -277,8 +277,6 @@ export class NewIntentHandler {
 
         try {
 
-            console.log('[Intent-Handler: ---- Bridging]');
-
             if (!this.contract) {
 
                 throw new Error('Contract not initialized.');
@@ -292,8 +290,6 @@ export class NewIntentHandler {
             };
 
             const result = await this.contract[methodInfo.method](...args);
-
-            console.log(result);
 
             return result;
 
