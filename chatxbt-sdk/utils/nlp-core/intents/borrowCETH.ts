@@ -15,3 +15,7 @@ export const borrowEth = [
   ];
   
   // buy usdt on uniswap with 0.005 eth
+
+    // borrow usdt on compound with 0.005 eth
+
+    // borrow usdt on pancakeswap with 0.005 eth

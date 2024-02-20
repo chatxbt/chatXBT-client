@@ -174,7 +174,7 @@ export class NewIntentHandler {
 
             };
 
-            const result = await this.contract[methodInfo.method]([...args]);
+            const result = await this.contract[methodInfo.method](...args);
 
             return result;
 
@@ -189,24 +189,82 @@ export class NewIntentHandler {
 
         try {
 
-            console.log('[Intent-Handler: ---- Borrowing]');
+            if (window.ethereum) {
 
-            if (!this.contract) {
+                // @ts-ignore
+                await window.ethereum.send('eth_requestAccounts');
 
-                throw new Error('Contract not initialized.');
+                console.log('[Intent-Handler: ---- Borrowing]');
+
+                if (!this.contract) {
+
+                    throw new Error('Contract not initialized.');
+                };
+
+                const { methodInfo } = await this.validateDexAndMethod('borrow');
+
+                if (args.length !== methodInfo.arg.length) {
+
+                    throw new Error(`Incorrect number of arguments provided. Expected ${methodInfo.arg.length}, got ${args.length}.`);
+
+                };
+
+                let amountInEth;
+
+                if (args.length > 0) {
+
+                    const hex = args[0]._hex;
+
+                    const bigNumberValue = ethers.BigNumber.from(hex);
+
+                    amountInEth = ethers.utils.formatEther(bigNumberValue);
+
+                };
+
+                const result = await this.contract[methodInfo.method](...args);
+
+                return {
+
+                    type: "borrow",
+
+                    message: `${amountInEth} ETH borrowed successfully.`,
+
+                    status: true,
+
+                    metadata: {
+
+                        ...result,
+
+                        amount: amountInEth,
+
+                        token: "ETH"
+
+                    },
+                    
+                };
+
+
+            } else {
+
+                console.log(
+                    "Please install MetaMask or use a compatible dapp browser."
+                );
+
+                return {
+
+                    type: "borrow",
+
+                    message: `Please install MetaMask or use a compatible dapp browser.`,
+
+                    status: false,
+
+                    metadata: {
+                        // ...tx
+                    },
+
+                };
+
             };
-
-            const { methodInfo } = await this.validateDexAndMethod('borrow');
-
-            if (args.length !== methodInfo.arg.length) {
-
-                throw new Error(`Incorrect number of arguments provided. Expected ${methodInfo.arg.length}, got ${args.length}.`);
-
-            };
-
-            const result = await this.contract[methodInfo.method]([...args]);
-
-            return result;
 
         } catch (e) {
 
@@ -233,7 +291,7 @@ export class NewIntentHandler {
                 throw new Error(`Incorrect number of arguments provided. Expected ${methodInfo.arg.length}, got ${args.length}.`);
             };
 
-            const result = await this.contract[methodInfo.method]([...args]);
+            const result = await this.contract[methodInfo.method](...args);
 
             console.log(result);
 
