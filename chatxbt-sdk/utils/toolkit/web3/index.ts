@@ -127,15 +127,61 @@ export const checkIfprotocolExist = (protocols: Array<string>, text: string): bo
 }
 
 export const findMatchingDex = (messageObject: { [x: string]: any; }, dexes: string | any[]) => {
+
   for (const key in messageObject) {
+
     const value = messageObject[key];
-    if (typeof value === 'string') { 
+
+    if (typeof value === 'string') {
+
       const lowercaseValue = value.toLowerCase();
+
       if (dexes.includes(lowercaseValue)) {
+
         return lowercaseValue;
-      }
-    }
+
+      };
+
+    };
+
   };
 
   return 'dex not found';
-}
+
+};
+
+export const parseNlpBotResponse = async (response: any) => {
+
+  let data;
+
+  if (response.trim().startsWith('{')) {
+
+    try {
+
+      data = JSON.parse(response);
+
+    } catch (e) {
+
+      console.log('Error parsing nlp bot response', e);
+
+    };
+
+  } else {
+
+    data = {};
+
+    const lines = response.split('\n');
+
+    lines.forEach((line: any) => {
+
+      const [key, value] = line.split(':').map((part: any) => part.trim());
+
+      if (key) data[key] = value || null;
+
+    });
+
+  };
+
+  return data;
+
+};

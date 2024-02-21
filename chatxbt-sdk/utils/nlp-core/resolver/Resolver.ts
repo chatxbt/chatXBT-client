@@ -1,7 +1,7 @@
 import { toolkit } from "@chatxbt-sdk/utils";
 import { NewIntentHandler } from "../intent-handler/intentHandler";
 import { ethers } from "ethers";
-import { findMatchingDex } from "@chatxbt-sdk/utils/toolkit";
+import { findMatchingDex, parseNlpBotResponse } from "@chatxbt-sdk/utils/toolkit";
 
 export class NewResolver {
     private nlp = require("compromise");
@@ -24,7 +24,7 @@ export class NewResolver {
         this.signer = signer;
     };
 
-    async handleAction(messageObject: any) {
+    async handleDefiAction(messageObject: any) {
 
         try {
 
@@ -108,7 +108,7 @@ export class NewResolver {
 
                 status: true,
 
-                message: "Action not recognized",
+                message: `Action unrecognized. Please specify a DeFi action, such as creating a wallet, checking crypto prices, viewing trending coins, swapping, or borrowing.`,
 
             };
 
@@ -122,7 +122,7 @@ export class NewResolver {
 
                 status: true,
 
-                message: "your instruction is not clear enough",
+                message: "Your instruction is not clear enough",
 
             };
 
@@ -134,11 +134,11 @@ export class NewResolver {
 
         try {
 
-            const messageObject = JSON.parse(message);
+            const messageObject = await parseNlpBotResponse(message);
 
-            if (messageObject.Action) {
+            if (messageObject) {
 
-                const response = await this.handleAction(messageObject);
+                const response = await this.handleDefiAction(messageObject);
 
                 return response;
 
@@ -150,7 +150,7 @@ export class NewResolver {
 
                 status: true,
 
-                message: "your instruction is not clear enough"
+                message: "Your instruction is not clear enough"
 
             };
 
@@ -166,10 +166,10 @@ export class NewResolver {
 
                 status: true,
 
-                message: "your instruction is not clear enough",
+                message: "Your instruction is not clear enough",
 
             };
-        }
+        };
     };
 
-}
+};

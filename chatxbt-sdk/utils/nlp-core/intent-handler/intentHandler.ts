@@ -16,15 +16,15 @@ export class NewIntentHandler {
 
         this.contractConfig = contractConfig;
 
-        console.log(this.contractConfig);
-
         if (this.contractConfig) {
 
             this.protocol = this.getProtocol();
 
-            console.log(this.protocol, ' this is the protocol');
-
             this.initialize();
+
+            console.log(this.contractConfig);
+
+            console.log(this.protocol, ' this is the protocol');
 
         };
 
