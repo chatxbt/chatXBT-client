@@ -185,3 +185,33 @@ export const parseNlpBotResponse = async (response: any) => {
   return data;
 
 };
+
+
+// const templateConversation = {
+//   messageType: 'conversation',
+//   data: 'message'
+// };
+
+// const templateDefiCTA = {
+//   messageType: 'defi-detected',
+//   action: 'Buy',
+//   value: 'bitcoin',
+//   amount: 0.1,
+//   tokenToUse: 'ETH',
+//   tokenToBuy: 'USDC',
+//   Dex: 'uniswap'
+// };
+
+// const templateDefiRTD = {
+//   messageType: 'defi-detected',
+//   action: 'Get price',
+//   value: 'Bitcoin'
+// };
+
+// {
+//     "Action": "Swap",
+//     "Amount": 0.001,
+//     "Token to Use": "ETH",
+//     "Token to Swap": "USDT",
+//     "DEX": "1inch"
+// }

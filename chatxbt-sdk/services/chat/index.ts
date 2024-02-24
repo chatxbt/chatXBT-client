@@ -340,7 +340,8 @@ export const chat = (props: any) => {
         addresses,
         address: wagmiData.address,
         signer,
-        protocols
+        protocols,
+        wagmiData
       });
 
       const xbtResolve = async (message: string) => {

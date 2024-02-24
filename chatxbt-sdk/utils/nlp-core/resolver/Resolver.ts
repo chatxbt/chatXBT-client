@@ -11,9 +11,10 @@ export class NewResolver {
     private tokenKeys = "";
     private protocols: any;
     private signer: any;
+    private wagmiData: any;
 
 
-    constructor({ intents, dexKeys, tokenKeys, addresses, address, signer, protocols }: any) {
+    constructor({ intents, dexKeys, tokenKeys, addresses, address, signer, protocols, wagmiData }: any) {
 
         // configure
         this.intents = intents;
@@ -22,6 +23,7 @@ export class NewResolver {
         this.addresses = new Map(addresses);
         this.protocols = protocols;
         this.signer = signer;
+        this.wagmiData = wagmiData;
     };
 
     async handleDefiAction(messageObject: any) {
@@ -95,12 +97,52 @@ export class NewResolver {
                     const amountInWei = ethers.utils.parseEther(amountInEthString);
 
                     const response = await borrowHandler.borrow(amountInWei);
-    
+
                     return response;
 
                 };
 
             };
+
+            if (action.includes('swap')) {
+
+                const getDexFromMessageObject = findMatchingDex(messageObject, dexes);
+
+                const contractConfig = {
+
+                    dex: getDexFromMessageObject,
+
+                    protocols: this.protocols,
+
+                    signer: this.signer
+
+                };
+
+                const amount = messageObject.Amount;
+
+                if (amount !== undefined) {
+
+                    let amountInString = amount.toString();
+
+                    const swapArgs = {
+
+                        amountIn: amountInString,
+    
+                        toToken: messageObject['Token to Buy'] || messageObject['Token to Get'] || messageObject['Token to Swap'],
+    
+                        fromToken: messageObject['Token to Use']
+    
+                    };
+    
+                    const swapHandler = new NewIntentHandler(contractConfig);
+    
+                    const response = await swapHandler.swap(swapArgs);
+    
+                    return response;
+
+                };
+
+            }
 
             return {
 

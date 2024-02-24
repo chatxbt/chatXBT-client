@@ -57,7 +57,9 @@ export class NewIntentHandler {
 
             };
 
-            this.contract = new ethers.Contract(this.protocol.contractAddress, this.protocol.abi, signer);
+            let contractAddress = this.protocol.contractAddress || this.protocol.contractAddress[signer.provider._network.name];
+
+            this.contract = new ethers.Contract(contractAddress, this.protocol.abi, signer);
 
             this.setRecipientAddress(this.protocol.contractAddress);
 
@@ -155,7 +157,7 @@ export class NewIntentHandler {
 
     };
 
-    async swap(...args: any): Promise<any> {
+    async swap(args: any): Promise<any> {
 
         try {
 
@@ -168,19 +170,56 @@ export class NewIntentHandler {
 
             const { methodInfo } = await this.validateDexAndMethod('swap');
 
-            if (args.length !== methodInfo.arg.length) {
+            const { amountIn, toToken, fromToken } = args;
 
-                throw new Error(`Incorrect number of arguments provided. Expected ${methodInfo.arg.length}, got ${args.length}.`);
+            const { signer } = this.contractConfig;
+
+            console.log(args);
+
+            const swapParams = {
+
+                signer: signer,
+
+                receiverAddress: signer._address,
+
+                // amountIn: ethers.utils.parseEther(amountIn),
+
+                amountIn: amountIn,
+
+                toToken: toToken,
+
+                fromToken: fromToken,
+
+                abi: this.protocol.abi,
+
+                router: this.protocol.contractAddress,
+
+                // router: this.protocol.contractAddress[signer.provider._network.name],
+
+                chain: signer.provider._network.chainId,
+
+                contract: this.contract,
+
+                ethers: ethers
 
             };
 
-            const result = await this.contract[methodInfo.method](...args);
+            console.log(swapParams);
+
+            // const result = await this.contract[methodInfo.method](...args);
+
+            // const customCallFunction = new Function(methodInfo.customCall);
+
+            const customCallFunction = eval(`(${methodInfo.customCall})`);
+
+            const result = await customCallFunction(swapParams);
 
             return result;
 
         } catch (e) {
 
             console.log(e);
+
         };
 
     };
