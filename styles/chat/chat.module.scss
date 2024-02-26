@@ -231,12 +231,13 @@
 
         .message {
             height: auto;
-            padding: 15px 14px;
+            padding: 15px;
             background: linear-gradient(180deg, rgba(94, 148, 255, 0.16) 0%, rgba(84, 142, 254, 0.1) 100%);
             border-radius: 8px;
             display: flex;
+            flex-direction: column;
             justify-content: left;
-            align-items: center;
+            align-items: left;
             text-align: left;
 
             p {
