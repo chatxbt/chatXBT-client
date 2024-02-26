@@ -12,6 +12,8 @@ export class NewIntentHandler {
 
     private address: string | undefined;
 
+    private network: string | undefined;
+
     constructor(contractConfig: ContractConfig | null = null) {
 
         this.contractConfig = contractConfig;
@@ -57,7 +59,7 @@ export class NewIntentHandler {
 
             };
 
-            let contractAddress = this.protocol.contractAddress || this.protocol.contractAddress[signer.provider._network.name];
+            let contractAddress = this.protocol.contractAddress || this.protocol.contractAddress[signer.provider._network.name.toLowerCase()];
 
             this.contract = new ethers.Contract(contractAddress, this.protocol.abi, signer);
 
@@ -122,7 +124,7 @@ export class NewIntentHandler {
 
         this.address = address;
 
-    }
+    };
 
     async createWallet(): Promise<any> {
 
@@ -192,9 +194,9 @@ export class NewIntentHandler {
 
                 abi: this.protocol.abi,
 
-                router: this.protocol.contractAddress,
+                // router: this.protocol.contractAddress,
 
-                // router: this.protocol.contractAddress[signer.provider._network.name],
+                router: this.protocol.contractAddress[signer.provider._network.name.toLowerCase()],
 
                 chain: signer.provider._network.chainId,
 
