@@ -38,6 +38,16 @@ export class NewResolver {
 
             let dexes = this.dexKeys?.split('|');
 
+            const defaultDex = {
+
+                swap: '1inch',
+
+                borrow: 'compound',
+
+                bridging: 'hop'
+
+            };
+
             if (action.includes('create wallet')) {
 
                 const response = await handler.createWallet();
@@ -78,7 +88,7 @@ export class NewResolver {
 
                 const contractConfig = {
 
-                    dex: getDexFromMessageObject,
+                    dex: getDexFromMessageObject ? getDexFromMessageObject : defaultDex.borrow,
 
                     protocols: this.protocols,
 
@@ -110,7 +120,7 @@ export class NewResolver {
 
                 const contractConfig = {
 
-                    dex: getDexFromMessageObject,
+                    dex: getDexFromMessageObject ? getDexFromMessageObject : defaultDex.swap,
 
                     protocols: this.protocols,
 

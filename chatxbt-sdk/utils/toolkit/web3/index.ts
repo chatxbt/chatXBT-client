@@ -146,7 +146,7 @@ export const findMatchingDex = (messageObject: { [x: string]: any; }, dexes: str
 
   };
 
-  return 'dex not found';
+  return undefined;
 
 };
 

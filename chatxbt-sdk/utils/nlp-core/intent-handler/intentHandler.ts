@@ -10,10 +10,6 @@ export class NewIntentHandler {
 
     private protocol: any;
 
-    private address: string | undefined;
-
-    private network: string | undefined;
-
     constructor(contractConfig: ContractConfig | null = null) {
 
         this.contractConfig = contractConfig;
@@ -59,11 +55,9 @@ export class NewIntentHandler {
 
             };
 
-            let contractAddress = this.protocol.contractAddress || this.protocol.contractAddress[signer.provider._network.name.toLowerCase()];
+            let contractAddress = this.protocol.contractAddress && this.protocol.contractAddress[signer.provider._network.name.toLowerCase()];
 
             this.contract = new ethers.Contract(contractAddress, this.protocol.abi, signer);
-
-            this.setRecipientAddress(this.protocol.contractAddress);
 
             console.log('[Contract initialized]');
 
@@ -72,24 +66,6 @@ export class NewIntentHandler {
             console.log(e);
 
         };
-
-    };
-
-    async exposeVariablesFromHandler() {
-
-        let address: string | undefined;
-
-        let config: any;
-
-        if (this.contractConfig) {
-
-            address = this.address;
-
-            config = this.contractConfig;
-
-        };
-
-        return { address, config };
 
     };
 
@@ -117,12 +93,6 @@ export class NewIntentHandler {
         };
 
         return { methodInfo };
-
-    };
-
-    setRecipientAddress(address: string) {
-
-        this.address = address;
 
     };
 
@@ -184,8 +154,6 @@ export class NewIntentHandler {
 
                 receiverAddress: signer._address,
 
-                // amountIn: ethers.utils.parseEther(amountIn),
-
                 amountIn: amountIn,
 
                 toToken: toToken,
@@ -193,8 +161,6 @@ export class NewIntentHandler {
                 fromToken: fromToken,
 
                 abi: this.protocol.abi,
-
-                // router: this.protocol.contractAddress,
 
                 router: this.protocol.contractAddress[signer.provider._network.name.toLowerCase()],
 
