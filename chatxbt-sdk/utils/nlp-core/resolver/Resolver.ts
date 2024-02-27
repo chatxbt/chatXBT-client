@@ -137,17 +137,57 @@ export class NewResolver {
                     const swapArgs = {
 
                         amountIn: amountInString,
-    
-                        toToken: messageObject['Token to Buy'] || messageObject['Token to Get'] || messageObject['Token to Swap'],
-    
+
+                        toToken: messageObject['Token to Buy'] || messageObject['Token to Get'] || messageObject['Token to Swap'] || messageObject['Token to Receive'],
+
                         fromToken: messageObject['Token to Use']
-    
+
                     };
-    
+
                     const swapHandler = new NewIntentHandler(contractConfig);
-    
+
                     const response = await swapHandler.swap(swapArgs);
-    
+
+                    return response;
+
+                };
+
+            }
+
+            if (action.includes('bridge')) {
+
+                const getDexFromMessageObject = findMatchingDex(messageObject, dexes);
+
+                const contractConfig = {
+
+                    dex: getDexFromMessageObject ? getDexFromMessageObject : defaultDex.swap,
+
+                    protocols: this.protocols,
+
+                    signer: this.signer
+
+                };
+
+                const amount = messageObject.Amount;
+
+                if (amount !== undefined) {
+
+                    let amountInString = amount.toString();
+
+                    const bridgeArgs = {
+
+                        amountIn: amountInString,
+
+                        toToken: messageObject['Token to Buy'] || messageObject['Token to Get'] || messageObject['Token to Swap'] || messageObject['Token to Receive'],
+
+                        fromToken: messageObject['Token to Use']
+
+                    };
+
+                    const bridgeHandler = new NewIntentHandler(contractConfig);
+
+                    const response = await bridgeHandler.bridge(bridgeArgs);
+
                     return response;
 
                 };

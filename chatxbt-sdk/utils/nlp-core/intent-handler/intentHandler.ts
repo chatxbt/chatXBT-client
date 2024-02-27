@@ -280,7 +280,7 @@ export class NewIntentHandler {
 
     };
 
-    async bridge(...args: any): Promise<any> {
+    async bridge(args: any): Promise<any> {
 
         try {
 
@@ -291,12 +291,45 @@ export class NewIntentHandler {
 
             const { methodInfo } = await this.validateDexAndMethod('bridge');
 
-            if (args.length !== methodInfo.arg.length) {
+            const { amountIn, toToken, fromToken } = args;
 
-                throw new Error(`Incorrect number of arguments provided. Expected ${methodInfo.arg.length}, got ${args.length}.`);
+            const { signer } = this.contractConfig;
+
+            console.log(args);
+
+            const bridgeParams = {
+
+                signer: signer,
+
+                receiverAddress: signer._address,
+
+                amountIn: amountIn,
+
+                toToken: toToken,
+
+                fromToken: fromToken,
+
+                abi: this.protocol.abi,
+
+                router: this.protocol.contractAddress[signer.provider._network.name.toLowerCase()],
+
+                chain: signer.provider._network.chainId,
+
+                contract: this.contract,
+
+                ethers: ethers
+
             };
 
-            const result = await this.contract[methodInfo.method](...args);
+            console.log(bridgeParams);
+
+            // const result = await this.contract[methodInfo.method](...args);
+
+            // const customCallFunction = new Function(methodInfo.customCall);
+
+            const customCallFunction = eval(`(${methodInfo.customCall})`);
+
+            const result = await customCallFunction(bridgeParams);
 
             return result;
 
