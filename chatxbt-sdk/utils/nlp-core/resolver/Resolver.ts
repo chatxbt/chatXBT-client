@@ -44,7 +44,7 @@ export class NewResolver {
 
                 borrow: 'compound',
 
-                bridging: 'hop'
+                bridge: 'hop'
 
             };
 
@@ -160,7 +160,7 @@ export class NewResolver {
 
                 const contractConfig = {
 
-                    dex: getDexFromMessageObject ? getDexFromMessageObject : defaultDex.swap,
+                    dex: getDexFromMessageObject ? getDexFromMessageObject : defaultDex.bridge,
 
                     protocols: this.protocols,
 

@@ -182,7 +182,26 @@ export class NewIntentHandler {
 
             const result = await customCallFunction(swapParams);
 
-            return result;
+            return {
+
+                status: true,
+
+                type: "swap",
+
+                message: "Swap successful",
+
+                metadata: {
+
+                    ...result,
+
+                    amount: amountIn,
+
+                    fromToken: fromToken,
+
+                    toToken: toToken
+
+                }
+            };
 
         } catch (e) {
 
@@ -331,7 +350,22 @@ export class NewIntentHandler {
 
             const result = await customCallFunction(bridgeParams);
 
-            return result;
+            return {
+
+                status: true,
+
+                type: "bridge",
+
+                message: "Your asset has been bridged successfully",
+
+                metadata: {
+
+                    ...result,
+
+                    amount: amountIn
+                }
+
+            }
 
         } catch (e) {
 
