@@ -6,6 +6,9 @@ export const lightPool = async () => {
       const { data, headers } = await chatxbtUtils
       .privateApiConnect()
       .get(`defi/light-pool`);
+
+      console.log('light-pool', data.data);
+      
       return {
         status: true,
         data: data.data,

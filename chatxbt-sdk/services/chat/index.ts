@@ -19,6 +19,7 @@ import {
 } from "wagmi";
 import { getContract } from "wagmi/actions";
 import { providers } from "ethers";
+import { NewResolver } from "@chatxbt-sdk/utils/nlp-core/resolver/Resolver";
 
 export const chat = (props: any) => {
   // data provider modules
@@ -227,7 +228,7 @@ export const chat = (props: any) => {
         });
     }
   };
-  
+
 
   const hints = chatxbtUtils.promptData.default.AIPrompts.filter((word) => {
     const typedCommand = message.toLowerCase();
@@ -317,15 +318,30 @@ export const chat = (props: any) => {
   const resolvePrompt = async (): Promise<any> => {
     try {
       console.log("walletClient", walletClient);
+
       const signer = walletClientToSigner(walletClient as any);
 
-      const resolver = new chatxbtUtils.ChatXBTResolver({
+      const { protocols } = lightPool;
+
+      // const resolver = new chatxbtUtils.ChatXBTResolver({
+      //   intents,
+      //   dexKeys,
+      //   tokenKeys,
+      //   addresses,
+      //   address: wagmiData.address,
+      //   signer,
+      //   protocols
+      // });
+
+      const resolver = new NewResolver({
         intents,
         dexKeys,
         tokenKeys,
         addresses,
         address: wagmiData.address,
         signer,
+        protocols,
+        wagmiData
       });
 
       const xbtResolve = async (message: string) => {
@@ -339,12 +355,14 @@ export const chat = (props: any) => {
             message: cv,
           };
         }
-        // nlp prompting
+        // // nlp prompting
         const { message: msg } = await nlpAiBot(message);
-        // alert(msg);
-        // const resolvedMessage: any = await resolver.resolveMsg(message, provider);
 
-        const resolvedMessage: any = await resolver.resolveMsg(msg, provider);
+        // alert(msg);
+
+        // const resolvedMessage: any = await resolver.resolveMsg(msg, provider);
+        const resolvedMessage: any = await resolver.resolveMsg(msg, provider, signer, protocols);
+
         if (resolvedMessage?.status) {
           return resolvedMessage;
         }
