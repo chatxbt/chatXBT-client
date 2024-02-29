@@ -48,6 +48,7 @@ export class NewResolver {
 
             };
 
+
             if (action.includes('create wallet')) {
 
                 const response = await handler.createWallet();
@@ -114,7 +115,7 @@ export class NewResolver {
 
             };
 
-            if (action.includes('swap')) {
+            if (action.includes('swap') || action.includes('convert') || action.includes('exchange') || action.includes('buy') || action.includes('sell')) {
 
                 const getDexFromMessageObject = findMatchingDex(messageObject, dexes);
 
