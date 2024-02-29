@@ -186,6 +186,14 @@ export const parseNlpBotResponse = async (response: any) => {
 
 };
 
+export const containsKeyValues = (param: string, keyValues: string[]) => {
+
+  console.log(param, keyValues);
+
+  return keyValues.some(key => key === param);
+
+}
+
 
 // const templateConversation = {
 //   messageType: 'conversation',
