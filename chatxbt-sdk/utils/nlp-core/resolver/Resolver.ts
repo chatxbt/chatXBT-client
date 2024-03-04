@@ -49,9 +49,11 @@ export class NewResolver {
             };
 
 
-            if (action.includes('create wallet')) {
+            if (action.includes('create wallet') || action.includes('create wallets')) {
 
-                const response = await handler.createWallet();
+                const walletsToCreate = messageObject['Number of Wallets'] || messageObject['Number'] || messageObject['Quantity'] || messageObject['Amount'];
+
+                const response = await handler.createWallet(walletsToCreate);
 
                 return response;
 
