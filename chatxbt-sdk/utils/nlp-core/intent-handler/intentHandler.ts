@@ -96,13 +96,33 @@ export class NewIntentHandler {
 
     };
 
-    async createWallet(): Promise<any> {
+    async createWallet(numWallets: number = 1): Promise<any> {
 
         try {
 
-            console.log('[Intent-Handler: ---- Creating new wallet]');
+            if (numWallets > 10) {
 
-            const wallet = ethers.Wallet.createRandom();
+                throw new Error('You can only create up to 10 wallets at a time.');
+
+            }
+
+            console.log(`[Intent-Handler: ---- Creating ${numWallets} new wallet(s)]`);
+
+            const wallets = [];
+
+            for (let i = 0; i < numWallets; i++) {
+
+                const wallet = ethers.Wallet.createRandom();
+
+                wallets.push({
+
+                    address: wallet.address,
+
+                    mnemonic: wallet.mnemonic.phrase
+
+                });
+
+            };
 
             return {
 
@@ -110,21 +130,28 @@ export class NewIntentHandler {
 
                 type: "create-wallet",
 
-                message: `Address: ${wallet.address}\n\n\n\nmnemonic: ${wallet.mnemonic.phrase}\n\n\n\n\n\n\n\nPlease keep these phrases safe, we cannot recover them for you if you lose them.`,
+                message: wallets.map(wallet => `Address: ${wallet.address}\nMnemonic: ${wallet.mnemonic}\n\nPlease keep these phrases safe, we cannot recover them for you if you lose them.\n`).join("\n\n"),
 
-                metadata: {
-
-                    ...wallet,
-
-                    mnemonic: wallet.mnemonic.phrase,
-
-                },
+                metadata: wallets
 
             };
 
         } catch (e) {
 
             console.log(e);
+
+            return {
+
+                status: false,
+
+                type: "default-text",
+
+                message: "You can only create up to 10 wallets at a time.",
+
+                metadata: null
+
+            };
+
         };
 
     };
@@ -362,7 +389,7 @@ export class NewIntentHandler {
 
                     ...result,
 
-                    amount: amountIn
+                    amount: amountIn,
                 }
 
             }
