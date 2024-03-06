@@ -324,6 +324,15 @@
             }
         }
 
+        #div{
+            width: 362px;
+            width: 600px;
+
+            @include responsivePro(mobile) {
+                width: 100%;
+            }
+        }
+
         .message {
             width: 362px;
             width: 600px;

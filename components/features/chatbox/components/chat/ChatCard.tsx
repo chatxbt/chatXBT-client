@@ -91,27 +91,42 @@ export const UserChatCard = (props: any) => {
               exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
             >
               <img src={dp} alt="" />
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+                id={style.div}
+              >
+                {metadata.map((data: any, index: any) => (
+                  <div
+                    className={style.message}
+                    key={index}
+                    style={{
+                      marginBottom: "10px",
+                    }}
+                  >
+                    <div id={style.card}>
+                      <h4>Address:</h4>
+                      <p>{data?.address}</p>
+                    </div>
+                    <div id={style.card}>
+                      <h4>mnemonic:</h4>
+                      <div id={style.mne}>
+                        {data?.mnemonic
+                          ?.split(" ")
+                          .map((data: any, index: any) => (
+                            <span key={index}>{data}</span>
+                          ))}
+                      </div>
+                    </div>
 
-              <div className={style.message}>
-                <div id={style.card}>
-                  <h4>Address:</h4>
-                  <p>{metadata?.address}</p>
-                </div>
-                <div id={style.card}>
-                  <h4>mnemonic:</h4>
-                  <div id={style.mne}>
-                    {metadata?.mnemonic
-                      .split(" ")
-                      .map((data: any, index: any) => (
-                        <span key={index}>{data}</span>
-                      ))}
+                    <h6>
+                      {`Please keep these phrases safe, we cannot recover them for you
+                    if you lose them.`}
+                    </h6>
                   </div>
-                </div>
-
-                <h6>
-                  {`Please keep these phrases safe, we cannot recover them for you
-                  if you lose them.`}
-                </h6>
+                ))}
               </div>
             </motion.div>
           )}
