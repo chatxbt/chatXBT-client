@@ -8,7 +8,7 @@ export const useAppEntry = (props: any) => {
     const defiService = chatxbtServices.defi(props);
     const {
       store: { _hasHydrated, wagmiData, variables, signMessageData, connected, googleLogin },
-      action: { handleWalletSignIn, signAndConnectUser, signOut },
+      action: { handleWalletSignIn, signAndConnectUser, signOut, checkUserNetwork },
     } = authService;
 
     const {
@@ -32,6 +32,10 @@ export const useAppEntry = (props: any) => {
       // signOut();
       !configured && connected && loadLightPoolAndInitialiseNlpCoreConfigs();
     }, [connected]);
+
+    useEffect(() => {
+      checkUserNetwork();
+    }, [wagmiData.isConnected, wagmiData.address]);
 
     useEffect(() => {
       // localStorage.clear();
@@ -60,5 +64,5 @@ export const useAppEntry = (props: any) => {
         loadLightPoolAndInitialiseNlpCoreConfigs,
       },
     };
-  } catch (error) {}
+  } catch (error) { }
 };
