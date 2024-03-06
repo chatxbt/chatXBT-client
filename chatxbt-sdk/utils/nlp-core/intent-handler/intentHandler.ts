@@ -1,513 +1,435 @@
+import { actionTypes } from "@chatxbt-sdk/config";
 import { ContractConfig } from "@chatxbt-sdk/interface/intent-handler";
 import { toolkit } from "@chatxbt-sdk/utils";
 import { ethers } from "ethers";
 
 export class NewIntentHandler {
+  private contract: any;
 
-    private contract: any;
+  private contractConfig: any;
 
-    private contractConfig: any;
+  private protocol: any;
 
-    private protocol: any;
+  constructor(contractConfig: ContractConfig | null = null) {
+    this.contractConfig = contractConfig;
 
-    constructor(contractConfig: ContractConfig | null = null) {
+    if (this.contractConfig) {
+      this.protocol = this.getProtocol();
 
-        this.contractConfig = contractConfig;
+      this.initialize();
 
-        if (this.contractConfig) {
+      console.log(this.contractConfig);
 
-            this.protocol = this.getProtocol();
+      console.log(this.protocol, " this is the protocol");
+    }
+  }
 
-            this.initialize();
+  private getProtocol() {
+    try {
+      const { dex, protocols } = this.contractConfig;
 
-            console.log(this.contractConfig);
+      return protocols.find((p: { name: any }) => p.name === dex);
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
-            console.log(this.protocol, ' this is the protocol');
+  private async initialize() {
+    try {
+      const { signer } = this.contractConfig;
 
-        };
+      if (this.protocol.abi === "" || !this.protocol.abi) {
+        throw new Error("Protocol ABI not found.");
+      }
 
-    };
+      let contractAddress =
+        this.protocol.contractAddress &&
+        this.protocol.contractAddress[
+          signer.provider._network.name.toLowerCase()
+        ];
 
-    private getProtocol() {
+      this.contract = new ethers.Contract(
+        contractAddress,
+        this.protocol.abi,
+        signer
+      );
 
-        try {
+      console.log("[Contract initialized]");
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
-            const { dex, protocols } = this.contractConfig;
+  private async validateDexAndMethod(methodName: string) {
+    const { dex } = this.contractConfig;
 
-            return protocols.find((p: { name: any; }) => p.name === dex);
+    if (!this.protocol) {
+      throw new Error("Protocol not found.");
+    }
 
-        } catch (e) {
+    if (!dex || !this.protocol.name.toLowerCase().includes(dex.toLowerCase())) {
+      throw new Error(`Dex "${dex}" not found in protocols.`);
+    }
 
-            console.log(e);
-        };
+    const methodInfo = this.protocol.mapping[methodName];
 
-    };
+    if (!methodInfo) {
+      throw new Error(
+        `Method "${methodName}" not found for "${dex}" protocol.`
+      );
+    }
 
-    private async initialize() {
+    return { methodInfo };
+  }
 
-        try {
+  async createWallet(): Promise<any> {
+    try {
+      console.log("[Intent-Handler: ---- Creating new wallet]");
 
-            const { signer } = this.contractConfig;
+      const wallet = ethers.Wallet.createRandom();
 
-            if (this.protocol.abi === "" || !this.protocol.abi) {
+      return {
+        status: true,
 
-                throw new Error('Protocol ABI not found.');
+        type: "create-wallet",
 
-            };
+        message: `Address: ${wallet.address}\n\n\n\nmnemonic: ${wallet.mnemonic.phrase}\n\n\n\n\n\n\n\nPlease keep these phrases safe, we cannot recover them for you if you lose them.`,
 
-            let contractAddress = this.protocol.contractAddress && this.protocol.contractAddress[signer.provider._network.name.toLowerCase()];
+        metadata: {
+          ...wallet,
 
-            this.contract = new ethers.Contract(contractAddress, this.protocol.abi, signer);
+          mnemonic: wallet.mnemonic.phrase,
+        },
+      };
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
-            console.log('[Contract initialized]');
+  async swap(args: any): Promise<any> {
+    try {
+      console.log("[Intent-Handler: ---- Swapping]");
 
-        } catch (e) {
+      if (!this.contract) {
+        throw new Error("Contract not initialized.");
+      }
 
-            console.log(e);
+      const { methodInfo } = await this.validateDexAndMethod("swap");
 
-        };
+      const { amountIn, toToken, fromToken } = args;
 
-    };
+      const { signer } = this.contractConfig;
 
+      console.log(args);
 
-    private async validateDexAndMethod(methodName: string) {
+      const swapParams = {
+        signer: signer,
 
-        const { dex } = this.contractConfig;
+        receiverAddress: signer._address,
 
-        if (!this.protocol) {
+        amountIn: amountIn,
 
-            throw new Error('Protocol not found.');
-        };
+        toToken: toToken,
 
-        if (!dex || !this.protocol.name.toLowerCase().includes(dex.toLowerCase())) {
+        fromToken: fromToken,
 
-            throw new Error(`Dex "${dex}" not found in protocols.`);
+        abi: this.protocol.abi,
 
-        };
+        router:
+          this.protocol.contractAddress[
+            signer.provider._network.name.toLowerCase()
+          ],
 
-        const methodInfo = this.protocol.mapping[methodName];
+        chain: signer.provider._network.chainId,
 
-        if (!methodInfo) {
+        contract: this.contract,
 
-            throw new Error(`Method "${methodName}" not found for "${dex}" protocol.`);
-        };
+        ethers: ethers,
+      };
 
-        return { methodInfo };
+      console.log(swapParams);
 
-    };
+      // const result = await this.contract[methodInfo.method](...args);
 
-    async createWallet(): Promise<any> {
+      // const customCallFunction = new Function(methodInfo.customCall);
 
-        try {
+      const customCallFunction = eval(`(${methodInfo?.customCall})`);
 
-            console.log('[Intent-Handler: ---- Creating new wallet]');
+      const result = await customCallFunction(swapParams);
+      console.log("SWAP RESULT: ", result);
 
-            const wallet = ethers.Wallet.createRandom();
+      return {
+        status: true,
 
-            return {
+        type: "swap",
 
-                status: true,
+        message: "Swap successful",
 
-                type: "create-wallet",
+        metadata: {
+          ...result,
 
-                message: `Address: ${wallet.address}\n\n\n\nmnemonic: ${wallet.mnemonic.phrase}\n\n\n\n\n\n\n\nPlease keep these phrases safe, we cannot recover them for you if you lose them.`,
+          amount: amountIn,
 
-                metadata: {
+          fromToken: fromToken,
 
-                    ...wallet,
+          from: result?.data?.from,
+          to: result?.data?.to,
 
-                    mnemonic: wallet.mnemonic.phrase,
+          toToken: toToken,
+          transactionHash: result?.data?.transactionHash,
+        },
+      };
+    } catch (e) {
+      console.error("SWAP ERROR: ", e);
+    }
+  }
 
-                },
+  async borrow(...args: any): Promise<any> {
+    try {
+      if (window.ethereum) {
+        // @ts-ignore
+        await window.ethereum.send("eth_requestAccounts");
 
-            };
+        console.log("[Intent-Handler: ---- Borrowing]");
 
-        } catch (e) {
-
-            console.log(e);
-        };
-
-    };
-
-    async swap(args: any): Promise<any> {
-
-        try {
-
-            console.log('[Intent-Handler: ---- Swapping]');
-
-            if (!this.contract) {
-
-                throw new Error('Contract not initialized.');
-            };
-
-            const { methodInfo } = await this.validateDexAndMethod('swap');
-
-            const { amountIn, toToken, fromToken } = args;
-
-            const { signer } = this.contractConfig;
-
-            console.log(args);
-
-            const swapParams = {
-
-                signer: signer,
-
-                receiverAddress: signer._address,
-
-                amountIn: amountIn,
-
-                toToken: toToken,
-
-                fromToken: fromToken,
-
-                abi: this.protocol.abi,
-
-                router: this.protocol.contractAddress[signer.provider._network.name.toLowerCase()],
-
-                chain: signer.provider._network.chainId,
-
-                contract: this.contract,
-
-                ethers: ethers
-
-            };
-
-            console.log(swapParams);
-
-            // const result = await this.contract[methodInfo.method](...args);
-
-            // const customCallFunction = new Function(methodInfo.customCall);
-
-            const customCallFunction = eval(`(${methodInfo.customCall})`);
-
-            const result = await customCallFunction(swapParams);
-
-            return {
-
-                status: true,
-
-                type: "swap",
-
-                message: "Swap successful",
-
-                metadata: {
-
-                    ...result,
-
-                    amount: amountIn,
-
-                    fromToken: fromToken,
-
-                    toToken: toToken
-
-                }
-            };
-
-        } catch (e) {
-
-            console.log(e);
-
-        };
-
-    };
-
-    async borrow(...args: any): Promise<any> {
-
-        try {
-
-            if (window.ethereum) {
-
-                // @ts-ignore
-                await window.ethereum.send('eth_requestAccounts');
-
-                console.log('[Intent-Handler: ---- Borrowing]');
-
-                if (!this.contract) {
-
-                    throw new Error('Contract not initialized.');
-                };
-
-                const { methodInfo } = await this.validateDexAndMethod('borrow');
-
-                if (args.length !== methodInfo.arg.length) {
-
-                    throw new Error(`Incorrect number of arguments provided. Expected ${methodInfo.arg.length}, got ${args.length}.`);
-
-                };
-
-                let amountInEth;
-
-                if (args.length > 0) {
-
-                    const hex = args[0]._hex;
-
-                    const bigNumberValue = ethers.BigNumber.from(hex);
-
-                    amountInEth = ethers.utils.formatEther(bigNumberValue);
-
-                };
-
-                const result = await this.contract[methodInfo.method](...args);
-
-                return {
-
-                    type: "borrow",
-
-                    message: `${amountInEth} ETH borrowed successfully.`,
-
-                    status: true,
-
-                    metadata: {
-
-                        ...result,
-
-                        amount: amountInEth,
-
-                        token: "ETH"
-
-                    },
-
-                };
-
-
-            } else {
-
-                console.log(
-                    "Please install MetaMask or use a compatible dapp browser."
-                );
-
-                return {
-
-                    type: "borrow",
-
-                    message: `Please install MetaMask or use a compatible dapp browser.`,
-
-                    status: false,
-
-                    metadata: {
-                        // ...tx
-                    },
-
-                };
-
-            };
-
-        } catch (e) {
-
-            console.log(e);
+        if (!this.contract) {
+          throw new Error("Contract not initialized.");
         }
 
-    };
+        const { methodInfo } = await this.validateDexAndMethod("borrow");
 
-    async bridge(args: any): Promise<any> {
+        if (args.length !== methodInfo.arg.length) {
+          throw new Error(
+            `Incorrect number of arguments provided. Expected ${methodInfo.arg.length}, got ${args.length}.`
+          );
+        }
 
-        try {
+        let amountInEth;
 
-            if (!this.contract) {
+        if (args.length > 0) {
+          const hex = args[0]._hex;
 
-                throw new Error('Contract not initialized.');
-            };
+          const bigNumberValue = ethers.BigNumber.from(hex);
 
-            const { methodInfo } = await this.validateDexAndMethod('bridge');
+          amountInEth = ethers.utils.formatEther(bigNumberValue);
+        }
 
-            const { amountIn, toToken, fromToken } = args;
+        const result = await this.contract[methodInfo.method](...args);
+        console.log("BORROW RESULT: ", result);
 
-            const { signer } = this.contractConfig;
+        return {
+          type: "borrow",
 
-            console.log(args);
+          message: `${amountInEth} ETH borrowed successfully.`,
 
-            const bridgeParams = {
+          status: true,
 
-                signer: signer,
+          metadata: {
+            ...result,
 
-                receiverAddress: signer._address,
+            amount: amountInEth,
 
-                amountIn: amountIn,
-
-                toToken: toToken,
-
-                fromToken: fromToken,
-
-                abi: this.protocol.abi,
-
-                router: this.protocol.contractAddress[signer.provider._network.name.toLowerCase()],
-
-                chain: signer.provider._network.chainId,
-
-                contract: this.contract,
-
-                ethers: ethers
-
-            };
-
-            console.log(bridgeParams);
-
-            // const result = await this.contract[methodInfo.method](...args);
-
-            // const customCallFunction = new Function(methodInfo.customCall);
-
-            const customCallFunction = eval(`(${methodInfo.customCall})`);
-
-            const result = await customCallFunction(bridgeParams);
-
-            return {
-
-                status: true,
-
-                type: "bridge",
-
-                message: "Your asset has been bridged successfully",
-
-                metadata: {
-
-                    ...result,
-
-                    amount: amountIn
-                }
-
-            }
-
-        } catch (e) {
-
-            console.log(e);
+            token: "ETH",
+          },
         };
+      } else {
+        console.log(
+          "Please install MetaMask or use a compatible dapp browser."
+        );
 
-    };
+        return {
+          type: "borrow",
 
+          message: `Please install MetaMask or use a compatible dapp browser.`,
 
-    async searchTrendingCoins({ dex }: { dex: string }) {
+          status: false,
 
-        try {
-
-            switch (dex) {
-
-                case "coingecko":
-
-                    return await toolkit.searchTrendingCoinsFromCoinGecko();
-
-                case "coinmarketcap":
-
-                    return toolkit.searchTrendingCoinsFromCoinGecko();
-
-                default:
-
-                    return toolkit.searchTrendingCoinsFromCoinGecko();
-            };
-
-        } catch (error: any) {
-
-            if (error?.response?.status === 500 || error?.response?.status === 403)
-                toolkit.slackNotify({
-                    message: JSON.stringify(error?.response?.message),
-                });
-
-            return {
-
-                status: true,
-
-                type: "default-text",
-
-                message: `Unable to get trending: ${error?.message}`,
-
-            };
-
+          metadata: {
+            // ...tx
+          },
         };
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
-    };
+  async bridge(args: any): Promise<any> {
+    try {
+      if (!this.contract) {
+        throw new Error("Contract not initialized.");
+      }
 
-    async getCoinPrice({
-        coin,
-        to = "usd",
-        dex,
-        amount = 1,
-    }: {
-        coin: string;
-        to?: string;
-        dex: string;
-        amount?: number;
-    }) {
+      const { methodInfo } = await this.validateDexAndMethod("bridge");
 
-        try {
+      const { amountIn, toToken, fromToken } = args;
 
-            switch (dex) {
+      const { signer } = this.contractConfig;
 
-                case "coingecko":
+      // console.log(args);
 
-                    return await toolkit.getCoinMarketChartFromCoinGecko(
-                        coin,
-                        amount,
-                        to
-                    );
+      const bridgeParams = {
+        signer: signer,
 
-                case "coinmarketcap":
+        receiverAddress: signer._address,
 
-                    return await toolkit.getCoinMarketChartFromCoinGecko(
-                        coin,
-                        amount,
-                        to
-                    );
+        amountIn: amountIn,
 
-                default:
+        toToken: toToken,
 
-                    return await toolkit.getCoinMarketChartFromCoinGecko(
-                        coin,
-                        amount,
-                        to
-                    );
+        fromToken: fromToken,
 
-            }
-        } catch (error: any) {
+        abi: this.protocol.abi,
 
-            if (error?.response?.status === 500 || error?.response?.status === 403)
-                toolkit.slackNotify({
-                    message: JSON.stringify(error?.response?.message),
-                });
+        router:
+          this.protocol.contractAddress[
+            signer.provider._network.name.toLowerCase()
+          ],
 
-            return {
+        chain: signer.provider._network.chainId,
 
-                status: true,
+        contract: this.contract,
 
-                type: "default-text",
+        ethers: ethers,
+      };
 
-                message: `Unable to get coin price: ${error?.message}`,
+      // console.log(this.contract);
+      // console.log(bridgeParams);
 
-            };
+      // const result = await this.contract[methodInfo.method](...args);
 
-        };
+      // const customCallFunction = new Function(methodInfo.customCall);
 
-    };
+      const customCallFunction = eval(`(${methodInfo?.customCall})`);
 
-    async searchTotalMarketCap({ dex }: { dex: string }) {
+      const result = await customCallFunction(bridgeParams);
+      // console.log("BRIDGE RESULT: ", result);
 
-        try {
+      return {
+        status: true,
 
-            switch (dex) {
+        type: "bridge",
 
-                case "coingecko":
+        message: "Your asset has been bridged successfully",
 
-                    return await toolkit.searchTotalMarketCapFromCoinGecko();
+        metadata: {
+          ...result,
 
-                case "coinmarketcap":
+          amountIn,
+          fromToken,
 
-                    return toolkit.searchTotalMarketCapFromCoinGecko();
+          from: result?.data?.from || signer?._address,
+          to:
+            this.contract?.address ||
+            this.protocol.contractAddress[
+              signer.provider._network.name.toLowerCase()
+            ],
 
-                default:
+          transactionHash: result?.data?.transactionHash,
+        },
+      };
+    } catch (e) {
+      console.log("BRIDGE ERROR: ", e);
+    }
+  }
 
-                    return toolkit.searchTotalMarketCapFromCoinGecko();
+  async searchTrendingCoins({ dex }: { dex: string }) {
+    try {
+      switch (dex) {
+        case "coingecko":
+          return await toolkit.searchTrendingCoinsFromCoinGecko();
 
-            };
+        case "coinmarketcap":
+          return await toolkit.searchTrendingCoinsFromCoinGecko();
 
-        } catch (error: any) {
+        default:
+          return await toolkit.searchTrendingCoinsFromCoinGecko();
+      }
+    } catch (error: any) {
+      if (error?.response?.status === 500 || error?.response?.status === 403)
+        toolkit.slackNotify({
+          message: JSON.stringify(error?.response?.message),
+        });
 
-            if (error?.response?.status === 500 || error?.response?.status === 403)
-                toolkit.slackNotify({
-                    message: JSON.stringify(error?.response?.message),
-                });
+      return {
+        status: true,
 
-            return false;
+        type: actionTypes.DEFAULT_TEXT,
 
-        };
+        message: `Unable to get trending: ${error?.message}`,
+      };
+    }
+  }
 
-    };
+  async getCoinPrice({
+    coin,
+    to = "usd",
+    dex,
+    amount = 1,
+  }: {
+    coin: string;
+    to?: string;
+    dex: string;
+    amount?: number;
+  }) {
+    try {
+      switch (dex) {
+        case "coingecko":
+          return await toolkit.getCoinMarketChartFromCoinGecko(
+            coin,
+            amount,
+            to
+          );
 
-};
+        case "coinmarketcap":
+          return await toolkit.getCoinMarketChartFromCoinGecko(
+            coin,
+            amount,
+            to
+          );
+
+        default:
+          return await toolkit.getCoinMarketChartFromCoinGecko(
+            coin,
+            amount,
+            to
+          );
+      }
+    } catch (error: any) {
+      if (error?.response?.status === 500 || error?.response?.status === 403)
+        toolkit.slackNotify({
+          message: JSON.stringify(error?.response?.message),
+        });
+
+      return {
+        status: true,
+
+        type: actionTypes.UNSUPPORTED, // Somto's
+
+        message: `Unable to get coin price: ${error?.message}`,
+      };
+    }
+  }
+
+  async searchTotalMarketCap({ dex }: { dex: string }) {
+    try {
+      switch (dex) {
+        case "coingecko":
+          return await toolkit.searchTotalMarketCapFromCoinGecko();
+
+        case "coinmarketcap":
+          return toolkit.searchTotalMarketCapFromCoinGecko();
+
+        default:
+          return toolkit.searchTotalMarketCapFromCoinGecko();
+      }
+    } catch (error: any) {
+      if (error?.response?.status === 500 || error?.response?.status === 403)
+        toolkit.slackNotify({
+          message: JSON.stringify(error?.response?.message),
+        });
+
+      return false;
+    }
+  }
+}
