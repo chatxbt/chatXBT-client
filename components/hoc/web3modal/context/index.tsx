@@ -28,6 +28,7 @@ createWeb3Modal({
   privacyPolicyUrl: 'https://www.myprivacypolicy.com',
   allWallets: 'ONLY_MOBILE', // SHOW HIDE,
   themeMode: 'dark',
+  enableOnramp: true,
 })
 
 export function ContextProvider({
