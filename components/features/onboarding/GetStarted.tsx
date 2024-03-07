@@ -3,16 +3,16 @@ import Image from "next/image";
 import style from "@styles/get-started/index.module.scss";
 import { icons } from "./data";
 import { motion } from "framer-motion";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+// import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useGoogleLogin, GoogleLogin } from "@react-oauth/google";
 
 export const Web3Button = () => {
   return <w3m-button />;
 };
 
-export const RainBow = () => {
-  return <ConnectButton />;
-};
+// export const RainBow = () => {
+//   return <ConnectButton />;
+// };
 
 const GetStarted = (props: any) => {
   const {

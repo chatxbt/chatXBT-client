@@ -3,7 +3,7 @@ import { randomBytes } from "crypto";
 import Web3 from "web3";
 import { useCallback, useMemo } from "react";
 import { ethers } from "ethers";
-import { useAccount, useSignMessage, useNetwork, useDisconnect } from "wagmi";
+import { useAccount, useSignMessage, useDisconnect } from "wagmi";
 import { recoverMessageAddress } from "viem";
 import { chatxbtDataProvider, chatxbtStore, chatxbtUtils } from "../..";
 import { useGoogleLogin } from "@react-oauth/google";
@@ -13,11 +13,11 @@ export const auth = (props: any) => {
   try {
     const { disconnect: walletDisconnect } = useDisconnect();
     const wagmiData = useAccount();
-    const { chain } = useNetwork();
+    // const { chain } = useNetwork();
     const {
       data: signMessageData,
       error: wgmE,
-      isLoading,
+      // isLoading,
       signMessage: wgsm,
       variables,
       signMessageAsync,

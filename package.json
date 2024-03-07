@@ -11,7 +11,8 @@
   "dependencies": {
     "@rainbow-me/rainbowkit": "^1.1.3",
     "@react-oauth/google": "^0.12.1",
-    "@web3modal/wagmi": "^3.3.2",
+    "@tanstack/react-query": "^5.25.0",
+    "@web3modal/wagmi": "^4.0.13",
     "apexcharts": "^3.42.0",
     "axios": "^0.27.2",
     "bootstrap": "5.1.3",
@@ -20,14 +21,14 @@
     "ethers": "5.7",
     "framer-motion": "6.2.4",
     "joi": "^17.9.2",
-    "next": "12.1.0",
+    "next": "^14.1.3",
     "next-recaptcha-v3": "^1.1.4",
     "nprogress": "^0.2.0",
-    "react": "17.0.2",
+    "react": "^18.2.0",
     "react-apexcharts": "^1.4.1",
     "react-autocomplete-hint": "^2.0.0",
     "react-chartjs-2": "^5.2.0",
-    "react-dom": "17.0.2",
+    "react-dom": "^18.2.0",
     "react-google-recaptcha-v3": "^1.10.1",
     "react-gtm-module": "^2.0.11",
     "react-icons": "^4.8.0",
@@ -35,8 +36,8 @@
     "slack-notify": "^2.0.7",
     "sweetalert": "^2.1.2",
     "uuid": "^9.0.0",
-    "viem": "^1.19.3",
-    "wagmi": "^1.4.7",
+    "viem": "^2.7.19",
+    "wagmi": "^2.5.7",
     "web3": "^1.10.2",
     "web3modal": "^1.9.12",
     "zustand": "^4.3.3"
@@ -44,16 +45,12 @@
   "devDependencies": {
     "@types/node": "18.8.3",
     "@types/nprogress": "^0.2.0",
-    "@types/react": "17.0.2",
-    "@types/react-dom": "17.0.2",
+    "@types/react": "^18.2.64",
+    "@types/react-dom": "^18.2.21",
     "@types/react-gtm-module": "^2.0.1",
     "@types/uuid": "^9.0.1",
     "eslint": "^8.54.0",
     "eslint-config-next": "12.1.0",
     "typescript": "^5.2.2"
-  },
-  "resolutions": {
-    "**/@types/react": "^17.0.21",
-    "**/@types/react-dom": "^17.0.9"
   }
 }
