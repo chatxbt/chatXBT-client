@@ -8,6 +8,7 @@ import { recoverMessageAddress } from "viem";
 import { chatxbtDataProvider, chatxbtStore, chatxbtUtils } from "../..";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
+import { toast } from 'react-toastify';
 
 export const auth = (props: any) => {
   try {
@@ -211,6 +212,25 @@ export const auth = (props: any) => {
       }
     };
 
+        const checkUserNetwork = async () => {
+
+        if (window.ethereum) {
+  
+          const networkId = await window.ethereum.request({ method: 'net_version' });
+  
+          if (networkId !== '5') {
+  
+            alert('Please switch to the Goerli network in MetaMask to use this application.');
+  
+          };
+  
+        } else {
+  
+          alert('Please install and enable MetaMask to use this application.');
+  
+        }
+      }
+
     const googleLogin = useGoogleLogin({
       onSuccess: async (tokenResponse: any) => {
         console.log(tokenResponse, '[Google authentication successful]');
@@ -299,7 +319,8 @@ export const auth = (props: any) => {
         getSigner,
         signAndConnectUser,
         signOut,
-        handleGoogleAuth
+        handleGoogleAuth,
+        checkUserNetwork
       },
       ...props,
     };
