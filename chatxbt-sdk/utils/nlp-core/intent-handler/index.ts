@@ -12,13 +12,11 @@ import oneInchAbi from "./1inch.json";
 import {
   useAccount,
   useSignMessage,
-  useNetwork,
   useDisconnect,
   useContractRead,
   useWalletClient,
   usePublicClient
 } from "wagmi";
-import { getContract } from 'wagmi/actions'
 
 export class IntentHandler {
   private contract: any;

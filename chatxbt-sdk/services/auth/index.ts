@@ -8,13 +8,11 @@ import { recoverMessageAddress } from "viem";
 import { chatxbtDataProvider, chatxbtStore, chatxbtUtils } from "../..";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
-import { toast } from 'react-toastify';
 
 export const auth = (props: any) => {
   try {
     const { disconnect: walletDisconnect } = useDisconnect();
     const wagmiData = useAccount();
-    // const { chain } = useNetwork();
     const {
       data: signMessageData,
       error: wgmE,
