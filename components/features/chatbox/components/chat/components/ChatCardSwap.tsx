@@ -49,12 +49,12 @@ const ChatCardSwap = (props: any) => {
             <h3>From</h3>
             <h5>
               {formatAddress(metadata.from, 10)}{" "}
-              {isCopied && copiedData === metadata.from ? (
+              {isCopied && copiedData === metadata?.from ? (
                 <IoIcons2.IoCopy className={style.iconCopy} />
               ) : (
                 <IoIcons2.IoCopyOutline
                   className={style.iconCopy}
-                  onClick={() => handleCopy(metadata.from)}
+                  onClick={() => handleCopy(metadata?.from)}
                 />
               )}
             </h5>
@@ -68,12 +68,12 @@ const ChatCardSwap = (props: any) => {
             <h3>To</h3>
             <h5>
               {formatAddress(metadata.to, 10)}{" "}
-              {isCopied && copiedData === metadata.to ? (
+              {isCopied && copiedData === metadata?.to ? (
                 <IoIcons2.IoCopy className={style.iconCopy} />
               ) : (
                 <IoIcons2.IoCopyOutline
                   className={style.iconCopy}
-                  onClick={() => handleCopy(metadata.to)}
+                  onClick={() => handleCopy(metadata?.to)}
                 />
               )}
             </h5>
@@ -81,7 +81,7 @@ const ChatCardSwap = (props: any) => {
         </div>
         <div className={style.chatCardBtns}>
           <Link
-            href={`https://goerli.etherscan.io/tx/${metadata.transactionHash}`}
+            href={`https://goerli.etherscan.io/tx/${metadata?.transactionHash}`}
           >
             <a target="_blank">
               <button type="button">

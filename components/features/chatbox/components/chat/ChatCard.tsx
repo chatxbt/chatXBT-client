@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import style from "@styles/chat/chat.module.scss";
 import { motion } from "framer-motion";
 import { actionTypes } from "@chatxbt-sdk/config/constants";
@@ -18,7 +17,7 @@ import {
 } from "@chatxbt-sdk/utils/ui-formatter-helpers";
 
 export const UserChatCard = (props: any) => {
-  const { dp, from, id, message, type, metadata } = props;
+  const { dp, from, id, message, type, metadata, status } = props;
 
   return (
     <>
@@ -40,6 +39,33 @@ export const UserChatCard = (props: any) => {
 
       {from === "bot" && (
         <>
+          {type === actionTypes.UNSUPPORTED && (
+            <motion.div
+              className={style.chatCardBot}
+              id={`${id}`}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
+            >
+              <img src={dp} alt="" />
+
+              <div className={style.message}>
+                <p>
+                  Sorry, your query is not currently supported, but you can add
+                  custom protocols and tokens{" "}
+                  <a
+                    href="https://github.com/deltastackhq/openAi"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    here
+                  </a>
+                  .
+                </p>
+              </div>
+            </motion.div>
+          )}
+
           {type === actionTypes.DEFAULT_TEXT && (
             <motion.div
               className={style.chatCardBot}
