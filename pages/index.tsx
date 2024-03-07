@@ -31,3 +31,4 @@ const Home = (props: any) => {
 
 // export default Home;
 export default (props: any) => <Home {...chatxbtHooks.useAppEntry(props)} />;
+

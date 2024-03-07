@@ -10,14 +10,11 @@ import { actionTypes } from "@chatxbt-sdk/config/constants";
 import {
   useAccount,
   useSignMessage,
-  useNetwork,
   useDisconnect,
-  useContractRead,
   useWalletClient,
   usePublicClient,
-  type WalletClient,
+  // type WalletClient,
 } from "wagmi";
-import { getContract } from "wagmi/actions";
 import { providers } from "ethers";
 import { NewResolver } from "@chatxbt-sdk/utils/nlp-core/resolver/Resolver";
 
@@ -98,11 +95,9 @@ export const chat = (props: any) => {
   }));
 
   const wagmiData = useAccount();
-  const { chain } = useNetwork();
   const {
     data: signMessageData,
     error: wgmE,
-    isLoading,
     signMessage: wgsm,
     variables,
     signMessageAsync,
@@ -110,12 +105,12 @@ export const chat = (props: any) => {
 
   // const publicClient = usePublicClient();
 
-  const { data: walletClient } = useWalletClient({ chainId: 5 });
+  const { data: walletClient } = useWalletClient({ chainId: wagmiData.chainId || 5 });
 
   const ref = useRef<null | HTMLDivElement>(null);
   const chatInputRef = useRef<null | HTMLInputElement>(null);
 
-  const walletClientToSigner = (walletClient: WalletClient) => {
+  const walletClientToSigner = (walletClient: any) => {
     const { account, chain, transport } = walletClient;
     console.log("chain", chain);
     const network = {
