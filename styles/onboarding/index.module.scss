@@ -1,0 +1,219 @@
+@import '../utils/functions.scss';
+
+.onBoarding {
+    padding: 40px 10px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 80vh;
+  
+    .mathsCon {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      z-index: 0;
+      height: 768px;
+      width: 100%;
+      background: linear-gradient(
+          rgba(2, 6, 17, 0.7),
+          rgba(2, 6, 17, 0.1),
+          rgba(2, 6, 17, 0.1),
+          rgba(2, 6, 17, 0.8)
+        ),
+        url(../../public/images/main/maths.png);
+    }
+  
+    #con {
+      position: relative;
+      z-index: 0;
+  
+      button {
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+  
+      #chats {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        border-radius: 20px;
+        width: 100%;
+        padding: 40px;
+  
+        @include responsivePro(mobile) {
+          padding: 0px;
+        }
+  
+        @include responsivePro(exception) {
+          padding: 20px;
+        }
+  
+        .chatLayout {
+          display: flex;
+          width: 70%;
+  
+          @include responsivePro(mobile) {
+            width: 100%;
+            padding: 0px;
+            flex-direction: column;
+          }
+      
+          @include responsivePro(exception) {
+            width: 90%;
+          }
+  
+          img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            margin-right: 10px;
+            margin-top: 10px;
+          }
+  
+          .chatBody {
+            display: flex;
+            flex-direction: column;
+            justify-content: left;
+            align-items: flex-start;
+            width: 85%;
+  
+            @include responsivePro(mobile) {
+              width: 100%;
+            }
+          }
+        }
+  
+        #chatCard {
+          margin-top: 10px;
+          width: 80%;
+          display: flex;
+          justify-content: left;
+          align-items: flex-start;
+  
+          @include responsivePro(mobile) {
+            width: 100%;
+          }
+  
+          @include responsivePro(exception) {
+            width: 90%;
+          }
+  
+          img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            margin-right: 10px;
+          }
+  
+          .message {
+            height: auto;
+            padding: 15px 14px;
+            background: linear-gradient(
+              180deg,
+              rgba(205, 207, 255, 0.19) 0%,
+              rgba(205, 207, 255, 0.15) 100%
+            );
+            border-radius: 8px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: left;
+            align-items: flex-start;
+            text-align: left;
+  
+            @include responsivePro(mobile) {
+              width: 100%;
+            }
+  
+            @include responsivePro(exception) {
+              width: 90%;
+            }
+  
+            span {
+              font-size: 14px;
+              margin: 0px;
+            }
+  
+            .inputDiv {
+              width: 340px;
+              height: 50px;
+              display: flex;
+              margin-top: 10px;
+  
+              @include responsivePro(mobile) {
+                width: 100%;
+              }
+  
+              @include responsivePro(exception) {
+                width: 100%;
+              }
+  
+              #userReply {
+                display: flex;
+                justify-content: left;
+                align-items: center;
+  
+                div {
+                  height: 40px;
+                  width: 40px;
+                  border-radius: 50%;
+                  font-size: 1.7rem;
+                  font-weight: 900;
+                  background: linear-gradient(
+                    151.71deg,
+                    #fc7916 6.43%,
+                    #880ef7 56.45%,
+                    #1c4df0 74.55%
+                  );
+                  color: #fff;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  text-align: center;
+                  margin-right: 10px;
+                }
+              }
+  
+              input {
+                width: 80%;
+                height: 100%;
+                background: transparent;
+                color: #fff;
+                padding: 5px;
+                border: 1px solid transparent;
+                outline: none;
+              }
+  
+              button {
+                width: 20%;
+                height: 100%;
+                border: 1px solid transparent;
+                background: #1c4df0;
+                border-radius: 5px;
+                border: 1px solid transparent;
+                color: #fff;
+              }
+            }
+          }
+        }
+  
+        #btn {
+          height: 60px;
+          border: 1px solid transparent;
+          background: #1c4df0;
+          border-radius: 5px;
+          border: 1px solid transparent;
+          color: #fff;
+          padding: 0px 20px;
+          margin-top: 20px;
+  
+          @include responsivePro(mobile) {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
