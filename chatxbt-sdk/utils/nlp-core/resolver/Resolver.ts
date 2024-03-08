@@ -104,7 +104,7 @@ export class NewResolver {
         if (amountInEth !== undefined) {
           const amountInEthString = amountInEth.toString();
 
-          const amountInWei = ethers.utils.parseEther(amountInEthString);
+          const amountInWei = ethers.parseEther(amountInEthString);
 
           const response = await borrowHandler.borrow(amountInWei);
 
