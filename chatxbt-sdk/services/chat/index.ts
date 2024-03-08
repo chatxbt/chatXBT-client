@@ -15,7 +15,7 @@ import {
   usePublicClient,
   // type WalletClient,
 } from "wagmi";
-import { providers } from "ethers";
+import { BrowserProvider, JsonRpcSigner } from "ethers";
 import { NewResolver } from "@chatxbt-sdk/utils/nlp-core/resolver/Resolver";
 
 export const chat = (props: any) => {
@@ -110,7 +110,7 @@ export const chat = (props: any) => {
   const ref = useRef<null | HTMLDivElement>(null);
   const chatInputRef = useRef<null | HTMLInputElement>(null);
 
-  const walletClientToSigner = (walletClient: any) => {
+  const walletClientToSigner = async (walletClient: any) => {
     const { account, chain, transport } = walletClient;
     console.log("chain", chain);
     const network = {
@@ -119,8 +119,9 @@ export const chat = (props: any) => {
       ensAddress: chain.contracts?.ensRegistry?.address,
     };
     console.log("network", network);
-    const provider = new providers.Web3Provider(transport, network);
-    const signer = provider.getSigner(account.address);
+    const provider = new BrowserProvider(transport, network);
+    // const signer = new JsonRpcSigner(provider, account.address);
+    const signer = await provider.getSigner(account.address);
     return signer;
   };
 
@@ -314,7 +315,7 @@ export const chat = (props: any) => {
     try {
       console.log("walletClient", walletClient);
 
-      const signer = walletClientToSigner(walletClient as any);
+      const signer = await walletClientToSigner(walletClient as any);
 
       const { protocols } = lightPool;
 

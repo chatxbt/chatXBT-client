@@ -104,7 +104,7 @@ export const auth = (props: any) => {
           ],
         });
 
-        return { signer, signature, address: ethers.utils.getAddress(account) };
+        return { signer, signature, address: ethers.getAddress(account) };
       } catch (error: any) {
         if (error?.response?.status === 500 || error?.response?.status === 403)
           chatxbtUtils.toolkit.slackNotify({

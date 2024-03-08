@@ -224,10 +224,14 @@ const Main = () => {
                     >
                       <div className={style.message}>
                         <span>
-                          Kindly read our <Link href={"/"}>TOC</Link> and{" "}
-                          <Link href={"/"}>Docs</Link> as it will provide you
-                          with the necessary information and guidelines for
-                          ChatXBT
+                          Kindly read our{" "}
+                          <Link
+                            href={"https://docs.chatxbt.com/chatxbt-protocol/"}
+                          >
+                            Docs
+                          </Link>{" "}
+                          as it will provide you with the necessary information
+                          and guidelines for ChatXBT
                         </span>
                       </div>
                     </motion.div>
@@ -298,7 +302,7 @@ const Main = () => {
                   </motion.div>
                   <button
                     id={style.btn}
-                    onClick={() => router.push("/dashboard")}
+                    onClick={() => router.push("/dashboard/chat")}
                   >
                     Get Started
                   </button>

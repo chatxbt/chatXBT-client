@@ -1,7 +1,7 @@
 import { actionTypes } from "@chatxbt-sdk/config";
 import { ContractConfig } from "@chatxbt-sdk/interface/intent-handler";
 import { toolkit } from "@chatxbt-sdk/utils";
-import { ethers } from "ethers";
+import { ethers, BigNumberish } from "ethers";
 
 export class NewIntentHandler {
   private contract: any;
@@ -93,12 +93,12 @@ export class NewIntentHandler {
 
         type: "create-wallet",
 
-        message: `Address: ${wallet.address}\n\n\n\nmnemonic: ${wallet.mnemonic.phrase}\n\n\n\n\n\n\n\nPlease keep these phrases safe, we cannot recover them for you if you lose them.`,
+        message: `Address: ${wallet.address}\n\n\n\nmnemonic: ${wallet?.mnemonic?.phrase}\n\n\n\n\n\n\n\nPlease keep these phrases safe, we cannot recover them for you if you lose them.`,
 
         metadata: {
           ...wallet,
 
-          mnemonic: wallet.mnemonic.phrase,
+          mnemonic: wallet?.mnemonic?.phrase,
         },
       };
     } catch (e) {
@@ -125,7 +125,7 @@ export class NewIntentHandler {
       const swapParams = {
         signer: signer,
 
-        receiverAddress: signer._address,
+        receiverAddress: signer.address,
 
         amountIn: amountIn,
 
@@ -209,9 +209,9 @@ export class NewIntentHandler {
         if (args.length > 0) {
           const hex = args[0]._hex;
 
-          const bigNumberValue = ethers.BigNumber.from(hex);
+          const bigNumberValue = ethers.toBigInt(hex);
 
-          amountInEth = ethers.utils.formatEther(bigNumberValue);
+          amountInEth = ethers.formatEther(bigNumberValue);
         }
 
         const result = await this.contract[methodInfo.method](...args);
@@ -271,7 +271,7 @@ export class NewIntentHandler {
       const bridgeParams = {
         signer: signer,
 
-        receiverAddress: signer._address,
+        receiverAddress: signer.address,
 
         amountIn: amountIn,
 
