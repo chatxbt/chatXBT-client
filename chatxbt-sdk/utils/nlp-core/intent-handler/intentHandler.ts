@@ -125,7 +125,7 @@ export class NewIntentHandler {
       const swapParams = {
         signer: signer,
 
-        receiverAddress: signer._address,
+        receiverAddress: signer.address,
 
         amountIn: amountIn,
 
@@ -271,7 +271,7 @@ export class NewIntentHandler {
       const bridgeParams = {
         signer: signer,
 
-        receiverAddress: signer._address,
+        receiverAddress: signer.address,
 
         amountIn: amountIn,
 
