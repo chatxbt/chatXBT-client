@@ -6,8 +6,8 @@ import ComingSoon from "../ComingSoon";
 const WalletComponent = () => {
   return (
     <ChatBoxLayoutV1>
-        <ComingSoon />
-        {/* <Main /> */}
+      {/* <ComingSoon /> */}
+      <Main />
     </ChatBoxLayoutV1>
   );
 };

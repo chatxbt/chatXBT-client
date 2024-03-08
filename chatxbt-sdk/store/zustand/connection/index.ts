@@ -1,10 +1,9 @@
 import { ConnectionStore } from "@chatxbt-sdk/interface/connection";
 import { toolkit } from "@chatxbt-sdk/utils";
 import { create } from "zustand";
-import { devtools, persist, createJSONStorage } from 'zustand/middleware'
+import { devtools, persist, createJSONStorage } from "zustand/middleware";
 
-
-const storageName = 'connection-storage'
+const storageName = "connection-storage";
 
 export const useConnectionStore = create<ConnectionStore>()(
   devtools(
@@ -15,17 +14,38 @@ export const useConnectionStore = create<ConnectionStore>()(
         address: "",
         token: null,
         userInfo: null,
-        provider: '',
+        provider: "",
         visibleAddress: "",
         _hasHydrated: false,
         signMessage: (signature: string) => {
-          set({ signature })
+          set({ signature });
         },
-        connect: (userInfo: any, token: string, address: string, signature: string, provider: string) => {
-          set({ userInfo, token, provider, address, signature, visibleAddress: toolkit.ellipticAddress(address), connected: true })
+        connect: (
+          userInfo: any,
+          token: string,
+          address: string,
+          signature: string,
+          provider: string
+        ) => {
+          set({
+            userInfo,
+            token,
+            provider,
+            address,
+            signature,
+            visibleAddress: toolkit.ellipticAddress(address),
+            connected: true,
+          });
         },
         disconnect: () => {
-          set({ provider: '', address: "", token: "", signature: null, visibleAddress: "", connected: false });
+          set({
+            provider: "",
+            address: "",
+            token: "",
+            signature: null,
+            visibleAddress: "",
+            connected: false,
+          });
           // window.localStorage.removeItem(storageName);
         },
         setHasHydrated: (state: any) => {
@@ -53,5 +73,4 @@ export const useConnectionStore = create<ConnectionStore>()(
       }
     )
   )
-)
-
+);
