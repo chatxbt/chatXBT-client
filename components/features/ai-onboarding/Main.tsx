@@ -4,8 +4,12 @@ import { motion } from "framer-motion";
 // import Typewriter from "@chatxbt-sdk/utils/typewritter/Typewriter";
 import Link from "next/link";
 import Typewriter from "@chatxbt-sdk/utils/typewriter/Typewriter";
+import { FcApproval } from "react-icons/fc";
+import { chatxbtUtils } from "@chatxbt-sdk/index";
+import { useRouter } from "next/router";
 
 const Main = () => {
+  const router = useRouter();
   const [userName, setUsername] = useState("");
   const [messages, setMessages] = useState([
     "Hello! Welcome to ChatXBT.",
@@ -26,21 +30,50 @@ const Main = () => {
     useState(false);
   const [hideInput, setHideInput] = useState(false);
 
+  const [showFeatures, setShowFeatures] = useState(false);
+
   const handleAllFirstMessagesRendered = () => {
     setAllMessagesRendered(true);
   };
 
-    const handleAllSecondMessagesRendered = () => {
-      if(currentNextMessageIndex === 2) setAllSecondMessagesRendered(true);
-    };
-    
+  const handleAllSecondMessagesRendered = () => {
+    if (currentNextMessageIndex === 2) setAllSecondMessagesRendered(true);
+  };
+
   const triggerNextConversation = () => {
     if (userName.length > 0) {
       setStartNextConversation(true);
       setHideInput(true);
+      handleUserProfileName(userName);
     } else {
       setStartNextConversation(false);
       setHideInput(false);
+    }
+  };
+
+  const handleShowAppFeatures = () => {
+    setShowFeatures(true);
+  };
+
+  const handleUserProfileName = async (displayName: any) => {
+    try {
+      let authProvider = "google";
+      const { data } = await chatxbtUtils
+        .privateApiConnect()
+        .put("user/update-profile", { displayName });
+      console.log(data);
+      // return {
+      //   status: true,
+      //   data: data,
+      //   message: data
+      // }
+    } catch (error: any) {
+      console.log(error);
+      // return {
+      //   status: false,
+      //   message: error.message,
+      //   error: true,
+      // }
     }
   };
 
@@ -83,32 +116,33 @@ const Main = () => {
 
   return (
     <div className={`container-fluid ${style.onBoarding}`}>
-      <div className={style.mathsCon}></div>
+      {/* <div className={style.mathsCon}></div> */}
       <div className="container" id={style.con}>
         <div id={style.chats}>
           <div className={style.chatLayout}>
             <img src={"/images/chat/bot.png"} alt="" />
             <div className={style.chatBody} ref={ref}>
-              {messages
-                .slice(0, currentMessageIndex + 1)
-                .map((message, index) => (
-                  <motion.div
-                    id={style.chatCard}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{
-                      opacity: 0,
-                      scale: 0.5,
-                      transition: { duration: 0.2 },
-                    }}
-                    key={index}
-                  >
-                    <div className={style.message}>
-                      <Typewriter text={message} speed={50} />
-                    </div>
-                  </motion.div>
-                ))}
-              {allMessagesRendered && (
+              {!showFeatures &&
+                messages
+                  .slice(0, currentMessageIndex + 1)
+                  .map((message, index) => (
+                    <motion.div
+                      id={style.chatCard}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{
+                        opacity: 0,
+                        scale: 0.5,
+                        transition: { duration: 0.2 },
+                      }}
+                      key={index}
+                    >
+                      <div className={style.message}>
+                        <Typewriter text={message} speed={50} />
+                      </div>
+                    </motion.div>
+                  ))}
+              {!showFeatures && allMessagesRendered && (
                 <>
                   <motion.div
                     id={style.chatCard}
@@ -153,7 +187,8 @@ const Main = () => {
                 </>
               )}
 
-              {startNextConversation &&
+              {!showFeatures &&
+                startNextConversation &&
                 finalMessages
                   .slice(0, currentNextMessageIndex + 1)
                   .map((message, index) => (
@@ -173,7 +208,37 @@ const Main = () => {
                       </div>
                     </motion.div>
                   ))}
-              {startNextConversation && allSecondMessagesRendered && (
+              {!showFeatures &&
+                startNextConversation &&
+                allSecondMessagesRendered && (
+                  <>
+                    <motion.div
+                      id={style.chatCard}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{
+                        opacity: 0,
+                        scale: 0.5,
+                        transition: { duration: 0.2 },
+                      }}
+                    >
+                      <div className={style.message}>
+                        <span>
+                          Kindly read our <Link href={"/"}>TOC</Link> and{" "}
+                          <Link href={"/"}>Docs</Link> as it will provide you
+                          with the necessary information and guidelines for
+                          ChatXBT
+                        </span>
+                      </div>
+                    </motion.div>
+                    {!showFeatures && (
+                      <button id={style.btn} onClick={handleShowAppFeatures}>
+                        Acknowledge & Continue
+                      </button>
+                    )}
+                  </>
+                )}
+              {showFeatures && (
                 <>
                   <motion.div
                     id={style.chatCard}
@@ -186,14 +251,57 @@ const Main = () => {
                     }}
                   >
                     <div className={style.message}>
-                      <span>
-                        Kindly read our <Link href={"/"}>TOC</Link> and{" "}
-                        <Link href={"/"}>Docs</Link> as it will provide you with
-                        the necessary information and guidelines for ChatXBT
-                      </span>
+                      {/* <span>On ChatXBT you can:</span> */}
+                      <Typewriter text="On ChatXBT you can:" speed={100} />
                     </div>
                   </motion.div>
-                  <button id={style.btn}>Acknowledge & Get Started</button>
+                  <motion.div
+                    className={style.features}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{
+                      opacity: 0,
+                      scale: 0.5,
+                      transition: { duration: 0.2 },
+                    }}
+                  >
+                    <div className={style.featureCard}>
+                      <i>
+                        <FcApproval />
+                      </i>
+                      <p>Create Wallet</p>
+                    </div>
+                    <div className={style.featureCard}>
+                      <i>
+                        <FcApproval />
+                      </i>
+                      <p>Check Coin Prices</p>
+                    </div>
+                    <div className={style.featureCard}>
+                      <i>
+                        <FcApproval />
+                      </i>
+                      <p>Check Trending Coins</p>
+                    </div>
+                    <div className={style.featureCard}>
+                      <i>
+                        <FcApproval />
+                      </i>
+                      <p>Check Total MarketCap</p>
+                    </div>
+                    <div className={style.featureCard}>
+                      <i>
+                        <FcApproval />
+                      </i>
+                      <p>Swap, Bridge, and Borrow Coins</p>
+                    </div>
+                  </motion.div>
+                  <button
+                    id={style.btn}
+                    onClick={() => router.push("/dashboard")}
+                  >
+                    Get Started
+                  </button>
                 </>
               )}
             </div>

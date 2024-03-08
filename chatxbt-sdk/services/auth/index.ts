@@ -1,6 +1,6 @@
 //@ts-ignore
 import { randomBytes } from "crypto";
-import Web3 from "web3";
+// import Web3 from "web3";
 import { useCallback, useMemo } from "react";
 import { ethers } from "ethers";
 import { useAccount, useSignMessage, useDisconnect } from "wagmi";
@@ -40,6 +40,7 @@ export const auth = (props: any) => {
       signMessage,
       connect,
       disconnect,
+      userInfo
     } = useConnectionStore((state: any) => ({
       signature: state.signature,
       connected: state.connected,
@@ -50,6 +51,7 @@ export const auth = (props: any) => {
       signMessage: state.signMessage,
       connect: state.connect,
       disconnect: state.disconnect,
+      userInfo: state.userInfo
     }));
 
     // waitlist store
@@ -309,6 +311,7 @@ export const auth = (props: any) => {
         loading,
         sendFormValid,
         error,
+        userInfo
       },
       action: {
         joinWaitlist,
@@ -318,7 +321,8 @@ export const auth = (props: any) => {
         signAndConnectUser,
         signOut,
         handleGoogleAuth,
-        checkUserNetwork
+        checkUserNetwork,
+        connect
       },
       ...props,
     };

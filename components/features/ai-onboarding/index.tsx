@@ -1,10 +1,13 @@
 import React from "react";
 import Main from "./Main";
+import GetStartedLayout from "@components/app-layout/layout/GetStartedLayout";
 
 const AiOnboardingComponent = () => {
   return (
     <>
-      <Main />
+      {/* <GetStartedLayout> */}
+        <Main />
+      {/* </GetStartedLayout> */}
     </>
   );
 };

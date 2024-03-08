@@ -7,14 +7,16 @@ export const useAppEntry = (props: any) => {
     const authService = chatxbtServices.auth(props);
     const defiService = chatxbtServices.defi(props);
     const {
-      store: { _hasHydrated, wagmiData, variables, signMessageData, connected, googleLogin },
-      action: { handleWalletSignIn, signAndConnectUser, signOut, checkUserNetwork },
+      store: { _hasHydrated, wagmiData, variables, signMessageData, connected, googleLogin, userInfo },
+      action: { handleWalletSignIn, signAndConnectUser, signOut, checkUserNetwork, connect },
     } = authService;
 
     const {
       store: { configured, lightPool },
       action: { loadLightPoolAndInitialiseNlpCoreConfigs },
     } = defiService;
+
+    // console.log(userInfo);
 
     useEffect(() => {
       //   alert(wagmiData.address);
