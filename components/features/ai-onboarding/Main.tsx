@@ -255,10 +255,10 @@ const Main = () => {
                   >
                     <div className={style.message}>
                       {/* <span>On ChatXBT you can:</span> */}
-                      <Typewriter text="On ChatXBT you can:" speed={100} />
+                      <Typewriter text="ChatXBT - is your crypto execution assistant. with chatXBT you can talk directly to your crypto and chatXBT will execute your command" speed={100} />
                     </div>
                   </motion.div>
-                  <motion.div
+                  {/* <motion.div
                     className={style.features}
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -298,7 +298,7 @@ const Main = () => {
                       </i>
                       <p>Swap, Bridge, and Borrow Coins</p>
                     </div>
-                  </motion.div>
+                  </motion.div> */}
                   <button
                     id={style.btn}
                     onClick={() => router.push("/dashboard/chat")}
