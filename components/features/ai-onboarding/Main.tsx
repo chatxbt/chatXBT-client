@@ -159,7 +159,7 @@ const Main = () => {
                       <div className={style.inputDiv}>
                         {hideInput ? (
                           <div id={style.userReply}>
-                            <div>{userName.charAt(0)}</div>
+                            <div>{userName.charAt(0).toUpperCase()}</div>
                             <span>{userName}</span>
                           </div>
                         ) : (

@@ -84,7 +84,8 @@ const ChatCardBridge = (props: any) => {
         </div>
         <div className={style.chatCardBtns}>
           <Link
-            href={`https://goerli.etherscan.io/tx/${metadata?.transactionHash}`}
+            href={`https://goerli.etherscan.io/tx/${metadata?.data?.hash}`}
+            legacyBehavior
           >
             <a target="_blank">
               <button type="button">
