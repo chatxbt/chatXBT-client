@@ -110,7 +110,7 @@ export const auth = (props: any) => {
           chatxbtUtils.toolkit.slackNotify({
             message: JSON.stringify(error?.response?.message),
           });
-        throw new chatxbtUtils.Issue(500, error?.message);
+        // throw new chatxbtUtils.Issue(500, error?.message);
       }
     };
 
@@ -189,12 +189,12 @@ export const auth = (props: any) => {
           const accounts = await ethereum.request({
             method: "eth_requestAccounts",
           });
-          const { signature, address } = await getSigner(provider, accounts[0]);
+          const { signature, address }: any = await getSigner(provider, accounts[0]);
           connect(address, signature, "metamask");
           // @ts-ignore
           window.ethereum.on("accountsChanged", async (accounts: string[]) => {
             if (accounts.length > 0) {
-              const { signature, address, signer } = await getSigner(
+              const { signature, address, signer }: any = await getSigner(
                 provider,
                 accounts[0]
               );
@@ -212,7 +212,7 @@ export const auth = (props: any) => {
           chatxbtUtils.toolkit.slackNotify({
             message: JSON.stringify(error?.response?.message),
           });
-        throw new chatxbtUtils.Issue(500, error?.message);
+        // throw new chatxbtUtils.Issue(500, error?.message);
       }
     };
 

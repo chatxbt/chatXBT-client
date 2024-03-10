@@ -2,11 +2,11 @@ import React from "react";
 import Main from "./Main";
 import GetStartedLayout from "@components/app-layout/layout/GetStartedLayout";
 
-const AiOnboardingComponent = () => {
+const AiOnboardingComponent = ({setOnboard}: any) => {
   return (
     <>
       {/* <GetStartedLayout> */}
-        <Main />
+        <Main setOnboard={setOnboard}/>
       {/* </GetStartedLayout> */}
     </>
   );
