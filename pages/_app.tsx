@@ -1,5 +1,5 @@
 import type { AppProps } from "next/app";
-import { SessionProvider } from 'next-auth/react'
+// import { SessionProvider } from 'next-auth/react'
 import "bootstrap/dist/css/bootstrap.css";
 import "../styles/utils/global.scss";
 import GoogleAnalytics from "../chatxbt-sdk/utils/google-analytics";
@@ -24,9 +24,9 @@ function MyApp({ Component, pageProps }: AppProps | any) {
             clientId={`${credentials.google.oauth.clientIdAuth}`}
           >
             <GoogleAnalytics />
-            <SessionProvider session={pageProps.session} refetchInterval={0}>
+            {/* <SessionProvider session={pageProps.session} refetchInterval={0}> */}
               <Component {...pageProps} />
-            </SessionProvider>
+            {/* </SessionProvider> */}
           </GoogleOAuthProvider>
         </Web3RootLayout>
       </PageLoadProgressIndicator>

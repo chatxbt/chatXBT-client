@@ -135,7 +135,8 @@ export const auth = (props: any) => {
         }
 
         if (!jwt) {
-          walletDisconnect();
+          // walletDisconnect();
+          signOut();
           throw new chatxbtUtils.Issue(401, res.message);
         }
       } catch (error: any) {
@@ -143,7 +144,8 @@ export const auth = (props: any) => {
           chatxbtUtils.toolkit.slackNotify({
             message: JSON.stringify(error?.response?.message),
           });
-        walletDisconnect();
+        // walletDisconnect();
+        signOut();
       }
     };
 
@@ -154,7 +156,8 @@ export const auth = (props: any) => {
         });
         const messageToSign = response?.data;
         if (!messageToSign) {
-          walletDisconnect();
+          // walletDisconnect();
+          signOut();
           throw new chatxbtUtils.Issue(401, response.message);
         }
 
@@ -168,7 +171,8 @@ export const auth = (props: any) => {
           chatxbtUtils.toolkit.slackNotify({
             message: JSON.stringify(error?.response?.message),
           });
-        walletDisconnect();
+        // walletDisconnect();
+        signOut();
         // throw new chatxbtUtils.Issue(500, error.message)
         // toast.success("You have successfully signed in");
       }
