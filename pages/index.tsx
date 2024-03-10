@@ -4,6 +4,7 @@ import { useConnectionStore } from "@chatxbt-sdk/store/zustand/connection";
 import { chatxbtHooks, chatxbtUtils } from "../chatxbt-sdk";
 import ChatPage from "./dashboard/chat";
 import dynamic from "next/dynamic";
+import OnboardingPage from "./onboarding";
 
 // Window?.addEventListener('error', function (event) {
 //   // Handle the error here
@@ -26,7 +27,8 @@ const Home = (props: any) => {
   // }, [connected]);
 
   // console.log('intentTemplate', chatxbtUtils.intents);
-  return <>{connected ? <ChatPage /> : <GetStarted {...props} />}</>;
+  // return <>{connected ? <ChatPage /> : <GetStarted {...props} />}</>;
+  return <>{connected ? <OnboardingPage /> : <GetStarted {...props} />}</>;
 };
 
 // export default Home;

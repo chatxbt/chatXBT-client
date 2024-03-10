@@ -98,22 +98,22 @@ export const UserChatCard = (props: any) => {
                 }}
                 id={style.div}
               >
-                {metadata.map((data: any, index: any) => (
+                {/* {metadata.map((data: any, index: any) => ( */}
                   <div
                     className={style.message}
-                    key={index}
+                    // key={index}
                     style={{
                       marginBottom: "10px",
                     }}
                   >
                     <div id={style.card}>
                       <h4>Address:</h4>
-                      <p>{data?.address}</p>
+                      <p>{metadata?.address}</p>
                     </div>
                     <div id={style.card}>
                       <h4>mnemonic:</h4>
                       <div id={style.mne}>
-                        {data?.mnemonic
+                        {metadata?.mnemonic
                           ?.split(" ")
                           .map((data: any, index: any) => (
                             <span key={index}>{data}</span>
@@ -126,7 +126,7 @@ export const UserChatCard = (props: any) => {
                     if you lose them.`}
                     </h6>
                   </div>
-                ))}
+                {/* ))} */}
               </div>
             </motion.div>
           )}
