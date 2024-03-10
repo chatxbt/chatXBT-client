@@ -220,13 +220,13 @@ export const auth = (props: any) => {
   
           if (networkId !== '5') {
   
-            alert('Please switch to the Goerli network in MetaMask to use this application.');
+            console.log('Please switch to the Goerli network in MetaMask to use this application.');
   
           };
   
         } else {
   
-          alert('Please install and enable MetaMask to use this application.');
+          console.log('Please install and enable MetaMask to use this application.');
   
         }
       }
