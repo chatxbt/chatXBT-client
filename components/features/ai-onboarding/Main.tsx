@@ -258,7 +258,7 @@ const Main = () => {
                       <Typewriter text="ChatXBT - is your crypto execution assistant. with chatXBT you can talk directly to your crypto and chatXBT will execute your command" speed={100} />
                     </div>
                   </motion.div>
-                  {/* <motion.div
+                  <motion.div
                     className={style.features}
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -272,33 +272,33 @@ const Main = () => {
                       <i>
                         <FcApproval />
                       </i>
-                      <p>Create Wallet</p>
+                      <p>Get ChatXBT to purchase crypto, bridge , swap as easily as talking to a friend</p>
                     </div>
                     <div className={style.featureCard}>
                       <i>
                         <FcApproval />
                       </i>
-                      <p>Check Coin Prices</p>
+                      <p>Access to crypto investments across DeFi, CeFi, and NFT markets in any blockchain</p>
                     </div>
                     <div className={style.featureCard}>
                       <i>
                         <FcApproval />
                       </i>
-                      <p>Check Trending Coins</p>
+                      <p>Answers to real-time DeFi and blockchain data</p>
                     </div>
                     <div className={style.featureCard}>
                       <i>
                         <FcApproval />
                       </i>
-                      <p>Check Total MarketCap</p>
+                      <p>Say goodbye to complex interfaces and endless logins, accessing DeFi protocols is as easy as messaging a friend</p>
                     </div>
-                    <div className={style.featureCard}>
+                    {/* <div className={style.featureCard}>
                       <i>
                         <FcApproval />
                       </i>
                       <p>Swap, Bridge, and Borrow Coins</p>
-                    </div>
-                  </motion.div> */}
+                    </div> */}
+                  </motion.div>
                   <button
                     id={style.btn}
                     onClick={() => router.push("/dashboard/chat")}
