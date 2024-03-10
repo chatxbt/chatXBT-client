@@ -8,7 +8,7 @@ import { FcApproval } from "react-icons/fc";
 import { chatxbtUtils } from "@chatxbt-sdk/index";
 import { useRouter } from "next/router";
 
-const Main = () => {
+const Main = ({setOnboard}: any) => {
   const router = useRouter();
   const [userName, setUsername] = useState("");
   const [messages, setMessages] = useState([
@@ -301,7 +301,8 @@ const Main = () => {
                   </motion.div>
                   <button
                     id={style.btn}
-                    onClick={() => router.push("/dashboard/chat")}
+                    // onClick={() => router.push("/dashboard/chat")}
+                    onClick={() => setOnboard(true)}
                   >
                     Get Started
                   </button>

@@ -55,7 +55,7 @@ export const defi = (props: any) => {
             message: JSON.stringify(error?.response?.message),
           });
 
-        throw new chatxbtUtils.Issue(500, error?.message);
+        // throw new chatxbtUtils.Issue(500, error?.message);
       }
     };
 
@@ -84,7 +84,7 @@ export const defi = (props: any) => {
           chatxbtUtils.toolkit.slackNotify({
             message: JSON.stringify(error?.response?.message),
           });
-        throw new chatxbtUtils.Issue(500, error?.message);
+        // throw new chatxbtUtils.Issue(500, error?.message);
       }
     };
 
@@ -119,7 +119,7 @@ export const defi = (props: any) => {
             message: JSON.stringify(error?.response?.message),
           });
 
-        throw new chatxbtUtils.Issue(500, error?.message);
+        // throw new chatxbtUtils.Issue(500, error?.message);
       }
     };
 
@@ -130,12 +130,12 @@ export const defi = (props: any) => {
         // console.log('dexesAndTokens', dexesAndTokens)
         if (dexesAndTokens) {
           // transform tags
-          const { dexKeys, tokenKeys, addresses } = await transformTags(
+          const { dexKeys, tokenKeys, addresses }: any = await transformTags(
             dexesAndTokens
           );
 
           // transform intents
-          const { transformedIntent, transformedIntentList } =
+          const { transformedIntent, transformedIntentList }: any =
             await transformIntents({
               dexKeys,
               tokenKeys,
@@ -156,7 +156,7 @@ export const defi = (props: any) => {
             message: JSON.stringify(error?.response?.message),
           });
 
-        throw new chatxbtUtils.Issue(500, error?.message);
+        // throw new chatxbtUtils.Issue(500, error?.message);
       }
     };
 
@@ -174,9 +174,6 @@ export const defi = (props: any) => {
       ...props,
     };
   } catch (error: any) {
-    if (error?.response?.status === 500 || error?.response?.status === 403)
-      chatxbtUtils.toolkit.slackNotify({
-        message: JSON.stringify(error?.response?.message),
-      });
+
   }
 };

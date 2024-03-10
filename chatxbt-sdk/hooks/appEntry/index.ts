@@ -16,6 +16,8 @@ export const useAppEntry = (props: any) => {
       action: { loadLightPoolAndInitialiseNlpCoreConfigs },
     } = defiService;
 
+    console.log('isconnect and load light pool', connected);
+
     // console.log(userInfo);
 
     useEffect(() => {
@@ -32,12 +34,14 @@ export const useAppEntry = (props: any) => {
       // connected && props.history.push('/chat');
       // !connected && props.history.push('/');
       // signOut();
-      !configured && connected && loadLightPoolAndInitialiseNlpCoreConfigs();
+      // !configured && connected && loadLightPoolAndInitialiseNlpCoreConfigs();
+      console.log('isconnect and load light pool', connected);
+      connected && loadLightPoolAndInitialiseNlpCoreConfigs();
     }, [connected]);
 
-    useEffect(() => {
-      checkUserNetwork();
-    }, [wagmiData.isConnected, wagmiData.address]);
+    // useEffect(() => {
+    //   checkUserNetwork();
+    // }, [wagmiData.isConnected, wagmiData.address]);
 
     useEffect(() => {
       // localStorage.clear();

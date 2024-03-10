@@ -281,7 +281,7 @@ export const chat = (props: any) => {
           message: JSON.stringify(error?.response?.message),
         });
 
-      throw new chatxbtUtils.Issue(500, error?.message);
+      // throw new chatxbtUtils.Issue(500, error?.message);
     }
   };
 
@@ -307,7 +307,7 @@ export const chat = (props: any) => {
           message: JSON.stringify(error?.response?.message),
         });
 
-      throw new chatxbtUtils.Issue(500, error?.message);
+      // throw new chatxbtUtils.Issue(500, error?.message);
     }
   };
 
@@ -342,7 +342,7 @@ export const chat = (props: any) => {
 
       const xbtResolve = async (message: string) => {
         // cv prompting
-        const { message: cv } = await conversationAiBot(message);
+        const { message: cv }: any = await conversationAiBot(message);
 
         if (chatxbtUtils.toolkit.doesNotContainWord(cv, "DEFI-DETECTED")) {
           return {
@@ -352,7 +352,7 @@ export const chat = (props: any) => {
           };
         }
         // // nlp prompting
-        const { message: msg } = await nlpAiBot(message);
+        const { message: msg }: any = await nlpAiBot(message);
 
         // alert(msg);
 
