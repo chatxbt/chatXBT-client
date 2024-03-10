@@ -116,7 +116,6 @@ const Main = () => {
 
   return (
     <div className={`container-fluid ${style.onBoarding}`}>
-      {/* <div className={style.mathsCon}></div> */}
       <div className="container" id={style.con}>
         <div id={style.chats}>
           <div className={style.chatLayout}>
