@@ -6,8 +6,14 @@ import ComingSoon from "../ComingSoon";
 const ActivityComponent = () => {
   return (
     <ChatBoxLayoutV1>
-        {/* <ComingSoon /> */}
+      <div style={{ display: "flex" }}>
+        <ComingSoon
+          heading="Coming Soon"
+          content="Activity Page enables you to see all your transaction activity with Chatxbt 
+          { anything that's necessary for you to see as you're using Chatxbt to execute transactions  } "
+        />
         <Main />
+      </div>
     </ChatBoxLayoutV1>
   );
 };
