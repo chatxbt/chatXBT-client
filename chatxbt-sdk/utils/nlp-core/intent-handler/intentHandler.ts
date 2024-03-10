@@ -156,7 +156,6 @@ export class NewIntentHandler {
       const customCallFunction = eval(`(${methodInfo?.customCall})`);
 
       const result = await customCallFunction(swapParams);
-      console.log("SWAP RESULT: ", result);
 
       return {
         status: true,
@@ -173,9 +172,11 @@ export class NewIntentHandler {
           fromToken: fromToken,
 
           from: result?.data?.from,
+
           to: result?.data?.to,
 
           toToken: toToken,
+          
           transactionHash: result?.data?.transactionHash,
         },
       };
@@ -206,16 +207,24 @@ export class NewIntentHandler {
 
         let amountInEth;
 
+        console.log(args);
+
         if (args.length > 0) {
           const hex = args[0]._hex;
 
-          const bigNumberValue = ethers.toBigInt(hex);
+          console.log(hex);
 
-          amountInEth = ethers.formatEther(bigNumberValue);
+          // const bigNumberValue = ethers.toBigInt(hex);
+
+          // const bigNumberValue = parseInt(hex);
+
+          // amountInEth = ethers.formatEther(bigNumberValue);
+
+          amountInEth = 10;
+
         }
 
         const result = await this.contract[methodInfo.method](...args);
-        console.log("BORROW RESULT: ", result);
 
         return {
           type: "borrow",

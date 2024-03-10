@@ -72,7 +72,7 @@ const ChatCardBorrow = (props: any) => {
           </div>
         </div>
         <div className={style.chatCardBtns}>
-          <Link href={`https://goerli.etherscan.io/tx/${metadata.hash}`}>
+          <Link href={`https://goerli.etherscan.io/tx/${metadata?.data?.hash}`} legacyBehavior>
             <a target="_blank">
               <button type="button">
                 View on block explorer{" "}
