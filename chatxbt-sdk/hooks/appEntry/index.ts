@@ -32,7 +32,9 @@ export const useAppEntry = (props: any) => {
       // connected && props.history.push('/chat');
       // !connected && props.history.push('/');
       // signOut();
-      !configured && connected && loadLightPoolAndInitialiseNlpCoreConfigs();
+      // !configured && connected && loadLightPoolAndInitialiseNlpCoreConfigs();
+      console.log('isconnect and load light pool');
+      connected && loadLightPoolAndInitialiseNlpCoreConfigs();
     }, [connected]);
 
     useEffect(() => {

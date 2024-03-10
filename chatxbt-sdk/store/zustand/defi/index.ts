@@ -56,6 +56,12 @@ export const useDefiStore = create<DefiStore>()(
         storage: createJSONStorage(() => localStorage),
         partialize: (state: any) => ({
           _hasHydrated: state._hasHydrated,
+          dexKeys: state.dexKeys, 
+          tokenKeys: state.tokenKeys, 
+          addresses: state.addresses, 
+          intents: state.intents, 
+          intentList: state.intentList, 
+          configured: state.configured
         //   lightPool: state.lightPool,
         }),
         onRehydrateStorage: () => (state) => {

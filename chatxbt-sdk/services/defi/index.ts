@@ -174,9 +174,6 @@ export const defi = (props: any) => {
       ...props,
     };
   } catch (error: any) {
-    if (error?.response?.status === 500 || error?.response?.status === 403)
-      chatxbtUtils.toolkit.slackNotify({
-        message: JSON.stringify(error?.response?.message),
-      });
+
   }
 };
