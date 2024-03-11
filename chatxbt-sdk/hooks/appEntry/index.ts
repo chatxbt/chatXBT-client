@@ -18,7 +18,6 @@ export const useAppEntry = (props: any) => {
 
     console.log('isconnect and load light pool', connected);
 
-    // console.log(userInfo);
 
     useEffect(() => {
       //   alert(wagmiData.address);
@@ -65,6 +64,7 @@ export const useAppEntry = (props: any) => {
       store: {
         connected,
         googleLogin,
+        userInfo
       },
       action: {
         loadLightPoolAndInitialiseNlpCoreConfigs,

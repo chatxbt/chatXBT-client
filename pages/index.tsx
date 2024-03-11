@@ -17,18 +17,11 @@ import OnboardingPage from "./onboarding";
 
 const Home = (props: any) => {
   const {
-    store: { connected },
+    store: { connected, userInfo },
   } = props;
 
-  // const [isConnected, setIsConnected] = useState(false);
-  // const { connected, visibleAddress } = useConnectionStore();
-  // useEffect(() => {
-  //   setIsConnected(connected)
-  // }, [connected]);
-
-  // console.log('intentTemplate', chatxbtUtils.intents);
   // return <>{connected ? <ChatPage /> : <GetStarted {...props} />}</>;
-  return <>{connected ? <OnboardingPage /> : <GetStarted {...props} />}</>;
+  return <>{connected ? <OnboardingPage {...props}/> : <GetStarted {...props} />}</>;
 };
 
 // export default Home;
