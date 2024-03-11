@@ -9,7 +9,7 @@ const DynamicPage = dynamic(
 
 const OnboardingPage = (props: any) => {
   const {
-    store: { connected, userInfo },
+    store: { connected, userInfo},
   } = props;
 
   const [isOnboarded, setOnboarded] = useState(false);
@@ -19,7 +19,7 @@ const OnboardingPage = (props: any) => {
 
   return (
     <>
-      {isOnboarded ? <ChatPage /> : <DynamicPage setOnboard={setOnboard} />}
+      {userInfo?.displayName || isOnboarded ? <ChatPage /> : <DynamicPage setOnboard={setOnboard} />}
     </>
   )
 }

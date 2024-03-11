@@ -40,7 +40,7 @@ export const auth = (props: any) => {
       signMessage,
       connect,
       disconnect,
-      userInfo
+      userInfo,
     } = useConnectionStore((state: any) => ({
       signature: state.signature,
       connected: state.connected,
@@ -51,7 +51,7 @@ export const auth = (props: any) => {
       signMessage: state.signMessage,
       connect: state.connect,
       disconnect: state.disconnect,
-      userInfo: state.userInfo
+      userInfo: state.userInfo,
     }));
 
     // waitlist store
@@ -315,7 +315,7 @@ export const auth = (props: any) => {
         loading,
         sendFormValid,
         error,
-        userInfo
+        userInfo,
       },
       action: {
         joinWaitlist,
@@ -326,7 +326,7 @@ export const auth = (props: any) => {
         signOut,
         handleGoogleAuth,
         checkUserNetwork,
-        connect
+        connect,
       },
       ...props,
     };
