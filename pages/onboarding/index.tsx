@@ -7,7 +7,11 @@ const DynamicPage = dynamic(
     { ssr: false }
   );
 
-const OnboardingPage = () => {
+const OnboardingPage = (props: any) => {
+  const {
+    store: { connected, userInfo },
+  } = props;
+
   const [isOnboarded, setOnboarded] = useState(false);
   const setOnboard = (state: boolean) => {
     setOnboarded(state);

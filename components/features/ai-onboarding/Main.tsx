@@ -1,118 +1,33 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import style from "@styles/onboarding/index.module.scss";
 import { motion } from "framer-motion";
-// import Typewriter from "@chatxbt-sdk/utils/typewritter/Typewriter";
 import Link from "next/link";
 import Typewriter from "@chatxbt-sdk/utils/typewriter/Typewriter";
 import { FcApproval } from "react-icons/fc";
-import { chatxbtUtils } from "@chatxbt-sdk/index";
-import { useRouter } from "next/router";
+import useAiInteract from "@chatxbt-sdk/utils/ai-oborading-interact";
 
-const Main = ({setOnboard}: any) => {
-  const router = useRouter();
-  const [userName, setUsername] = useState("");
-  const [messages, setMessages] = useState([
-    "Hello! Welcome to ChatXBT.",
-    "I am a DeFi Assistant developed by Deltastack Labs, focused solely on blockchain and the cryptocurrency ecosystem.",
-    "May I know your name?",
-  ]);
-
-  const [finalMessages, setFinalMessages] = useState([
-    `Nice to meet you ${userName}.`,
-    "A few things you need to know before we continue:",
-  ]);
-
-  const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
-  const [allMessagesRendered, setAllMessagesRendered] = useState(false);
-  const [startNextConversation, setStartNextConversation] = useState(false);
-  const [currentNextMessageIndex, setCurrenNextMessageIndex] = useState(0);
-  const [allSecondMessagesRendered, setAllSecondMessagesRendered] =
-    useState(false);
-  const [hideInput, setHideInput] = useState(false);
-
-  const [showFeatures, setShowFeatures] = useState(false);
-
-  const handleAllFirstMessagesRendered = () => {
-    setAllMessagesRendered(true);
-  };
-
-  const handleAllSecondMessagesRendered = () => {
-    if (currentNextMessageIndex === 2) setAllSecondMessagesRendered(true);
-  };
-
-  const triggerNextConversation = () => {
-    if (userName.length > 0) {
-      setStartNextConversation(true);
-      setHideInput(true);
-      handleUserProfileName(userName);
-    } else {
-      setStartNextConversation(false);
-      setHideInput(false);
-    }
-  };
-
-  const handleShowAppFeatures = () => {
-    setShowFeatures(true);
-  };
-
-  const handleUserProfileName = async (displayName: any) => {
-    try {
-      let authProvider = "google";
-      const { data } = await chatxbtUtils
-        .privateApiConnect()
-        .put("user/update-profile", { displayName });
-      console.log(data);
-      // return {
-      //   status: true,
-      //   data: data,
-      //   message: data
-      // }
-    } catch (error: any) {
-      console.log(error);
-      // return {
-      //   status: false,
-      //   message: error.message,
-      //   error: true,
-      // }
-    }
-  };
-
-  const ref = useRef<null | HTMLDivElement>(null);
-
-  const scrollToLastChat = (ref: any) => {
-    if (ref.current != null) {
-      ref.current?.lastElementChild?.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
-  useEffect(() => {
-    scrollToLastChat(ref);
-  }, [currentMessageIndex, currentNextMessageIndex]);
-
-  useEffect(() => {
-    if (currentMessageIndex < messages.length) {
-      const timeout = setTimeout(() => {
-        setCurrentMessageIndex((prevIndex) => prevIndex + 1);
-      }, messages[currentMessageIndex].length * 50);
-      return () => clearTimeout(timeout);
-    } else {
-      handleAllFirstMessagesRendered();
-    }
-  }, [currentMessageIndex, messages]);
-
-  useEffect(() => {
-    if (
-      startNextConversation &&
-      currentNextMessageIndex < finalMessages.length
-    ) {
-      const timeoutTwo = setTimeout(() => {
-        setCurrenNextMessageIndex((prevIndex) => prevIndex + 1);
-      }, finalMessages[currentNextMessageIndex].length * 50);
-      return () => clearTimeout(timeoutTwo);
-    } else {
-      handleAllSecondMessagesRendered();
-    }
-  }, [startNextConversation, currentNextMessageIndex, finalMessages]);
+const Main = ({ setOnboard }: any) => {
+  const {
+    store: {
+      userName,
+      currentMessageIndex,
+      allMessagesRendered,
+      startNextConversation,
+      currentNextMessageIndex,
+      allSecondMessagesRendered,
+      hideInput,
+      showFeatures,
+      messages,
+      finalMessages,
+      ref,
+    },
+    action: {
+      setUsername,
+      setFinalMessages,
+      triggerNextConversation,
+      handleShowAppFeatures,
+    },
+  } = useAiInteract();
 
   return (
     <div className={`container-fluid ${style.onBoarding}`}>
@@ -137,7 +52,7 @@ const Main = ({setOnboard}: any) => {
                       key={index}
                     >
                       <div className={style.message}>
-                        <Typewriter text={message} speed={50} />
+                        <Typewriter text={message} speed={30} />
                       </div>
                     </motion.div>
                   ))}
@@ -154,7 +69,7 @@ const Main = ({setOnboard}: any) => {
                     }}
                   >
                     <div className={style.message}>
-                      <Typewriter text="You can call me..." speed={80} />
+                      <Typewriter text="You can call me..." speed={30} />
                       <div className={style.inputDiv}>
                         {hideInput ? (
                           <div id={style.userReply}>
@@ -203,7 +118,7 @@ const Main = ({setOnboard}: any) => {
                       key={index}
                     >
                       <div className={style.message}>
-                        <Typewriter text={message} speed={50} />
+                        <Typewriter text={message} speed={30} />
                       </div>
                     </motion.div>
                   ))}
@@ -254,8 +169,10 @@ const Main = ({setOnboard}: any) => {
                     }}
                   >
                     <div className={style.message}>
-                      {/* <span>On ChatXBT you can:</span> */}
-                      <Typewriter text="ChatXBT - is your crypto execution assistant. with chatXBT you can talk directly to your crypto and chatXBT will execute your command" speed={100} />
+                      <Typewriter
+                        text="ChatXBT - is your crypto execution assistant. with chatXBT you can talk directly to your crypto and chatXBT will execute your command"
+                        speed={30}
+                      />
                     </div>
                   </motion.div>
                   <motion.div
@@ -272,13 +189,19 @@ const Main = ({setOnboard}: any) => {
                       <i>
                         <FcApproval />
                       </i>
-                      <p>Get ChatXBT to purchase crypto, bridge , swap as easily as talking to a friend</p>
+                      <p>
+                        Get ChatXBT to purchase crypto, bridge , swap as easily
+                        as talking to a friend
+                      </p>
                     </div>
                     <div className={style.featureCard}>
                       <i>
                         <FcApproval />
                       </i>
-                      <p>Access to crypto investments across DeFi, CeFi, and NFT markets in any blockchain</p>
+                      <p>
+                        Access to crypto investments across DeFi, CeFi, and NFT
+                        markets in any blockchain
+                      </p>
                     </div>
                     <div className={style.featureCard}>
                       <i>
@@ -290,18 +213,15 @@ const Main = ({setOnboard}: any) => {
                       <i>
                         <FcApproval />
                       </i>
-                      <p>Say goodbye to complex interfaces and endless logins, accessing DeFi protocols is as easy as messaging a friend</p>
+                      <p>
+                        Say goodbye to complex interfaces and endless logins,
+                        accessing DeFi protocols is as easy as messaging a
+                        friend
+                      </p>
                     </div>
-                    {/* <div className={style.featureCard}>
-                      <i>
-                        <FcApproval />
-                      </i>
-                      <p>Swap, Bridge, and Borrow Coins</p>
-                    </div> */}
                   </motion.div>
                   <button
                     id={style.btn}
-                    // onClick={() => router.push("/dashboard/chat")}
                     onClick={() => setOnboard(true)}
                   >
                     Get Started

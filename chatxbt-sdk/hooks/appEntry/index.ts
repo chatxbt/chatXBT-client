@@ -18,7 +18,13 @@ export const useAppEntry = (props: any) => {
 
     console.log('isconnect and load light pool', connected);
 
-    // console.log(userInfo);
+    console.log(userInfo);
+
+    useEffect(() => {
+      if (userInfo?.displayName) {
+        console.log('Not a first time user');
+      };
+    }, [userInfo]);
 
     useEffect(() => {
       //   alert(wagmiData.address);
