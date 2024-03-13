@@ -6,7 +6,9 @@ import ComingSoon from "../ComingSoon";
 const WalletComponent = () => {
   return (
     <ChatBoxLayoutV1>
-      <div style={{ display: "flex" }}>
+      <div style={{
+        position: 'relative'
+      }}>
         <ComingSoon
           heading="Coming Soon"
           content="Wallet enables you to perform transactions and manage your crypto agnostic wallets for your trade"

@@ -31,7 +31,7 @@ const Preview = () => {
       <div className="row" id={style.row}>
         <div className="col-md-6">
           <div className={style.card}>
-            <p>Lend $1000 USDT on @Compound on ETH network</p>
+            <p>Lend $1000 USDT on <span>@Compound</span> on ETH network</p>
           </div>
         </div>
         <div className="col-md-6">
