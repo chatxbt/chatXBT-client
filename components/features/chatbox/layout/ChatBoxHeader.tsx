@@ -54,7 +54,8 @@ const ChatBoxHeader = ({ action: { signOut } }: any) => {
             ))}
           </div>
           <div className={style.buttons}>
-            <button id={style.first}>Integrate protocol</button>
+          <Link rel="noopener noreferrer" target="_blank" href="https://tricky-robe-698.notion.site/chatxbt-heavy-pool-43a1c48aa7094d2ea3cf159159067484?pvs=4" ><button id={style.first}>Integrate protocol</button></Link>
+          
             {/* {visibleAddress && (
               <button
                 id={style.second}
