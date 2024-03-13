@@ -56,6 +56,11 @@ export class NewResolver {
         bridge: "hop",
       };
 
+      const defaultTokens = {
+        buy: 'eth',
+        swap: 'eth'
+      }
+
       if (action.includes("create wallet")) {
         const response = await handler.createWallet();
 
@@ -136,6 +141,8 @@ export class NewResolver {
         if (amount !== undefined) {
           let amountInString = amount.toString();
 
+          let defaultFromToken = messageObject["Token to Use"] === undefined ? defaultTokens.buy : messageObject["Token to Use"];
+
           const swapArgs = {
             amountIn: amountInString,
 
@@ -145,7 +152,7 @@ export class NewResolver {
               messageObject["Token to Swap"] ||
               messageObject["Token to Receive"],
 
-            fromToken: messageObject["Token to Use"],
+            fromToken: defaultFromToken,
           };
 
           const swapHandler = new NewIntentHandler(contractConfig);
