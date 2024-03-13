@@ -65,7 +65,8 @@ export const useChatStore = create<ChatStore>()(
           set({ status: actionTypes.PENDING });
         },
         resetMessage: () => {
-          set({ status: "" });
+          // set({ status: "" });
+          set({ status: actionTypes.DONE });
         },
 
         setPreview: (param: boolean) => {
