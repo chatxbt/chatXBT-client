@@ -136,7 +136,7 @@ export const auth = (props: any) => {
 
         if (!jwt) {
           // walletDisconnect();
-          signOut();
+          signOut('failed get jwt');
           throw new chatxbtUtils.Issue(401, res.message);
         }
       } catch (error: any) {
@@ -145,7 +145,7 @@ export const auth = (props: any) => {
             message: JSON.stringify(error?.response?.message),
           });
         // walletDisconnect();
-        signOut();
+        signOut('failed to sign transaction');
       }
     };
 
@@ -157,7 +157,7 @@ export const auth = (props: any) => {
         const messageToSign = response?.data;
         if (!messageToSign) {
           // walletDisconnect();
-          signOut();
+          signOut('failed to find message to sign');
           throw new chatxbtUtils.Issue(401, response.message);
         }
 
@@ -172,7 +172,7 @@ export const auth = (props: any) => {
             message: JSON.stringify(error?.response?.message),
           });
         // walletDisconnect();
-        signOut();
+        signOut('failed attempted handleWalletSignIn');
         // throw new chatxbtUtils.Issue(500, error.message)
         // toast.success("You have successfully signed in");
       }
@@ -291,7 +291,8 @@ export const auth = (props: any) => {
     /**
      * sign out account
      */
-    const signOut = () => {
+    const signOut = (message: string) => {
+      // alert(message)
       walletDisconnect();
       disconnect();
     };
