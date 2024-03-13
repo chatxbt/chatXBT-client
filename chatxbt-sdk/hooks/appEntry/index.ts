@@ -1,6 +1,7 @@
+import { useAccountEffect } from 'wagmi'
 import { handleRefs } from "../../utils";
 import { useEffect } from "react";
-import { chatxbtServices } from "../../../chatxbt-sdk";
+import { chatxbtServices, chatxbtConfig } from "../../../chatxbt-sdk";
 
 export const useAppEntry = (props: any) => {
   try {
@@ -16,18 +17,26 @@ export const useAppEntry = (props: any) => {
       action: { loadLightPoolAndInitialiseNlpCoreConfigs },
     } = defiService;
 
-    console.log('isconnect and load light pool', connected);
+    useAccountEffect({
+      onConnect(data) {
+        !connected && data.address && handleWalletSignIn(data.address);
+      },
+      onDisconnect() {
+        connected && signOut('wagmi is disconnected');
+      },
+    })
 
     // console.log(userInfo);
 
-    useEffect(() => {
-      //   alert(wagmiData.address);
-      !connected &&
-        // _hasHydrated &&
-        wagmiData.isConnected &&
-        wagmiData.address &&
-        handleWalletSignIn(wagmiData.address);
-    }, [wagmiData.isConnected, wagmiData.address]);
+    // useEffect(() => {
+    //   //   alert(wagmiData.address);
+    //   // alert(connected);
+    //     // _hasHydrated &&
+    //     !connected &&
+    //     wagmiData.isConnected &&
+    //     wagmiData.address &&
+    //     handleWalletSignIn(wagmiData.address);
+    // }, [wagmiData.isConnected, wagmiData.address]);
 
     useEffect(() => {
       // localStorage.clear();
@@ -35,18 +44,12 @@ export const useAppEntry = (props: any) => {
       // !connected && props.history.push('/');
       // signOut();
       // !configured && connected && loadLightPoolAndInitialiseNlpCoreConfigs();
-      console.log('isconnect and load light pool', connected);
       connected && loadLightPoolAndInitialiseNlpCoreConfigs();
     }, [connected]);
 
     // useEffect(() => {
     //   checkUserNetwork();
     // }, [wagmiData.isConnected, wagmiData.address]);
-
-    useEffect(() => {
-      // localStorage.clear();
-      wagmiData?.isDisconnected && signOut();
-    }, [wagmiData?.isDisconnected]);
 
     useEffect(() => {
       (async () => {
@@ -56,10 +59,15 @@ export const useAppEntry = (props: any) => {
           //   signature: signMessageData,
           // })
           // setRecoveredAddress(recoveredAddress)
-          await signAndConnectUser(wagmiData.address);
+          wagmiData.address && await signAndConnectUser(wagmiData.address);
         }
       })();
-    }, [signMessageData, variables?.message]);
+    }, [signMessageData, variables?.message, wagmiData.address]);
+
+    // useEffect(() => {
+    //   // localStorage.clear();
+    //   !wagmiData.address && wagmiData?.isDisconnected && signOut('wagmi is disconnected');
+    // }, [wagmiData?.isDisconnected]);
 
     return {
       store: {
