@@ -1,7 +1,7 @@
 import { actionTypes } from "@chatxbt-sdk/config";
 import { chatxbtServices } from "../../index";
 import { handleRefs } from "../../utils";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export const useChat = (props: any) => {
   const chatServices = chatxbtServices.chat(props);
@@ -23,13 +23,25 @@ export const useChat = (props: any) => {
 
   useEffect(() => {
 
-    const stopResponseIfProlonged = setTimeout(() => {
+    const startTime: any = new Date();
 
-      status === actionTypes.PENDING && resetMessage();
+    const stopResponseIfProlonged = setInterval(() => {
 
-    }, 5 * 60 * 1000);
+      const currentTime: any = new Date();
 
-    return () => clearTimeout(stopResponseIfProlonged);
+      const elapsedTime = (currentTime - startTime) / (1000 * 60); 
+
+      if (status === actionTypes.PENDING && elapsedTime >= 5) {
+
+        resetMessage();
+
+        clearInterval(stopResponseIfProlonged);
+
+      };
+
+    }, 1000);
+
+    return () => clearInterval(stopResponseIfProlonged);
 
   }, [status]);
 

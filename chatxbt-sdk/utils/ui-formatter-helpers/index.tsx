@@ -1,8 +1,8 @@
-export const highlightAtWords = (sentence: string) => {
+export const highlightAtWords = (sentence: string, color: string) => {
   const words = sentence.split(" ");
   return words.map((word: any, index: any) =>
     word.startsWith("@") ? (
-      <span key={index} style={{ color: "blue" }}>
+      <span key={index} style={{ color: `${color}` }}>
         {word}{" "}
       </span>
     ) : (
