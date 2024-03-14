@@ -109,6 +109,7 @@
         bottom: 0;
         top: 0;
         padding: 40px 5px;
+        z-index: 4;
 
         @include responsivePro(mobile) {
             width: 100%;
@@ -224,6 +225,10 @@
                             flex-direction: column;
                         }
 
+                        a{
+                            color: #fff;
+                        }
+
                         i {
                             font-size: 1.3rem;
                             cursor: pointer;
@@ -290,6 +295,7 @@
         overflow-x: hidden;
         margin-left: 15%;
         position: relative;
+        // border: 1px solid red;
 
         @include responsivePro(mobile) {
             width: 100%;
@@ -666,6 +672,7 @@
         bottom: 0;
         top: 0;
         padding: 40px 5px;
+        z-index: 4;
 
         @include responsivePro(mobile) {
             width: 100%;
@@ -781,6 +788,10 @@
                             flex-direction: column;
                         }
 
+                        a{
+                            color: #fff;
+                        }
+
                         i {
                             font-size: 1.3rem;
                             cursor: pointer;
@@ -802,7 +813,7 @@
                     }
 
                     .btn {
-                        height: 48px;
+                        height: 50px;
                         width: 100%;
                         border-radius: 5px;
                         background: linear-gradient(151.71deg, #FC7916 6.43%, #880EF7 56.45%, #1C4DF0 74.55%);
@@ -817,12 +828,15 @@
                         button {
                             height: 100%;
                             width: 100%;
-                            // font-size: 16px;
                             font-size: 14px;
                             border: 1px solid transparent;
                             color: #fff;
                             background: #020611;
                             border-radius: 5px;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
 
                             @include responsivePro(exception) {
                                 font-size: .6rem;
@@ -1186,4 +1200,114 @@
 
     }
 
+}
+
+.updatePopup{
+    width: 100%;
+    // max-height: 80%;
+    background: #000;
+    border: 0.5px solid rgba(255, 255, 255, 0.17);
+    border-radius: 10px;
+    margin: auto;
+    padding: 30px 15px;
+    position: relative;
+    margin: 10px auto;
+
+
+    @include responsivePro(mobile) {
+        width: 100%;
+        padding: 20px;
+    }
+
+    @include responsivePro(exception) {
+        width: 60%;
+    }
+
+    h1{
+        font-size: 1.4rem;
+        margin-bottom: 10px;
+        background: linear-gradient(
+          to bottom right,
+          #fc7916 6.43%,
+          #880ef7 56.45%,
+          #1c4df0 74.55%
+        );
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    p{
+        font-size: 0.8rem;
+    }
+
+    button{
+        width: 100%;
+        background: #1c4df0;
+        color: #fff;
+        border-radius: 8px;
+        border: 1px solid transparent;
+        padding: 10px;
+        font-size: 0.8rem;
+    }
+}
+
+.updateModal{
+    height: 100%;
+    width: 170%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 5;
+    display: flex;
+    // background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
+
+    .updatePopup{
+        width: 100%;
+        // max-height: 80%;
+        background: #000;
+        border: 0.5px solid rgba(255, 255, 255, 0.17);
+        border-radius: 10px;
+        margin: auto;
+        padding: 30px 15px;
+        position: relative;
+
+
+        @include responsivePro(mobile) {
+            width: 100%;
+            padding: 20px;
+        }
+
+        @include responsivePro(exception) {
+            width: 100%;
+        }
+
+        h1{
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            background: linear-gradient(
+              to bottom right,
+              #fc7916 6.43%,
+              #880ef7 56.45%,
+              #1c4df0 74.55%
+            );
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p{
+            font-size: 0.8rem;
+        }
+
+        button{
+            width: 100%;
+            background: #1c4df0;
+            color: #fff;
+            border-radius: 8px;
+            border: 1px solid transparent;
+            padding: 10px;
+            font-size: 0.8rem;
+        }
+    }
 }

@@ -142,6 +142,10 @@ export const chat = (props: any) => {
   const [suggestions, setSuggestions] = useState<any>([]);
   const [mentionStartIndex, setMentionStartIndex] = useState<any>(null);
 
+  const allProtocols = dexKeys?.split('|');
+
+  // console.log(allProtocols);
+
   const fetchSuggestions = (query: string) => {
     let dexesSuggestions = dexKeys?.split('|');
     return dexesSuggestions?.filter((suggestion: string) =>
