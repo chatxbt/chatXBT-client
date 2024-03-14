@@ -19,9 +19,9 @@
 
         h1 {
             font-weight: 400;
-            font-size: 16px;
+            font-size: 14px;
             line-height: 139.52%;
-            color: #606B87;
+            color: #a3afcf;
         }
 
         #row {
@@ -37,25 +37,33 @@
         }
 
         .card {
-            min-height: 150px;
+            // min-height: 80px;
             background: linear-gradient(180deg, rgba(94, 148, 255, 0.16) 0%, rgba(84, 142, 254, 0.1) 100%);
             border-radius: 8px;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 21px 50px;
+            padding: 30px 50px;
             margin: 10px auto;
+            cursor: pointer;
+            border: 0.2px solid transparent;
+            transition: border-color 0.3s ease; 
+
+            &:hover{
+                border-color: #1c4df0;
+            }
 
             @include responsivePro(exception) {
-                height: 150px;
+                // height: 150px;
             }
 
             p {
-                font-weight: 400;
+                // font-weight: 400;
                 font-size: 14px;
                 line-height: 139.52%;
                 text-align: center;
                 // width: 80%;
+                margin: 0px;
 
                 @include responsivePro(exception) {
                     width: 100%;
@@ -63,7 +71,7 @@
                 }
 
                 span {
-                    color: #1C4DF0;
+                    color: #fc7916;
                 }
             }
         }

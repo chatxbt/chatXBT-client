@@ -4,16 +4,19 @@
             "prompt": "create wallet"
         },
         {
-            "prompt": "swap coin"
+            "prompt": "Set up a digital wallet"
         },
         {
-            "prompt": "add #Value (eth|ethereum) liquidity to (usdt|dai) on (uniswap|pancake)"
+            "prompt": "Generate a virtual wallet"
         },
         {
-            "prompt": "give approval to (uniswap) to spend #Value of (usdt|dai)"
+            "prompt": "Craft a decentralized wallet"
         },
         {
-            "prompt": "grant (#AtMention|#Noun) approval to spend up to #Value of (usdt|dai)"
+            "prompt": "swap 0.001 eth for usdt on uniswap"
+        },
+        {
+            "prompt": "Initiate a token swap: 0.001 ETH to USDT via Uniswap"
         },
         {
             "prompt": "make new wallet for me"
@@ -25,40 +28,28 @@
             "prompt": "generate my wallet"
         },
         {
-            "prompt": "create new wallet"
+            "prompt": "create a new wallet"
         },
         {
-            "prompt": "i (want|need) you to (create|generate|make) (new|fresh) wallet for me"
+            "prompt": "check price of dai"
         },
         {
-            "prompt": "if i {don't} have wallet before (create|generate|make) one for me"
+            "prompt": "buy dai on uniswap with 0.005 ethereum"
         },
         {
-            "prompt": "(swap|convert|exchange|buy|sell) (eth|ethereum) for #Value (usdt|dai) on (uniswap|pancake) (immediately|now|instantly)"
+            "prompt": "buy usdt @1inch with 0.001 eth"
         },
         {
-            "prompt": "(swap|convert|exchange|buy|sell) #Value (eth|ethereum) (for|to) (usdt|dai) on (uniswap|pancake) (immediately|now|instantly)"
+            "prompt": "add 0.00001 eth liquidity to usdt on uniswap"
         },
         {
-            "prompt": "i (want|need) to (swap|convert|exchange|buy|sell) (eth|ethereum) for #Value (usdt|dai) on (uniswap|pancake)"
+            "prompt": "buy usdt on uniswap with 0.005 eth"
         },
         {
-            "prompt": "{use} (uniswap|pancake) to (swap|convert|exchange|buy|sell) (eth|ethereum) to #Value (usdt|dai)"
+            "prompt": "borrow 0.001 usdt"
         },
         {
-            "prompt": "buy (usdt|dai) on (uniswap|pancake) with #Value (eth|ethereum)"
-        },
-        {
-            "prompt": "buy (usdt|dai) with #Value (eth|ethereum) on (uniswap|pancake)"
-        },
-        {
-            "prompt": "buy (usdt|dai) #AtMention with #Value (eth|ethereum)"
-        },
-        {
-            "prompt": "sell #Value (usdt|dai) on (uniswap|pancake) for (eth|ethereum)"
-        },
-        {
-            "prompt": "give approval to (uniswap) to spend #Value of (usdt|dai)"
+            "prompt": "bridge 0.001 eth on polygon"
         }
     ],
     "Mentions": [

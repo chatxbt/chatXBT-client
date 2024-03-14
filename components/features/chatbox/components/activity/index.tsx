@@ -6,7 +6,7 @@ import ComingSoon from "../ComingSoon";
 const ActivityComponent = () => {
   return (
     <ChatBoxLayoutV1>
-      <div style={{ display: "flex" }}>
+      <div>
         <ComingSoon
           heading="Coming Soon"
           content="Activity Page enables you to see all your transaction activity with Chatxbt 

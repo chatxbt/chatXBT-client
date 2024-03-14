@@ -32,7 +32,7 @@ export const UserChatCard = (props: any) => {
           <img src={dp} alt="" />
 
           <div className={style.message}>
-            <p>{highlightAtWords(message)}</p>
+            <p>{highlightAtWords(message, 'blue')}</p>
           </div>
         </motion.div>
       )}
