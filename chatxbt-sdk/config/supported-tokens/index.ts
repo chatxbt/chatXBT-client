@@ -4,6 +4,10 @@ export const supportedTokens = {
   dai: {
     asset: "DAI",
     coinGeckoId: "dai",
+    exxhanges: {
+      coinGeckoId: "dai",
+      coinmarketId: 'dai'
+    },
     isStable: true,
     contractAddress:
       env === "production"

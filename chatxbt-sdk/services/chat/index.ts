@@ -313,7 +313,6 @@ export const chat = (props: any) => {
 
   const resolvePrompt = async (): Promise<any> => {
     try {
-      console.log("walletClient", walletClient);
 
       const signer = await walletClientToSigner(walletClient as any);
 
@@ -329,17 +328,6 @@ export const chat = (props: any) => {
       //   protocols
       // });
 
-      const resolver = new NewResolver({
-        intents,
-        dexKeys,
-        tokenKeys,
-        addresses,
-        address: wagmiData.address,
-        signer,
-        protocols,
-        wagmiData
-      });
-
       const xbtResolve = async (message: string) => {
         // cv prompting
         const { message: cv }: any = await conversationAiBot(message);
@@ -351,10 +339,22 @@ export const chat = (props: any) => {
             message: cv,
           };
         }
+  
         // // nlp prompting
         const { message: msg }: any = await nlpAiBot(message);
 
         // alert(msg);
+
+        const resolver = new NewResolver({
+          intents,
+          dexKeys,
+          tokenKeys,
+          addresses,
+          address: wagmiData.address,
+          signer,
+          protocols,
+          wagmiData
+        });
 
         // const resolvedMessage: any = await resolver.resolveMsg(msg, provider);
         const resolvedMessage: any = await resolver.resolveMsg(msg, provider, signer, protocols);
