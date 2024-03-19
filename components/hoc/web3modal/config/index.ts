@@ -56,9 +56,19 @@ const metadata = {
   icons: ['https://www.chatxbt.com/images/logo/logo-2.png']
 }
 
+export const chatxbtchain = {
+  ...mainnet,
+  chainId: 15779,
+  name: 'Chatxbt',
+  currency: 'ETH',
+  explorerUrl: 'https://explorer.buildbear.io/zany-gilgamesh-cf3ecd70',
+  rpcUrl: 'https://rpc.buildbear.io/zany-gilgamesh-cf3ecd70',
+
+}
+
 // Create wagmiConfig
 export const config = defaultWagmiConfig({
-  chains: [mainnet, sepolia, goerli], // required
+  chains: [mainnet, sepolia, goerli, chatxbtchain], // required
   projectId, // required
   metadata, // required
   ssr: true,
