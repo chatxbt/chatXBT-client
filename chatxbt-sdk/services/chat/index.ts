@@ -105,7 +105,7 @@ export const chat = (props: any) => {
 
   // const publicClient = usePublicClient();
 
-  const { data: walletClient } = useWalletClient({ chainId: wagmiData.chainId || 5 });
+  const { data: walletClient } = useWalletClient({ chainId: wagmiData.chainId || 15779 });
 
   const ref = useRef<null | HTMLDivElement>(null);
   const chatInputRef = useRef<null | HTMLInputElement>(null);
