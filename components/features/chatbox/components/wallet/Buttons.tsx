@@ -20,25 +20,33 @@ const Buttons = () => {
   const { sendData, receiveData, swapData, stakeData } = buttonsData;
   return (
     <>
-      {send && <SendAssetModal closeModal={handleSendModal}/>}
-      {receive && <RecieveAssetModal closeModal={handleReceiveModal}/>}
-      {swap && <SwapModal closeModal={handleSwapModal}/>}
+      {send && <SendAssetModal closeModal={handleSendModal} />}
+      {receive && <RecieveAssetModal closeModal={handleReceiveModal} />}
+      {swap && <SwapModal closeModal={handleSwapModal} />}
 
       <div id={style.buttons}>
         <div id={style.div}>
-          <button onClick={handleSendModal}>{sendData.icon}</button>
+          <button onClick={handleSendModal}>
+            <sendData.icon />
+          </button>
           <span>{sendData.title}</span>
         </div>
         <div id={style.div}>
-          <button onClick={handleReceiveModal}>{receiveData.icon}</button>
+          <button onClick={handleReceiveModal}>
+            <receiveData.icon />
+          </button>
           <span>{receiveData.title}</span>
         </div>
         <div id={style.div}>
-          <button onClick={handleSwapModal}>{swapData.icon}</button>
+          <button onClick={handleSwapModal}>
+            <swapData.icon />
+          </button>
           <span>{swapData.title}</span>
         </div>
         <div id={style.div}>
-          <button onClick={handleStakeModal}>{stakeData.icon}</button>
+          <button onClick={handleStakeModal}>
+            <stakeData.icon />
+          </button>
           <span>{stakeData.title}</span>
         </div>
       </div>
