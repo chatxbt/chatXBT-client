@@ -42,7 +42,7 @@ import { defaultWagmiConfig } from '@web3modal/wagmi/react/config'
 
 import { cookieStorage, createStorage } from 'wagmi'
 import { mainnet, sepolia, goerli } from 'wagmi/chains'
-import { defineChain } from 'viem'
+import { defineChain, Chain } from 'viem'
 
 // Get projectId at https://cloud.walletconnect.com
 // export const projectId = process.env.NEXT_PUBLIC_PROJECT_ID || '954d1cd106b485e394a1b5b7423a42bd'
@@ -63,9 +63,17 @@ export const chatxbtchain = defineChain({
   nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
   rpcUrls: {
     default: { http: ['https://rpc.buildbear.io/zany-gilgamesh-cf3ecd70'] },
+    public: { http: ["https://rpc.buildbear.io/zany-gilgamesh-cf3ecd70"] },
   },
   blockExplorers: {
-    default: { name: 'chatxbt', url: 'https://explorer.buildbear.io/zany-gilgamesh-cf3ecd70' },
+    etherscan: {
+      name: "BBExplorer",
+      url: "https://explorer.buildbear.io/zany-gilgamesh-cf3ecd70",
+    },
+    default: {
+      name: "BBExplorer",
+      url: "https://explorer.buildbear.io/zany-gilgamesh-cf3ecd70",
+    },
   },
   contracts: {
     ensRegistry: {
@@ -81,6 +89,7 @@ export const chatxbtchain = defineChain({
     },
   },
 })
+
 
 // Create wagmiConfig
 export const config = defaultWagmiConfig({
