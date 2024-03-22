@@ -17,6 +17,8 @@ import {
 } from "wagmi";
 import { BrowserProvider, JsonRpcSigner } from "ethers";
 import { NewResolver } from "@chatxbt-sdk/utils/nlp-core/resolver/Resolver";
+import { supportedTokens } from "@chatxbt-sdk/config";
+import { ChatStore } from "@chatxbt-sdk/interface/chat";
 
 export const chat = (props: any) => {
   // data provider modules
@@ -44,7 +46,11 @@ export const chat = (props: any) => {
     setPreview,
     setScroll,
     awaitMessage,
-  } = useChatStore((state: any) => ({
+    setSuggestDex,
+    setSuggestTokens,
+    suggestDex,
+    suggestTokens,
+  } = useChatStore((state: ChatStore) => ({
     message: state.chatMessage,
     messageHolder: state.messageHolder,
     status: state.status,
@@ -60,6 +66,10 @@ export const chat = (props: any) => {
     setPreview: state.setPreview,
     setScroll: state.setScroll,
     awaitMessage: state.awaitMessage,
+    suggestDex: state.suggestDex,
+    suggestTokens: state.suggestTokens,
+    setSuggestDex: state.setSuggestDex,
+    setSuggestTokens: state.setSuggestTokens,
   }));
 
   // connection store
@@ -105,7 +115,9 @@ export const chat = (props: any) => {
 
   // const publicClient = usePublicClient();
 
-  const { data: walletClient } = useWalletClient({ chainId: wagmiData.chainId || 15779 });
+  const { data: walletClient } = useWalletClient({
+    chainId: wagmiData.chainId || 15779,
+  });
 
   const ref = useRef<null | HTMLDivElement>(null);
   const chatInputRef = useRef<null | HTMLInputElement>(null);
@@ -143,15 +155,16 @@ export const chat = (props: any) => {
   const [mentionStartIndex, setMentionStartIndex] = useState<any>(null);
 
   const fetchSuggestions = (query: string) => {
-    let dexesSuggestions = dexKeys?.split('|');
+    let dexesSuggestions = dexKeys?.split("|");
     return dexesSuggestions?.filter((suggestion: string) =>
       suggestion.toLowerCase().includes(query.toLowerCase())
     );
   };
 
   const handleUserInput = () => {
-
     const atIndex = message.lastIndexOf("@");
+    const dollarIndex = message.lastIndexOf("$");
+
     if (atIndex !== -1) {
       setMentionStartIndex(atIndex + 1);
 
@@ -160,19 +173,39 @@ export const chat = (props: any) => {
       );
       setSuggestions(fetchedSuggestions);
 
+      setSuggestDex(true);
+      setShowSuggestions(true);
+    } else if (dollarIndex !== -1) {
+      setMentionStartIndex(dollarIndex + 1);
+      const suggestedTokens = Object.keys(supportedTokens).map((token) =>
+        token.toUpperCase()
+      );
+
+      // let tokenArray: { [key: string]: any }[] = [];
+      // const suggestedTokens = Object.keys(supportedTokens).forEach((token) => {
+      //   tokenArray.push(supportedTokens[token as keyof typeof supportedTokens]);
+      // });
+
+      setSuggestions(suggestedTokens);
+
+      setSuggestTokens(true);
       setShowSuggestions(true);
     } else {
       setShowSuggestions(false);
       setMentionStartIndex(null);
+      setSuggestDex(false);
+      setSuggestTokens(false);
     }
   };
 
   const handleSuggestionClick = (suggestion: any) => {
-
-    const updatedMessage =
-      message.slice(0, mentionStartIndex - 1) +
-      `@${suggestion} ` +
-      message.slice(mentionStartIndex + suggestion.length - 1);
+    const updatedMessage = suggestDex
+      ? message.slice(0, mentionStartIndex - 1) +
+        `@${suggestion} ` +
+        message.slice(mentionStartIndex + suggestion.length - 1)
+      : message.slice(0, mentionStartIndex - 1) +
+        `${suggestion} ` +
+        message.slice(mentionStartIndex + suggestion.length - 1);
 
     setMessage(updatedMessage);
     setSuggestions([]);
@@ -225,7 +258,6 @@ export const chat = (props: any) => {
     }
   };
 
-
   const hints = chatxbtUtils.promptData.default.AIPrompts.filter((word) => {
     const typedCommand = message.toLowerCase();
     const keyword = word.prompt.toLowerCase();
@@ -268,7 +300,7 @@ export const chat = (props: any) => {
       const botReply =
         botRes?.data ||
         chatxbtConfig.lang.defaultRelies[
-        Math.floor(Math.random() * chatxbtConfig.lang.defaultRelies.length)
+          Math.floor(Math.random() * chatxbtConfig.lang.defaultRelies.length)
         ];
       return {
         status: true,
@@ -294,7 +326,7 @@ export const chat = (props: any) => {
       const botReply =
         botRes?.data ||
         chatxbtConfig.lang.defaultRelies[
-        Math.floor(Math.random() * chatxbtConfig.lang.defaultRelies.length)
+          Math.floor(Math.random() * chatxbtConfig.lang.defaultRelies.length)
         ];
       return {
         status: true,
@@ -313,7 +345,6 @@ export const chat = (props: any) => {
 
   const resolvePrompt = async (): Promise<any> => {
     try {
-
       const signer = await walletClientToSigner(walletClient as any);
 
       const { protocols } = lightPool;
@@ -339,7 +370,7 @@ export const chat = (props: any) => {
             message: cv,
           };
         }
-  
+
         // // nlp prompting
         const { message: msg }: any = await nlpAiBot(message);
 
@@ -353,11 +384,16 @@ export const chat = (props: any) => {
           address: wagmiData.address,
           signer,
           protocols,
-          wagmiData
+          wagmiData,
         });
 
         // const resolvedMessage: any = await resolver.resolveMsg(msg, provider);
-        const resolvedMessage: any = await resolver.resolveMsg(msg, provider, signer, protocols);
+        const resolvedMessage: any = await resolver.resolveMsg(
+          msg,
+          provider,
+          signer,
+          protocols
+        );
 
         if (resolvedMessage?.status) {
           return resolvedMessage;
@@ -397,6 +433,8 @@ export const chat = (props: any) => {
       scroll,
       showSuggestions,
       suggestions,
+      suggestDex,
+      suggestTokens,
     },
     action: {
       resolvePrompt,

@@ -19,6 +19,16 @@ export const useChatStore = create<ChatStore>()(
         chatData: null,
         botReply: "",
         scroll: "",
+
+        suggestDex: false, // code : Somto
+        suggestTokens: false, // code : Somto
+        setSuggestDex: (suggest: boolean) => {
+          set({ suggestDex: suggest });
+        }, // code: Somto
+        setSuggestTokens: (suggest: boolean) => {
+          set({ suggestTokens: suggest });
+        }, // code: Somto
+
         updateMessage: (chatMessage: any) => {
           set(() => ({
             chatMessage: chatMessage,

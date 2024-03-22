@@ -5,10 +5,19 @@ import * as IoIcons from "react-icons/io5";
 import { useChat } from "@chatxbt-sdk/hooks";
 import { motion } from "framer-motion";
 import * as BsIcons from "react-icons/bs";
+import Image from "next/image";
 
 const ChatInput = (props: any) => {
   const {
-    store: { message, hints, chatInputRef, showSuggestions, suggestions },
+    store: {
+      message,
+      hints,
+      chatInputRef,
+      showSuggestions,
+      suggestions,
+      suggestDex,
+      suggestTokens,
+    },
     action: {
       setMessage,
       sendMessage,
@@ -56,6 +65,12 @@ const ChatInput = (props: any) => {
               >
                 <BsIcons.BsRobot id={style.icon} />
                 <p>{data}</p>
+                {/* {suggestDex ? (
+                  <BsIcons.BsRobot id={style.icon} />
+                ) : (
+                  <Image src={data?.logo} width={24} height={24} alt="token" />
+                )}
+                <p>{suggestDex ? data : data?.asset?.toUpperCase()}</p> */}
               </li>
             );
           })}
