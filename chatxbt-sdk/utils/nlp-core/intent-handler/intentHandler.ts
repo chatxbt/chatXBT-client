@@ -6,6 +6,10 @@ import { ethers, BigNumberish } from "ethers";
 export class NewIntentHandler {
   private contract: any;
 
+  private networkName: any;
+
+  private chainId: any;
+
   private contractConfig: any;
 
   private protocol: any;
@@ -38,6 +42,10 @@ export class NewIntentHandler {
     try {
       const { signer } = this.contractConfig;
 
+      this.networkName = signer?.provider?._network.name === 'unknown' ? 'chatxbt' : signer?.provider?._network.name.toLowerCase()
+
+      this.chainId = signer.provider._network.chainId;
+
       if (this.protocol.abi === "" || !this.protocol.abi) {
         throw new Error("Protocol ABI not found.");
       }
@@ -45,7 +53,8 @@ export class NewIntentHandler {
       let contractAddress =
         this.protocol.contractAddress &&
         this.protocol.contractAddress[
-          signer.provider._network.name.toLowerCase()
+          // signer.provider._network.name.toLowerCase()
+          this.networkName.toLowerCase()
         ];
 
       this.contract = new ethers.Contract(
@@ -137,10 +146,10 @@ export class NewIntentHandler {
 
         router:
           this.protocol.contractAddress[
-            signer.provider._network.name.toLowerCase()
+            this.networkName
           ],
 
-        chain: signer.provider._network.chainId,
+        chain: this.chainId,
 
         contract: this.contract,
 
@@ -292,10 +301,10 @@ export class NewIntentHandler {
 
         router:
           this.protocol.contractAddress[
-            signer.provider._network.name.toLowerCase()
+            this.networkName
           ],
 
-        chain: signer.provider._network.chainId,
+        chain: this.chainId,
 
         contract: this.contract,
 
@@ -331,7 +340,7 @@ export class NewIntentHandler {
           to:
             this.contract?.address ||
             this.protocol.contractAddress[
-              signer.provider._network.name.toLowerCase()
+              this.networkName
             ],
 
           transactionHash: result?.data?.transactionHash,

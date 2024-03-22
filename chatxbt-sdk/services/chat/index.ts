@@ -36,6 +36,7 @@ export const chat = (props: any) => {
     chatData,
     botReply,
     scroll,
+    confirmation,
     // functions
     setMessage,
     submit,
@@ -44,6 +45,9 @@ export const chat = (props: any) => {
     setPreview,
     setScroll,
     awaitMessage,
+    sendConfirmation,
+    clearConfirmation
+
   } = useChatStore((state: any) => ({
     message: state.chatMessage,
     messageHolder: state.messageHolder,
@@ -53,6 +57,7 @@ export const chat = (props: any) => {
     chatData: state.chatData,
     botReply: state.botReply,
     scroll: state.scroll,
+    confirmation: state.confirmation,
     setMessage: state.updateMessage,
     submit: state.sendMessage,
     generateResponse: state.generateResponse,
@@ -60,6 +65,8 @@ export const chat = (props: any) => {
     setPreview: state.setPreview,
     setScroll: state.setScroll,
     awaitMessage: state.awaitMessage,
+    sendConfirmation: state.sendConfirmation,
+    clearConfirmation: state.clearConfirmation
   }));
 
   // connection store
@@ -218,7 +225,16 @@ export const chat = (props: any) => {
       (async () => {
         const { xbtResolve } = await resolvePrompt();
         const result = await xbtResolve(messageHolder);
+
+        // if (result?.type.includes('preview')) {
+        //   sendConfirmation(result);
+        //   resetMessage();
+        // } else {
+        //   sendResponse(result);
+        // };
+        
         sendResponse(result);
+
         console.log(result);
       })();
     } catch (error: any) {
@@ -315,6 +331,7 @@ export const chat = (props: any) => {
     }
   };
 
+
   const resolvePrompt = async (): Promise<any> => {
     try {
       console.log("walletClient", walletClient);
@@ -361,30 +378,31 @@ export const chat = (props: any) => {
         // alert(msg);
 
         // const resolvedMessage: any = await resolver.resolveMsg(msg, provider);
-        const resolvedMessage: any = await resolver.resolveMsg(msg, provider, signer, protocols);
+          const resolvedMessage: any = await resolver.resolveMsg(msg, provider, signer, protocols);
 
-        if (resolvedMessage?.status) {
-          return resolvedMessage;
-        }
-        //   return await queryAiChatBot(message);
-        return {
-          status: true,
-          type: "default-text",
-          message: "please try again",
+          if (resolvedMessage?.status) {
+            return resolvedMessage;
+          }
+          //   return await queryAiChatBot(message);
+          return {
+            status: true,
+            type: "default-text",
+            message: "please try again",
+          };
         };
-      };
-      return { xbtResolve };
-    } catch (error: any) {
-      if (error?.response?.status === 500 || error?.response?.status === 403)
-        chatxbtUtils.toolkit.slackNotify({
-          message: JSON.stringify(error?.response?.message),
-        });
+        return { xbtResolve };
+      } catch (error: any) {
+        if (error?.response?.status === 500 || error?.response?.status === 403)
+          chatxbtUtils.toolkit.slackNotify({
+            message: JSON.stringify(error?.response?.message),
+          });
 
-      console.log(error?.message);
+        console.log(error?.message);
 
-      // throw new chatxbtUtils.Issue(500, error?.message);
-    }
-  };
+        // throw new chatxbtUtils.Issue(500, error?.message);
+      }
+    };
+  // }
 
   return {
     store: {
@@ -401,6 +419,7 @@ export const chat = (props: any) => {
       scroll,
       showSuggestions,
       suggestions,
+      confirmation
     },
     action: {
       resolvePrompt,
@@ -420,6 +439,9 @@ export const chat = (props: any) => {
       fetchSuggestions,
       // handleScroll
       setScroll,
+      sendConfirmation,
+      clearConfirmation,
+      awaitMessage
     },
     ...props,
   };

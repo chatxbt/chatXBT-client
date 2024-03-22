@@ -11,6 +11,9 @@ export type ChatStore = {
     preview: boolean;
     botReply: any;
     scroll: any;
+    confirmation: any;
+    sendConfirmation: (data: any) => void;
+    clearConfirmation: (data: any) => void;
     updateMessage: (chatMessage: userState['message']) => void;
     sendMessage: (chatMessage: userState['message']) => void;
     generateResponse: (message: string) => void;

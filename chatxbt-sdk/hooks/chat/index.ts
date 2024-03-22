@@ -29,9 +29,9 @@ export const useChat = (props: any) => {
 
       const currentTime: any = new Date();
 
-      const elapsedTime = (currentTime - startTime) / (1000 * 60); 
+      const elapsedTime = (currentTime - startTime) / 1000; 
 
-      if (status === actionTypes.PENDING && elapsedTime >= 5) {
+      if (status === actionTypes.PENDING && elapsedTime >= 30) {
 
         resetMessage();
 

@@ -6,10 +6,14 @@ import * as MdIcons from "react-icons/md";
 import { actionTypes } from "@chatxbt-sdk/config/constants";
 import { useChat } from "@chatxbt-sdk/hooks";
 import BackToBottomButton from "@components/shared/back-to-bottom";
+import SwapPreview from "./components/previews/SwapPreview";
+import BorrowPreview from "./components/previews/BorrowPreview";
+import BridgePreview from "./components/previews/BridgePreview";
+import AiActionPreview from "./components/previews";
 
 const Main = (props: any) => {
   const {
-    store: { preview, messages, status, ref, scroll },
+    store: { preview, messages, status, ref, scroll, confirmation },
     action: { scrollDown, rePrompt },
   } = useChat(props);
 
@@ -37,6 +41,8 @@ const Main = (props: any) => {
         messages?.map((data: any, index: any) => (
           <UserChatCard key={index} {...data} />
         ))}
+      
+      <AiActionPreview/>
 
       {status === actionTypes.PENDING && <BotIndicator />}
     </div>

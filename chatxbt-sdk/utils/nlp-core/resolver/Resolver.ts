@@ -40,6 +40,8 @@ export class NewResolver {
     try {
       const handler = new NewIntentHandler();
 
+      console.log(messageObject);
+
       const action =
         messageObject.Action.toLowerCase() ||
         messageObject.action.toLowerCase();
@@ -49,6 +51,7 @@ export class NewResolver {
       let dexes = this.dexKeys?.split("|");
 
       const defaultDex = {
+        
         swap: "1inch",
 
         borrow: "compound",
@@ -196,6 +199,11 @@ export class NewResolver {
           const bridgeHandler = new NewIntentHandler(contractConfig);
 
           const response = await bridgeHandler.bridge(bridgeArgs);
+
+          // response = {
+          //   args,
+          //   func: async (args, intenthandler) => await intenthandler.bridge(args)
+          //   }
 
           return response;
         }

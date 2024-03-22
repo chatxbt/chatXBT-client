@@ -19,6 +19,14 @@ export const useChatStore = create<ChatStore>()(
         chatData: null,
         botReply: "",
         scroll: "",
+        confirmation: null,
+        sendConfirmation: (data: any) => {
+          set({ preview: false });
+          set(() => ({confirmation: data}))
+        },
+        clearConfirmation: () => {
+          set(() => ({confirmation: null}))
+        },
         updateMessage: (chatMessage: any) => {
           set(() => ({
             chatMessage: chatMessage,

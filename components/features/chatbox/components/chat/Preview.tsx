@@ -11,11 +11,11 @@ const Preview = (props: any) => {
   } = useChat(props);
 
   const previewPrompts = [
-    `Swap 0.0001 eth for usdt @1inch`,
-    `Bridge 0.0001 eth to polygon @hop`,
+    `Swap 0.01 eth for usdt @1inch`,
+    `Bridge 0.01 eth to polygon @hop`,
     `What is the current price of bitcoin`,
     `What coins are trending now`,
-    `Borrow 0.001 eth @compound`,
+    `Borrow 0.01 eth @compound`,
     `Can you create a wallet for me`,
     `Explain Defi`,
     `What is the Total Market Cap`,
