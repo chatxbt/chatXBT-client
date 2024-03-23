@@ -60,4 +60,8 @@ export const nav = [
         name: 'Whitepaper',
         href: 'https://drive.google.com/file/d/1ZYVwRWUXiN9K0z63W70LnYNqqjEsU2NM/view?usp=sharing'
     },
+    {
+        name: 'Testnet Guide & Faucet',
+        href: 'https://tricky-robe-698.notion.site/chatFI-test-guide-b17d4c9464dc4183b629b6d86b4e74fd?pvs=4'
+    }
 ]
