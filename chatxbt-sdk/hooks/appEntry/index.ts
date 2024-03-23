@@ -1,14 +1,15 @@
-import { handleRefs } from "@chatxbt-sdk/utils";
+import { useAccountEffect } from 'wagmi'
+import { handleRefs } from "../../utils";
 import { useEffect } from "react";
-import { chatxbtServices } from "../../../chatxbt-sdk";
+import { chatxbtServices, chatxbtConfig } from "../../../chatxbt-sdk";
 
 export const useAppEntry = (props: any) => {
   try {
     const authService = chatxbtServices.auth(props);
     const defiService = chatxbtServices.defi(props);
     const {
-      store: { _hasHydrated, wagmiData, variables, signMessageData, connected },
-      action: { handleWalletSignIn, signAndConnectUser, signOut },
+      store: { _hasHydrated, wagmiData, variables, signMessageData, connected, googleLogin, userInfo },
+      action: { handleWalletSignIn, signAndConnectUser, signOut, checkUserNetwork, connect },
     } = authService;
 
     const {
@@ -16,27 +17,38 @@ export const useAppEntry = (props: any) => {
       action: { loadLightPoolAndInitialiseNlpCoreConfigs },
     } = defiService;
 
-    useEffect(() => {
-      //   alert(wagmiData.address);
-      !connected &&
-        _hasHydrated &&
-        wagmiData.isConnected &&
-        wagmiData.address &&
-        handleWalletSignIn(wagmiData.address);
-    }, [wagmiData.isConnected, wagmiData.address]);
+    useAccountEffect({
+      onConnect(data) {
+        !connected && data.address && handleWalletSignIn(data.address);
+      },
+      onDisconnect() {
+        connected && signOut('wagmi is disconnected');
+      },
+    })
+
+
+    // useEffect(() => {
+    //   //   alert(wagmiData.address);
+    //   // alert(connected);
+    //     // _hasHydrated &&
+    //     !connected &&
+    //     wagmiData.isConnected &&
+    //     wagmiData.address &&
+    //     handleWalletSignIn(wagmiData.address);
+    // }, [wagmiData.isConnected, wagmiData.address]);
 
     useEffect(() => {
       // localStorage.clear();
       // connected && props.history.push('/chat');
       // !connected && props.history.push('/');
       // signOut();
-      !configured && connected && loadLightPoolAndInitialiseNlpCoreConfigs();
+      // !configured && connected && loadLightPoolAndInitialiseNlpCoreConfigs();
+      connected && loadLightPoolAndInitialiseNlpCoreConfigs();
     }, [connected]);
 
-    useEffect(() => {
-      // localStorage.clear();
-      wagmiData?.isDisconnected && signOut();
-    }, [wagmiData?.isDisconnected]);
+    // useEffect(() => {
+    //   checkUserNetwork();
+    // }, [wagmiData.isConnected, wagmiData.address]);
 
     useEffect(() => {
       (async () => {
@@ -46,18 +58,25 @@ export const useAppEntry = (props: any) => {
           //   signature: signMessageData,
           // })
           // setRecoveredAddress(recoveredAddress)
-          await signAndConnectUser(wagmiData.address);
+          wagmiData.address && await signAndConnectUser(wagmiData.address);
         }
       })();
-    }, [signMessageData, variables?.message]);
+    }, [signMessageData, variables?.message, wagmiData.address]);
+
+    // useEffect(() => {
+    //   // localStorage.clear();
+    //   !wagmiData.address && wagmiData?.isDisconnected && signOut('wagmi is disconnected');
+    // }, [wagmiData?.isDisconnected]);
 
     return {
       store: {
         connected,
+        googleLogin,
+        userInfo
       },
       action: {
         loadLightPoolAndInitialiseNlpCoreConfigs,
       },
     };
-  } catch (error) {}
+  } catch (error) { }
 };

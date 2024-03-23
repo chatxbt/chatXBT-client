@@ -9,16 +9,14 @@ import {
   comptrollerABI,
 } from "../abis";
 import oneInchAbi from "./1inch.json";
-import { 
-  useAccount, 
-  useSignMessage, 
-  useNetwork, 
-  useDisconnect, 
-  useContractRead, 
+import {
+  useAccount,
+  useSignMessage,
+  useDisconnect,
+  useContractRead,
   useWalletClient,
-  usePublicClient 
+  usePublicClient
 } from "wagmi";
-import { getContract } from 'wagmi/actions'
 
 export class IntentHandler {
   private contract: any;
@@ -30,15 +28,16 @@ export class IntentHandler {
     this.address = contractConfig?.address
   }
 
+
   async handleWalletCreate(password = "Password-From-User") {
     const wallet = ethers.Wallet.createRandom();
     return {
       status: true,
       type: "create-wallet",
-      message: `address: ${wallet.address}\n\n\n\nmnemonic: ${wallet.mnemonic.phrase}\n\n\n\n\n\n\n\nPlease keep these phrases safe, we cannot recover them for you if you lose them.`,
+      message: `address: ${wallet.address}\n\n\n\nmnemonic: ${wallet?.mnemonic?.phrase}\n\n\n\n\n\n\n\nPlease keep these phrases safe, we cannot recover them for you if you lose them.`,
       metadata: {
         ...wallet,
-        mnemonic: wallet.mnemonic.phrase,
+        mnemonic: wallet?.mnemonic?.phrase,
       },
     };
   }
@@ -51,19 +50,30 @@ export class IntentHandler {
     provider: string
   ) {
     const bridges: any = {
-      "usdt": "0x3E4a3a4796d16c0Cd582C382691998f7c06420B6",
-      "eth": "0xb8901acB165ed027E32754E0FFe830802919727f"
+      "usdt": "0x3E4a3a4796d16c0Cd582C382691998f7c06420B6", // no testnet
+      // "eth": "0xb8901acB165ed027E32754E0FFe830802919727f" eth mainnet
+      "eth": "0xC8A4FB931e8D77df8497790381CA7d228E68a41b" // goerli testnet
     }
 
     const router = bridges[token];
+
+    if (!router) {
+      return {
+        status: true,
+        type: "default-text",
+        message: `bridge asset: only assets allowed on this network is eth`,
+      };
+    }
     let tx;
+
+    console.log('the signer', this.signer)
 
     if (this.signer) {
 
-      const contract= new ethers.Contract( 
-        router, 
+      const contract = new ethers.Contract(
+        router,
         [
-          "function sendToL2(uint256 chainId, address recipient, uint256 amount, uint256 amountOutMin, uint256 deadline, address relayer, uint256 relayerFee)",
+          "function sendToL2(uint256 chainId, address recipient, uint256 amount, uint256 amountOutMin, uint256 deadline, address relayer, uint256 relayerFee) external payable",
         ],
         this.signer
       )
@@ -75,35 +85,51 @@ export class IntentHandler {
       //   signer
       // );
 
-    //   sendToL2(
-    //     uint256 chainId,
-    //     address recipient,
-    //     uint256 amount,
-    //     uint256 amountOutMin,
-    //     uint256 deadline,
-    //     address relayer,
-    //     uint256 relayerFee
-    // )
+      //   sendToL2(
+      //     uint256 chainId,
+      //     address recipient,
+      //     uint256 amount,
+      //     uint256 amountOutMin,
+      //     uint256 deadline,
+      //     address relayer,
+      //     uint256 relayerFee
+      // )
 
-    const deadline = Math.floor(Date.now() / 1000) + 60 * 5;
-    tx = await contract.sendToL2(
-      80001,
-      this.address,
-      amountIn,
-      1,
-      deadline,
-      this.address,
-      0,
-      { gasLimit: 4000000 }
-    );
+      const deadline = Math.floor(Date.now() / 1000) + 60 * 5;
+      tx = await contract.sendToL2(
+        80001,
+        this.address, // '0x3295186c52205b24B9e6B72d7B5207eAaB77E692',
+        ethers.parseEther(amountIn),
+        ethers.parseEther(amountIn),
+        deadline,
+        '0x0000000000000000000000000000000000000000',
+        0,
+        {
+          gasLimit: 4000000,
+          value: ethers.parseEther(amountIn),
+          // amount: amountIn,
+          // gasLimit: ethers.hexlify(300000),
+          // gasPrice: provider.getGasPrice(),
+        }
+      );
       tx = await tx.wait();
     }
+    console.log('tx', tx);
+    // return {
+    //   status: true,
+    //   type: "default-text",
+    //   message: `Your asset has been bridged successfully: ${this.address} tnx hash: ${tx?.hash}`,
+    // };
     return {
       status: true,
       type: "bridge",
-      message: tx.hash,
+      message: "Your asset has been bridged successfully",
       metadata: {
         ...tx,
+        token,
+        dex,
+        chain,
+        amount: amountIn,
       },
     };
   }
@@ -111,6 +137,7 @@ export class IntentHandler {
   async buyTokenWithEth(
     to: string,
     amountIn: string,
+    // dex: string,
     dex: "uniswap",
     p: string
   ) {
@@ -149,15 +176,16 @@ export class IntentHandler {
 
         // const path = [tokens['weth'], toToken];
         // const contract = toolkit.makeContract(router, routerV2ABI, signer)
-        // const amountsOut = await contract.getAmountsOut(ethers.utils.parseEther(String(amountIn)), path);
+        // const amountsOut = await contract.getAmountsOut(ethers.parseEther(String(amountIn)), path);
         // const now = new Date()
         // tx = await contract.swapExactETHForTokensSupportingFeeOnTransferTokens(
         //   amountsOut[1],
         //   path,
         //   address,
-        //   new Date(now.setMinutes(now.getMinutes() + 5)).getTime(), { value: ethers.utils.parseEther(String(amountIn)) }
+        //   new Date(now.setMinutes(now.getMinutes() + 5)).getTime(), { value: ethers.parseEther(String(amountIn)) }
         // )
         // await tx.wait();
+
       }
       return {
         status: true,
@@ -165,6 +193,9 @@ export class IntentHandler {
         message: tx.hash,
         metadata: {
           ...tx,
+          amount: amountIn,
+          fromToken: 'Eth',
+          toToken: 'USDT'
         },
       };
     } catch (error: any) {
@@ -180,12 +211,16 @@ export class IntentHandler {
       };
     }
   }
+
   async sellTokenForEth(
     from: "usdt",
     amountIn: string,
     dex: "uniswap",
     wallertProvider: string
   ) {
+
+    console.log(dex);
+
     try {
       const router = routers[dex];
       let signer = null;
@@ -206,8 +241,7 @@ export class IntentHandler {
         // alert(path);
         const contract = toolkit.makeContract(router, routerV2ABI, signer);
         const amountsIn = await contract
-          .connect(signer)
-          .getAmountsOut(ethers.utils.parseEther(String(amountIn)), path);
+          .getAmountsOut(ethers.parseEther(String(amountIn)), path);
         const now = new Date();
         tx = await contract.swapExactTokensForETHSupportingFeeOnTransferTokens(
           amountsIn[0],
@@ -265,12 +299,12 @@ export class IntentHandler {
         const allowance = await contract.allowance(address, account);
 
         const decimals = await contract.decimals();
-        value = Number(ethers.utils.formatUnits(allowance, decimals)).toFixed(
+        value = Number(ethers.formatUnits(allowance, decimals)).toFixed(
           4
         );
-        // value = Number(ethers.utils.formatUnits(allowance, decimals)).toFixed(4);
+        // value = Number(ethers.formatUnits(allowance, decimals)).toFixed(4);
         if (value === "0") {
-          tx = await contract.approve(account, ethers.constants.MaxUint256);
+          tx = await contract.approve(account, ethers.MaxUint256);
           await tx.wait();
         }
       }
@@ -395,6 +429,9 @@ export class IntentHandler {
     dex: "uniswap",
     provider: string
   ) {
+
+    console.log(dex);
+
     const router = routers[dex];
     let signer = null;
     let address = "";
@@ -413,8 +450,7 @@ export class IntentHandler {
       const path = [tokens[from], tokens["weth"]];
       const contract = toolkit.makeContract(router, routerV2ABI, signer);
       const amountsIn = await contract
-        .connect(signer)
-        .getAmountsOut(ethers.utils.parseEther(String(amountIn)), path);
+        .getAmountsOut(ethers.parseEther(String(amountIn)), path);
       const now = new Date();
       tx = await contract.swapExactTokensForETHSupportingFeeOnTransferTokens(
         amountsIn[0],
@@ -464,7 +500,7 @@ export class IntentHandler {
         );
 
         // Enter the amount you want to borrow in Ether
-        const amountInWei = ethers.utils.parseEther(amountInEth.toString());
+        const amountInWei = ethers.parseEther(amountInEth.toString());
 
         // Check if the user is allowed to borrow
         // const isAllowed = await comptrollerContract.checkBorrow(cETHAddress, provider.getSigner().getAddress(), amountInWei);
@@ -483,6 +519,8 @@ export class IntentHandler {
           status: true,
           metadata: {
             ...tx,
+            amount: amountInEth,
+            token: "ETH"
           },
         };
       } else {
@@ -538,7 +576,7 @@ export class IntentHandler {
         );
 
         // Enter the amount you want to supply in Ether
-        const amountInWei = ethers.utils.parseEther(amountInEth.toString());
+        const amountInWei = ethers.parseEther(amountInEth.toString());
 
         // Approve the cToken contract to spend your tokens
         const txApprove = await cTokenContract.approve(
@@ -613,17 +651,17 @@ export class IntentHandler {
 
   //     // // Calculate the minimum amount to receive with slippage tolerance
   //     // const slippagePercentage = parseFloat(slippage) / 100;
-  //     // const minAmountOut = ethers.utils.parseUnits(amountOut, 18);
+  //     // const minAmountOut = ethers.parseUnits(amountOut, 18);
   //     // const slippageAdjustedMinAmountOut = minAmountOut.sub(minAmountOut.mul(slippagePercentage).div(100));
 
   //     // // Ensure that the slippage-adjusted minimum amount is less than or equal to the amount to swap
-  //     // if (slippageAdjustedMinAmountOut.gt(ethers.utils.parseUnits(amountIn, 18))) {
+  //     // if (slippageAdjustedMinAmountOut.gt(ethers.parseUnits(amountIn, 18))) {
   //     //   alert('Slippage-adjusted minimum amount exceeds the amount to swap. Please reduce slippage or adjust your input.');
   //     //   // return;
   //     // }
 
   //     // const tx = await router.swapExactTokensForTokens(
-  //     //   ethers.utils.parseUnits(amountIn, 18), // Amount of token to swap (in wei)
+  //     //   ethers.parseUnits(amountIn, 18), // Amount of token to swap (in wei)
   //     //   slippageAdjustedMinAmountOut, // Minimum amount of token to receive with slippage
   //     //   [tokenIn, tokenOut],
   //     //   recipient,
@@ -632,8 +670,8 @@ export class IntentHandler {
   //     // );
 
   //     const tx = await router.swapExactTokensForTokens(
-  //       ethers.utils.parseUnits(amountIn, 18), // Amount of token to swap (in wei)
-  //       ethers.utils.parseUnits(amountOut, 18), // Minimum amount of token to receive (in wei)
+  //       ethers.parseUnits(amountIn, 18), // Amount of token to swap (in wei)
+  //       ethers.parseUnits(amountOut, 18), // Minimum amount of token to receive (in wei)
   //       [tokenIn, tokenOut],
   //       recipient,
   //       deadline,
@@ -670,24 +708,29 @@ export class IntentHandler {
 
       // const slippagePercentage = parseFloat(slippage) / 100;
 
-      // const minAmountOut = ethers.utils.parseUnits(amountOut, 6);
+      // const minAmountOut = ethers.parseUnits(amountOut, 6);
       // const slippageAdjustedMinAmountOut = minAmountOut.sub(minAmountOut.mul(slippagePercentage).div(100));
 
-      // if (slippageAdjustedMinAmountOut.gt(ethers.utils.parseUnits(amountIn, 18))) {
+      // if (slippageAdjustedMinAmountOut.gt(ethers.parseUnits(amountIn, 18))) {
       //   alert('Slippage-adjusted minimum amount exceeds the amount to swap. Please reduce slippage or adjust your input.');
       //   return; // Stop execution if slippage-adjusted minimum amount exceeds the amount to swap
       // }
 
-      // alert(ethers.utils.parseUnits(amountIn, 18))
+      // alert(ethers.parseUnits(amountIn, 18))
 
       const tx = await router.swapExactTokensForTokens(
-        ethers.utils.parseUnits(amountIn, 18),
+        ethers.parseUnits(amountIn, 18),
         // slippageAdjustedMinAmountOut,
         0,
         [tokenIn, tokenOut],
         recipient,
         deadline,
-        { gasLimit: 4000000 }
+        {
+          gasLimit: 4000000,
+          // value: ethers.parseEther(amountIn),
+          // value: 1
+
+        }
       );
 
       // alert('Swap successful!'); // Show success message before returning
@@ -715,7 +758,7 @@ export class IntentHandler {
   //     const router = new ethers.Contract(routerAddress, abi, signer);
 
   //     const tx = await router.swap(
-  //       ethers.utils.parseUnits(amountIn, 18),
+  //       ethers.parseUnits(amountIn, 18),
   //       recipient,
   //       [tokenIn, tokenOut],
   //       recipient,
@@ -733,4 +776,44 @@ export class IntentHandler {
   //     console.error('Error swapping tokens:', error);
   //   }
   // }
+
+  async getDexes(selectedDex: string, supportedDexes: any[]) {
+    const isDexSupported = supportedDexes?.filter((newDex: string) =>
+      newDex.toLowerCase().includes(selectedDex.toLowerCase()));
+    const defaultDex = 'hop';
+
+    if (isDexSupported) {
+      console.log(`Performing DeFi action with ${selectedDex}`);
+      return selectedDex;
+    } else {
+      console.log(`Selected DEX (${selectedDex}) not supported. Defaulting to ${defaultDex}.`);
+      return defaultDex;
+    }
+  }
+
+  async interactWithProtocol(methodName: string, params: any[] = []) {
+    try {
+      
+      const contractInstance = new ethers.Contract(this.address, cTokenABI, this.signer);
+
+      if (!contractInstance) {
+        console.log("Contract not initialized.");
+        return;
+      }
+
+      console.log(contractInstance);
+
+      const method: any = contractInstance.getFunction(methodName);
+      if (!method) {
+        console.log(`Method ${methodName} not found in the contract.`);
+        return;
+      }
+
+      const result = await method(...params).call();
+      console.log(`Result from ${methodName} call:`, result);
+
+    } catch (error) {
+      console.error(`Error interacting with contract:`, error);
+    }
+  }
 }

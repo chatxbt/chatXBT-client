@@ -48,6 +48,10 @@ export const doesNotContainWord = (str: string, word: string) => {
   return str.indexOf(word) === -1;
 };
 
+export const doesNotContainKeyword = (str: string, keyword: string) => {
+  return !str.toLowerCase().includes(keyword.toLowerCase());
+}
+
 // get bearer token
 export const getAuthToken = () =>
   customlocalStorage("connection-storage")?.token;
@@ -89,13 +93,17 @@ export const slackNotify = async ({
   const slack = SlackNotify(
     "https://hooks.slack.com/services/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"
   );
-  await slack.send({
-    channel: "#earnathon-support-telegram",
-    text: `
+  try {
+    await slack.send({
+      channel: "#earnathon-support-telegram",
+      text: `
     cfm-${envConfig.env} ===>>
     ${message}
     `,
-    username: "ena-node-bot",
-    icon_url: "https://earnathon.com/static/media/yellow-06.7e9ef266.svg",
-  });
+      username: "ena-node-bot",
+      icon_url: "https://earnathon.com/static/media/yellow-06.7e9ef266.svg",
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };

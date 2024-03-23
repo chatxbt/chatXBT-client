@@ -67,7 +67,7 @@ const TableHead = () => (
         </div>
       </th>
       <th>
-        <p> Price</p>
+        <p>Price</p>
       </th>
       <th>
         <p>Market Rank</p>

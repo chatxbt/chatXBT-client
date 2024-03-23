@@ -48,12 +48,16 @@ export const socials = [
 ];
 
 export const nav = [
-    {
-        name: 'Tools',
-        href: ''
-    },
+    // {
+    //     name: 'Tools',
+    //     href: ''
+    // },
     {
         name: 'Docs',
-        href: ''
-    }
+        href: 'https://docs.chatxbt.com/chatxbt-protocol/'
+    },
+    {
+        name: 'Whitepaper',
+        href: 'https://drive.google.com/file/d/1ZYVwRWUXiN9K0z63W70LnYNqqjEsU2NM/view?usp=sharing'
+    },
 ]

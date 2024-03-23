@@ -1,8 +1,26 @@
 import React from "react";
 import style from "@styles/chat/chat.module.scss";
 import { motion } from "framer-motion";
+import { useChat } from "@chatxbt-sdk/hooks";
+import { highlightAtWords } from "@chatxbt-sdk/utils/ui-formatter-helpers";
 
-const Preview = () => {
+const Preview = (props: any) => {
+  const {
+    store: {},
+    action: { setMessage },
+  } = useChat(props);
+
+  const previewPrompts = [
+    `Swap 0.0001 eth for usdt @1inch`,
+    `Bridge 0.0001 eth to polygon @hop`,
+    `What is the current price of bitcoin`,
+    `What coins are trending now`,
+    `Borrow 0.001 eth @compound`,
+    `Can you create a wallet for me`,
+    `Explain Defi`,
+    `What is the Total Market Cap`,
+  ];
+
   return (
     <motion.div
       className={style.preview}
@@ -12,36 +30,13 @@ const Preview = () => {
     >
       <h1>Start by typing a prompt, or try entering one of these examples:</h1>
       <div className="row" id={style.row}>
-        <div className="col-md-6">
-          <div className={style.card}>
-            <p>
-              Add liquidity for me on <span>@uniswapv3</span>. Use a total of
-              $500 from usdt and eth. Choose the default pool setting
-            </p>
+        {previewPrompts.map((data: any, index: any) => (
+          <div className="col-md-6" key={index}>
+            <div className={style.card} onClick={() => setMessage(data)}>
+              <p>{highlightAtWords(data, "#fc7916")}</p>
+            </div>
           </div>
-        </div>
-        <div className="col-md-6">
-          <div className={style.card}>
-            <p>
-              Bridge 1ETH from Polygon to Aptos use <span>@liquidswap</span>
-            </p>
-          </div>
-        </div>
-      </div>
-      <div className="row" id={style.row}>
-        <div className="col-md-6">
-          <div className={style.card}>
-            <p>Lend $1000 USDT on @Compound on ETH network</p>
-          </div>
-        </div>
-        <div className="col-md-6">
-          <div className={style.card}>
-            <p>
-              Generate a bitcoin wallet address for me, use{" "}
-              <span>@changenow</span> convert $200 ETH and fund the wallet
-            </p>
-          </div>
-        </div>
+        ))}
       </div>
     </motion.div>
   );

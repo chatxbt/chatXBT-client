@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import style from "@styles/chat/chat.module.scss";
 import { motion } from "framer-motion";
 import { actionTypes } from "@chatxbt-sdk/config/constants";
@@ -9,9 +8,17 @@ import {
   formatCurrency,
   formatNumberWithMagnitude,
 } from "@chatxbt-sdk/utils/toolkit";
+import ChatCardSwap from "./components/ChatCardSwap";
+import ChatCardBorrow from "./components/ChatCardBorrow";
+import ChatCardBridge from "./components/ChatCardBridge";
+import {
+  formatNumberedParagraphs,
+  highlightAtWords,
+} from "@chatxbt-sdk/utils/ui-formatter-helpers";
 
 export const UserChatCard = (props: any) => {
-  const { dp, from, id, message, type, metadata } = props;
+  const { dp, from, id, message, type, metadata, status } = props;
+
   return (
     <>
       {from === "user" && (
@@ -25,13 +32,40 @@ export const UserChatCard = (props: any) => {
           <img src={dp} alt="" />
 
           <div className={style.message}>
-            <p>{message}</p>
+            <p>{highlightAtWords(message, 'blue')}</p>
           </div>
         </motion.div>
       )}
 
       {from === "bot" && (
         <>
+          {type === actionTypes.UNSUPPORTED && (
+            <motion.div
+              className={style.chatCardBot}
+              id={`${id}`}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
+            >
+              <img src={dp} alt="" />
+
+              <div className={style.message}>
+                <p>
+                  Sorry, your query is not currently supported, but you can add
+                  custom protocols and tokens{" "}
+                  <a
+                    href="https://github.com/deltastackhq/openAi"
+                    target="_blank"
+                    rel="noreferrer noopener"
+                  >
+                    here
+                  </a>
+                  .
+                </p>
+              </div>
+            </motion.div>
+          )}
+
           {type === actionTypes.DEFAULT_TEXT && (
             <motion.div
               className={style.chatCardBot}
@@ -43,7 +77,7 @@ export const UserChatCard = (props: any) => {
               <img src={dp} alt="" />
 
               <div className={style.message}>
-                <p>{message}</p>
+                {formatNumberedParagraphs(message)}
               </div>
             </motion.div>
           )}
@@ -57,45 +91,56 @@ export const UserChatCard = (props: any) => {
               exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
             >
               <img src={dp} alt="" />
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+                id={style.div}
+              >
+                {/* {metadata.map((data: any, index: any) => ( */}
+                  <div
+                    className={style.message}
+                    // key={index}
+                    style={{
+                      marginBottom: "10px",
+                    }}
+                  >
+                    <div id={style.card}>
+                      <h4>Address:</h4>
+                      <p>{metadata?.address}</p>
+                    </div>
+                    <div id={style.card}>
+                      <h4>mnemonic:</h4>
+                      <div id={style.mne}>
+                        {metadata?.mnemonic
+                          ?.split(" ")
+                          .map((data: any, index: any) => (
+                            <span key={index}>{data}</span>
+                          ))}
+                      </div>
+                    </div>
 
-              <div className={style.message}>
-                <div id={style.card}>
-                  <h4>Address:</h4>
-                  <p>{metadata?.address}</p>
-                </div>
-                <div id={style.card}>
-                  <h4>mnemonic:</h4>
-                  <div id={style.mne}>
-                    {metadata?.mnemonic
-                      .split(" ")
-                      .map((data: any, index: any) => (
-                        <span key={index}>{data}</span>
-                      ))}
+                    <h6>
+                      {`Please keep these phrases safe, we cannot recover them for you
+                    if you lose them.`}
+                    </h6>
                   </div>
-                </div>
-
-                <h6>
-                  {`Please keep these phrases safe, we cannot recover them for you
-                  if you lose them.`}
-                </h6>
+                {/* ))} */}
               </div>
             </motion.div>
           )}
 
-          {type === actionTypes.SWAP && (
-            <motion.div
-              className={style.chatCardBot}
-              id={`${id}`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
-            >
-              <img src={dp} alt="" />
+          {type === actionTypes.BRIDGE && (
+            <ChatCardBridge dp={dp} metadata={metadata} message={message} />
+          )}
 
-              <div className={style.message}>
-                <p>{message}</p>
-              </div>
-            </motion.div>
+          {type === actionTypes.SWAP && (
+            <ChatCardSwap dp={dp} metadata={metadata} message={message} />
+          )}
+
+          {type === actionTypes.BORROW && (
+            <ChatCardBorrow dp={dp} metadata={metadata} message={message} />
           )}
 
           {type === actionTypes.APPROVAL && (

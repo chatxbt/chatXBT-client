@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactDevOverlay: false,
+  // reactDevOverlay: false,
   reactStrictMode: true,
   swcMinify: true,
   images: {

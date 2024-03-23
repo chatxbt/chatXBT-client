@@ -62,7 +62,8 @@ const Alert = (props: any) => {
         <div className={style.overlay}>
           <div className={style.notificationCon}>
             <ul>
-              <AnimatePresence initial={false}>
+              {/* <AnimatePresence initial={false}> */}
+              <>
                 {error && !loading && (
                   <motion.li
                     initial={{ opacity: 0, y: 150, scale: 0.3 }}
@@ -82,7 +83,8 @@ const Alert = (props: any) => {
                     </motion.button>
                   </motion.li>
                 )}
-              </AnimatePresence>
+              {/* </AnimatePresence> */}
+              </>
             </ul>
           </div>
         </div>

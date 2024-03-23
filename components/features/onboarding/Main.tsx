@@ -5,7 +5,7 @@ import EmailAuth from "./EmailAuth";
 import GetStarted from "./GetStarted";
 import MetaAuth from "./MetaAuth";
 
-const Main = () => {
+const Main = (props: any) => {
   const [meta, setMeta] = useState<boolean>(false);
   const [email, setEmail] = useState<boolean>(false);
   const [start, setStart] = useState<boolean>(true);
@@ -37,9 +37,9 @@ const Main = () => {
         viewport={{ once: true }}
         transition={{ delay: 0.35 }}
       >
-        {start && (
-          <GetStarted handleEmail={handleEmail} handleMeta={handleMeta} />
-        )}
+        {/* {start && ( */}
+          <GetStarted {...props} />
+        {/* )} */}
 
         {meta && <MetaAuth handleStart={handleStart} />}
 

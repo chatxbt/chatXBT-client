@@ -1,21 +1,22 @@
 //@ts-ignore
 import { randomBytes } from "crypto";
-import Web3 from "web3";
+// import Web3 from "web3";
 import { useCallback, useMemo } from "react";
 import { ethers } from "ethers";
-import { useAccount, useSignMessage, useNetwork, useDisconnect } from "wagmi";
+import { useAccount, useSignMessage, useDisconnect } from "wagmi";
 import { recoverMessageAddress } from "viem";
 import { chatxbtDataProvider, chatxbtStore, chatxbtUtils } from "../..";
+import { useGoogleLogin } from "@react-oauth/google";
+import axios from "axios";
 
 export const auth = (props: any) => {
   try {
     const { disconnect: walletDisconnect } = useDisconnect();
     const wagmiData = useAccount();
-    const { chain } = useNetwork();
     const {
       data: signMessageData,
       error: wgmE,
-      isLoading,
+      // isLoading,
       signMessage: wgsm,
       variables,
       signMessageAsync,
@@ -39,6 +40,7 @@ export const auth = (props: any) => {
       signMessage,
       connect,
       disconnect,
+      userInfo,
     } = useConnectionStore((state: any) => ({
       signature: state.signature,
       connected: state.connected,
@@ -49,6 +51,7 @@ export const auth = (props: any) => {
       signMessage: state.signMessage,
       connect: state.connect,
       disconnect: state.disconnect,
+      userInfo: state.userInfo,
     }));
 
     // waitlist store
@@ -101,13 +104,13 @@ export const auth = (props: any) => {
           ],
         });
 
-        return { signer, signature, address: ethers.utils.getAddress(account) };
+        return { signer, signature, address: ethers.getAddress(account) };
       } catch (error: any) {
         if (error?.response?.status === 500 || error?.response?.status === 403)
           chatxbtUtils.toolkit.slackNotify({
             message: JSON.stringify(error?.response?.message),
           });
-        throw new chatxbtUtils.Issue(500, error?.message);
+        // throw new chatxbtUtils.Issue(500, error?.message);
       }
     };
 
@@ -132,7 +135,8 @@ export const auth = (props: any) => {
         }
 
         if (!jwt) {
-          walletDisconnect();
+          // walletDisconnect();
+          signOut('failed get jwt');
           throw new chatxbtUtils.Issue(401, res.message);
         }
       } catch (error: any) {
@@ -140,7 +144,8 @@ export const auth = (props: any) => {
           chatxbtUtils.toolkit.slackNotify({
             message: JSON.stringify(error?.response?.message),
           });
-        walletDisconnect();
+        // walletDisconnect();
+        signOut('failed to sign transaction');
       }
     };
 
@@ -151,21 +156,23 @@ export const auth = (props: any) => {
         });
         const messageToSign = response?.data;
         if (!messageToSign) {
-          walletDisconnect();
+          // walletDisconnect();
+          signOut('failed to find message to sign');
           throw new chatxbtUtils.Issue(401, response.message);
         }
 
-        const web3 = new Web3(Web3.givenProvider);
+        // const web3 = new Web3(Web3.givenProvider);
         // const signature = await web3.eth.personal.sign(messageToSign, address, '');
         wgsm({ message: messageToSign });
         // const signature = await web3.eth.sign(messageToSign, address);
       } catch (error: any) {
-        // alert(error.message);
+        alert(error.message);
         if (error?.response?.status === 500 || error?.response?.status === 403)
           chatxbtUtils.toolkit.slackNotify({
             message: JSON.stringify(error?.response?.message),
           });
-        walletDisconnect();
+        // walletDisconnect();
+        signOut('failed attempted handleWalletSignIn');
         // throw new chatxbtUtils.Issue(500, error.message)
         // toast.success("You have successfully signed in");
       }
@@ -182,12 +189,12 @@ export const auth = (props: any) => {
           const accounts = await ethereum.request({
             method: "eth_requestAccounts",
           });
-          const { signature, address } = await getSigner(provider, accounts[0]);
+          const { signature, address }: any = await getSigner(provider, accounts[0]);
           connect(address, signature, "metamask");
           // @ts-ignore
           window.ethereum.on("accountsChanged", async (accounts: string[]) => {
             if (accounts.length > 0) {
-              const { signature, address, signer } = await getSigner(
+              const { signature, address, signer }: any = await getSigner(
                 provider,
                 accounts[0]
               );
@@ -205,9 +212,73 @@ export const auth = (props: any) => {
           chatxbtUtils.toolkit.slackNotify({
             message: JSON.stringify(error?.response?.message),
           });
-        throw new chatxbtUtils.Issue(500, error?.message);
+        // throw new chatxbtUtils.Issue(500, error?.message);
       }
     };
+
+        const checkUserNetwork = async () => {
+
+        if (window.ethereum) {
+  
+          const networkId = await window.ethereum.request({ method: 'net_version' });
+  
+          if (networkId !== '5') {
+  
+            console.log('Please switch to the Goerli network in MetaMask to use this application.');
+  
+          };
+  
+        } else {
+  
+          console.log('Please install and enable MetaMask to use this application.');
+  
+        }
+      }
+
+    const googleLogin = useGoogleLogin({
+      onSuccess: async (tokenResponse: any) => {
+        console.log(tokenResponse, '[Google authentication successful]');
+        const userInfo = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${tokenResponse.access_token}`, {
+          headers: {
+            Authorization: `Bearer ${tokenResponse.access_token}`,
+            Accept: 'application/json'
+          },
+        }).then(res => res);
+
+        console.log(userInfo);
+      //   // handleGoogleAuth(tokenResponse.access_token);
+      },
+      onError: () => {
+        console.log("[Google authentication failed]");
+      },
+    });
+
+    //google auth
+    const handleGoogleAuth = async (token: any) => {
+      try {
+        const response = await chatxbtApi.authWithGoogle(token);
+        console.log(response);
+
+        // const jwt = response?.data.token;
+        // const user = response?.data;
+
+        // if (jwt) {
+        //   connect(
+        //     user,
+        //     jwt,
+        //   );
+        // }
+
+
+        // if (!jwt) {
+        //   walletDisconnect();
+        //   throw new chatxbtUtils.Issue(401, response.message);
+        // }
+
+      } catch (error: any) {
+        console.log(error);
+      }
+    }
 
     /**
      * join waitlist
@@ -220,7 +291,8 @@ export const auth = (props: any) => {
     /**
      * sign out account
      */
-    const signOut = () => {
+    const signOut = (message: string) => {
+      // alert(message)
       walletDisconnect();
       disconnect();
     };
@@ -234,6 +306,7 @@ export const auth = (props: any) => {
         wagmiData,
         provider,
         visibleAddress,
+        googleLogin,
 
         variables,
         signMessageData,
@@ -243,6 +316,7 @@ export const auth = (props: any) => {
         loading,
         sendFormValid,
         error,
+        userInfo,
       },
       action: {
         joinWaitlist,
@@ -251,6 +325,9 @@ export const auth = (props: any) => {
         getSigner,
         signAndConnectUser,
         signOut,
+        handleGoogleAuth,
+        checkUserNetwork,
+        connect,
       },
       ...props,
     };

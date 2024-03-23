@@ -470,6 +470,7 @@
                 background: #0e2053;
                 border: 2px solid rgba(18, 52, 121, 0.2);
                 border-radius: 8px;
+                z-index: 2;
 
                 @include responsivePro(mobile){
                     width: 100%;
@@ -533,6 +534,7 @@
                         padding: 0px 16px;
                         outline: none;
                         color: #fff;
+                        font-size: 14px;
                     }
 
                     button {
@@ -815,7 +817,8 @@
                         button {
                             height: 100%;
                             width: 100%;
-                            font-size: 16px;
+                            // font-size: 16px;
+                            font-size: 14px;
                             border: 1px solid transparent;
                             color: #fff;
                             background: #020611;

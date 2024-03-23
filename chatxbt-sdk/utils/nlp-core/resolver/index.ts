@@ -11,6 +11,8 @@ import { IntentHandler } from "../intent-handler";
 import { envConfig, lang, supportedTokens } from "../../../config";
 
 import { toolkit } from "../../../utils";
+import { NewIntentHandler } from "../intent-handler/intentHandler";
+import { INewIntentHandler } from "@chatxbt-sdk/interface/intent-handler";
 
 export class ChatXBTResolver {
   private nlp = require("compromise");
@@ -19,9 +21,11 @@ export class ChatXBTResolver {
   private addresses = new Map();
   private intents: any;
   private dexKeys = "";
+  // private dexKeys: any;
   private tokenKeys = "";
+  private protocols: any;
 
-  constructor({ intents, dexKeys, tokenKeys, addresses, address, signer }: any) {
+  constructor({ intents, dexKeys, tokenKeys, addresses, address, signer, protocols }: any) {
     // this.addresses.set('uniswap', "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D");
     // this.addresses.set('@uniswap', "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D");
     // // this.addresses.set('uniswap', "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D");
@@ -32,9 +36,8 @@ export class ChatXBTResolver {
     this.dexKeys = dexKeys;
     this.tokenKeys = tokenKeys;
     this.addresses = new Map(addresses);
-    this.internalResolver = new IntentHandler({signer, address});
-
-    // console.log('intents', intents);
+    this.internalResolver = new IntentHandler({ signer, address });
+    this.protocols = protocols;
   }
 
   private extractMessage = (message: string, intent: { match: string }[]) => {
@@ -51,7 +54,12 @@ export class ChatXBTResolver {
   };
 
   resolveMsg = async (message: string, provider: any) => {
+
+    console.log(message, provider);
+
     try {
+      const dexesSuggestions = this.dexKeys?.split('|');
+
       const isCreatingWallet = this.extractMessage(
         message,
         this.intents.createWalletIntents
@@ -66,6 +74,8 @@ export class ChatXBTResolver {
         this.intents.crossChainSwap
       );
       if (isBridging) {
+        console.log('isBridging', isBridging);
+
         const _doc = this.nlp(isBridging); // reconstruct the doc
         const toToken = _doc.match(`(${this.tokenKeys})`).out("text");
         let exchange = _doc.match(`(${this.dexKeys})`);
@@ -80,10 +90,12 @@ export class ChatXBTResolver {
         if (amount.startsWith("$")) {
           amount = +amount.slice(1);
         }
+
+        console.log(dex);
         try {
           const response = await this.internalResolver.sendToL2Chain(
-            "usdt",
-            480000000000000,
+            "eth",
+            amount,
             'hop',
             'polygon',
             provider
@@ -95,7 +107,10 @@ export class ChatXBTResolver {
               message: JSON.stringify(e?.response?.message),
             });
 
-          console.log(Object.keys(e));
+          // console.log(Object.keys(e));
+          const errorMessage = JSON.parse(e);
+          console.log(errorMessage);
+
           return {
             // type: 'error',
             // message: `An Error Occurred, I Got This Feedback "${e.reason}"` }
@@ -111,6 +126,9 @@ export class ChatXBTResolver {
         this.intents.swapEthForToken
       );
       if (isBuyingWithEth) {
+        console.log('isBuyingWithEth', isBuyingWithEth);
+
+
         const _doc = this.nlp(isBuyingWithEth); // reconstruct the doc
         const toToken = _doc.match(`(${this.tokenKeys})`).out("text");
         let exchange = _doc.match(`(${this.dexKeys})`);
@@ -145,6 +163,7 @@ export class ChatXBTResolver {
             dex,
             provider
           );
+          
           return response;
         } catch (e: any) {
           if (e?.response?.status === 500 || e?.response?.status === 403)
@@ -168,6 +187,8 @@ export class ChatXBTResolver {
         this.intents.swapTokenForEth
       );
       if (isSellingTokenForEth) {
+        console.log('isSellingTokenForEth', isSellingTokenForEth);
+
         const _doc = this.nlp(isSellingTokenForEth); // reconstruct the doc
         const fromToken = _doc
           .match(`(${this.tokenKeys.toLowerCase()})`)
@@ -193,6 +214,8 @@ export class ChatXBTResolver {
         this.intents.approveTokenSpend
       );
       if (isApproval) {
+        console.log('isApproval', isApproval);
+
         const _doc = this.nlp(isApproval); // reconstruct the doc
         let to = _doc.match("(#AtMention|#Noun)").out("text");
         let token = _doc.match(`(${this.tokenKeys})`).out("text");
@@ -265,6 +288,8 @@ export class ChatXBTResolver {
         this.intents.borrowEth
       );
       if (isBorrowingEth) {
+        console.log('isBorrowingEth', isBorrowingEth);
+
         const _doc = this.nlp(isBorrowingEth); // reconstruct the doc
         const toToken = _doc.match(`(${this.tokenKeys})`).out("text");
         let exchange = _doc.match(`(${this.dexKeys})`);
@@ -298,6 +323,8 @@ export class ChatXBTResolver {
 
       const isLendingEth = this.extractMessage(message, this.intents.lendEth);
       if (isLendingEth) {
+        console.log('isLendingEth', isLendingEth);
+
         const _doc = this.nlp(isLendingEth); // reconstruct the doc
         const toToken = _doc.match(`(${this.tokenKeys})`).out("text");
         let exchange = _doc.match(`(${this.dexKeys})`);
