@@ -4,6 +4,7 @@ import { botInit, toolkit } from "@chatxbt-sdk/utils";
 import { botDisplayImage } from "@chatxbt-sdk/utils/assets";
 import { create } from "zustand";
 import { createJSONStorage, persist, devtools } from "zustand/middleware";
+import "@chatxbt-sdk/utils/pollyfill/polyfill.ts"
 
 const chatStorage = "chat-storage";
 
@@ -21,8 +22,8 @@ export const useChatStore = create<ChatStore>()(
         scroll: "",
         confirmation: null,
         sendConfirmation: (data: any) => {
+          set(() => ({confirmation: JSON.stringify(data)}))
           set({ preview: false });
-          set(() => ({confirmation: data}))
         },
         clearConfirmation: () => {
           set(() => ({confirmation: null}))
@@ -93,10 +94,10 @@ export const useChatStore = create<ChatStore>()(
       {
         name: chatStorage,
         storage: createJSONStorage(() => localStorage),
-        partialize: (state) => ({}),
-        onRehydrateStorage: () => (state: any) => {
-          state?.setHasHydrated(true);
-        },
+        // partialize: (state) => ({}),
+        // onRehydrateStorage: () => (state: any) => {
+        //   state?.setHasHydrated(true);
+        // },
       }
     )
   )

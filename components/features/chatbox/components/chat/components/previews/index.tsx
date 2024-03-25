@@ -7,16 +7,16 @@ import { useChat } from "@chatxbt-sdk/hooks";
 const AiActionPreview = (props: any) => {
   const {
     store: { confirmation },
-    action: {}
+    action: {},
   } = useChat(props);
+
+  const txConf = JSON.parse(confirmation);
 
   return (
     <>
-      {confirmation?.type === "swap-preview" && (
-        <SwapPreview {...confirmation} />
-      )}
-      {confirmation?.type === "borrow-preview" && <BorrowPreview />}
-      {confirmation?.type === "bridge-preview" && <BridgePreview />}
+      {txConf?.type === "swap-preview" && <SwapPreview />}
+      {txConf?.type === "borrow-preview" && <BorrowPreview />}
+      {txConf?.type === "bridge-preview" && <BridgePreview />}
     </>
   );
 };

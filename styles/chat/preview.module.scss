@@ -217,10 +217,17 @@
           border-radius: 3px;
           margin: 10px auto;
 
-          h3 {
+          h2 {
             font-weight: 700;
             font-size: 16px;
             line-height: 139.52%;
+          }
+
+          h3 {
+            // font-weight: 700;
+            font-size: 15px;
+            line-height: 139.52%;
+            color: #9a9a9c;
           }
 
           h4 {
@@ -307,6 +314,10 @@
           border-radius: 5px;
           border: 1px solid transparent;
           color: #fff;
+
+          &:hover{
+            opacity: 0.8;
+          }
         }
 
         #one {
@@ -573,11 +584,18 @@
             );
             border-radius: 3px;
             margin: 10px auto;
-  
-            h3 {
+
+            h2 {
               font-weight: 700;
               font-size: 16px;
               line-height: 139.52%;
+            }
+  
+            h3 {
+              // font-weight: 700;
+              font-size: 15px;
+              line-height: 139.52%;
+              color: #9a9a9c;
             }
   
             h4 {
@@ -931,10 +949,17 @@
           border-radius: 3px;
           margin: 10px auto;
 
-          h3 {
+          h2 {
             font-weight: 700;
             font-size: 16px;
             line-height: 139.52%;
+          }
+
+          h3 {
+            // font-weight: 700;
+            font-size: 15px;
+            line-height: 139.52%;
+            color: #9a9a9c;
           }
 
           h4 {

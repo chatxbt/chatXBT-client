@@ -13,7 +13,7 @@ import AiActionPreview from "./components/previews";
 
 const Main = (props: any) => {
   const {
-    store: { preview, messages, status, ref, scroll, confirmation },
+    store: { preview, messages, status, ref, scroll, confirmation,txConfirmationData },
     action: { scrollDown, rePrompt },
   } = useChat(props);
 

@@ -51,7 +51,7 @@ export class NewResolver {
       let dexes = this.dexKeys?.split("|");
 
       const defaultDex = {
-        
+
         swap: "1inch",
 
         borrow: "compound",
@@ -105,7 +105,7 @@ export class NewResolver {
           signer: this.signer,
         };
 
-        const borrowHandler = new NewIntentHandler(contractConfig);
+        // const borrowHandler = new NewIntentHandler(contractConfig);
 
         const amountInEth = messageObject.Amount;
 
@@ -114,7 +114,19 @@ export class NewResolver {
 
           const amountInWei = ethers.parseEther(amountInEthString);
 
-          const response = await borrowHandler.borrow(amountInWei);
+          // const response = await borrowHandler.borrow(amountInWei);
+
+          const response = {
+            type: "borrow-preview",
+            message: "You are about to perform a borrow transaction. Please confirm",
+            status: true,
+            dex: getDexFromMessageObject ? getDexFromMessageObject : defaultDex.borrow,
+            protocols: this.protocols,
+            args: amountInWei,
+            data: messageObject,
+            methodToCall: "borrow",
+            contractConfig: contractConfig
+          }
 
           return response;
         }
@@ -158,9 +170,21 @@ export class NewResolver {
             fromToken: defaultFromToken,
           };
 
-          const swapHandler = new NewIntentHandler(contractConfig);
+          // const swapHandler = new NewIntentHandler(contractConfig);
 
-          const response = await swapHandler.swap(swapArgs);
+          // const response = await swapHandler.swap(swapArgs);
+
+          const response = {
+            type: "swap-preview",
+            status: true,
+            message: "You are about to perform a swap transaction. Please confirm",
+            dex: getDexFromMessageObject ? getDexFromMessageObject : defaultDex.swap,
+            protocols: this.protocols,
+            args: swapArgs,
+            data: messageObject,
+            methodToCall: "swap",
+            contractConfig: contractConfig
+          }
 
           return response;
         }
@@ -196,14 +220,21 @@ export class NewResolver {
             fromToken: messageObject["Token to Use"],
           };
 
-          const bridgeHandler = new NewIntentHandler(contractConfig);
+          // const bridgeHandler = new NewIntentHandler(contractConfig);
 
-          const response = await bridgeHandler.bridge(bridgeArgs);
+          // const response = await bridgeHandler.bridge(bridgeArgs);
 
-          // response = {
-          //   args,
-          //   func: async (args, intenthandler) => await intenthandler.bridge(args)
-          //   }
+          const response = {
+            type: "bridge-preview",
+            message: "You are about to perform a bridge transaction. Please confirm",
+            status: true,
+            dex: getDexFromMessageObject ? getDexFromMessageObject : defaultDex.bridge,
+            protocols: this.protocols,
+            args: bridgeArgs,
+            data: messageObject,
+            methodToCall: "bridge",
+            contractConfig: contractConfig
+          }
 
           return response;
         }

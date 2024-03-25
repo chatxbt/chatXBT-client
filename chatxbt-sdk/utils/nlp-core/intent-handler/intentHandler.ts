@@ -219,7 +219,8 @@ export class NewIntentHandler {
         console.log(args);
 
         if (args.length > 0) {
-          const hex = args[0]._hex;
+          const hex = args[0];
+          // const hex = args[0]._hex;
 
           console.log(hex);
 

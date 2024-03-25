@@ -17,8 +17,11 @@ import {
 } from "wagmi";
 import { BrowserProvider, JsonRpcSigner } from "ethers";
 import { NewResolver } from "@chatxbt-sdk/utils/nlp-core/resolver/Resolver";
+import { NewIntentHandler } from "@chatxbt-sdk/utils/nlp-core/intent-handler/intentHandler";
 
 export const chat = (props: any) => {
+
+  let methodToCall = null;
   // data provider modules
   const { chatxbtApi } = chatxbtDataProvider;
 
@@ -141,9 +144,16 @@ export const chat = (props: any) => {
     );
   };
 
-  const sendResponse = (message: string) => {
+  const sendResponse = (message: any) => {
     generateResponse(message);
   };
+
+  // const [txConfirmationData, setTxConfirmationData] = useState<any>(null)
+
+  const sendPreview = (previewData: any) => {
+    sendConfirmation(previewData);
+    resetMessage();
+  }
 
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [suggestions, setSuggestions] = useState<any>([]);
@@ -226,14 +236,14 @@ export const chat = (props: any) => {
         const { xbtResolve } = await resolvePrompt();
         const result = await xbtResolve(messageHolder);
 
-        // if (result?.type.includes('preview')) {
-        //   sendConfirmation(result);
-        //   resetMessage();
-        // } else {
-        //   sendResponse(result);
-        // };
+        if (result?.type.includes('preview')) {
+          sendPreview(result);
+        } else {
+          sendResponse(result);
+        };
         
-        sendResponse(result);
+        // sendResponse(result);
+        // sendPreview(result);
 
         console.log(result);
       })();
@@ -244,6 +254,50 @@ export const chat = (props: any) => {
         });
     }
   };
+
+  const initTxAndConfirm = async () => {
+
+    try {
+      
+      const txData = JSON.parse(confirmation);
+
+      const signer = await walletClientToSigner(walletClient as any);
+  
+      const contractConfig = {
+        dex: txData.dex,
+        protocols: txData.protocols,
+        signer: signer
+      }
+  
+      const handler: any = new NewIntentHandler(contractConfig);
+  
+      const result = await handler[txData.methodToCall](txData.args);
+  
+      sendResponse(result);
+
+      awaitMessage();
+
+      clearConfirmation();
+
+    } catch (e) {
+      
+      console.log(e);
+    }
+
+  };
+
+  const cancelTx = () => {
+
+    const data = {
+      status: true,
+      type: "default-text",
+      message: "Transaction cancelled"
+    };
+
+    sendResponse(data);
+    resetMessage();
+    clearConfirmation();
+  }
 
 
   const hints = chatxbtUtils.promptData.default.AIPrompts.filter((word) => {
@@ -419,7 +473,9 @@ export const chat = (props: any) => {
       scroll,
       showSuggestions,
       suggestions,
-      confirmation
+      confirmation,
+      // txConfirmationData,
+      methodToCall
     },
     action: {
       resolvePrompt,
@@ -437,6 +493,8 @@ export const chat = (props: any) => {
       handleSuggestionClick,
       handleBlur,
       fetchSuggestions,
+      initTxAndConfirm,
+      cancelTx,
       // handleScroll
       setScroll,
       sendConfirmation,
