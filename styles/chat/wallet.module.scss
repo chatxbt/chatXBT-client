@@ -1,525 +1,537 @@
-@import '../utils/functions.scss';
+@import "../utils/functions.scss";
 
 .walletCon {
-    height: auto;
-    padding: 20px 20px 40px;
+  height: auto;
+  padding: 20px 20px 40px;
 
-    @include responsivePro(mobile) {
-        height: auto;
-        padding: 0px;
+  @include responsivePro(mobile) {
+    height: auto;
+    padding: 0px;
+  }
+
+  .hero {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    #details {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 120px;
+      background: linear-gradient(
+        180deg,
+        rgba(205, 207, 255, 0.08) 0%,
+        rgba(205, 207, 255, 0.05) 100%
+      );
+      border-radius: 10px;
+      padding: 20px;
+
+      @include responsivePro(mobile) {
+        width: 100%;
+      }
+
+      @include responsivePro(exception) {
+        width: 100%;
+      }
+
+      #desktop {
+        width: 100%;
+        height: 100%;
+        opacity: 0.6;
+
+        @include responsivePro(mobile) {
+          display: none;
+        }
+
+        @include responsivePro(mobile) {
+          display: none;
+        }
+
+        #cards,
+        #cardsFirst,
+        #cardLast {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: flex-start;
+        }
+
+        #cardsFirst {
+          border-right: 0.5px solid #565656;
+          padding: 0px 20px;
+          flex-direction: row;
+          justify-content: space-between;
+
+          div {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+
+            h3 {
+              font-weight: 400;
+              font-size: 14px;
+              line-height: 139.52%;
+              color: rgba(255, 255, 255, 0.6);
+            }
+
+            p {
+              font-weight: 400;
+              font-size: 20px;
+              line-height: 139.52%;
+            }
+          }
+
+          button {
+            border: 1px solid transparent;
+            background-color: transparent;
+            color: #fff;
+            margin-right: 20px;
+          }
+        }
+
+        #cards {
+          border-right: 0.5px solid #565656;
+          padding: 0px 20px;
+
+          h3 {
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 139.52%;
+            color: rgba(255, 255, 255, 0.6);
+          }
+
+          p {
+            font-weight: 400;
+            font-size: 20px;
+            line-height: 139.52%;
+          }
+        }
+
+        #cardLast {
+          button {
+            width: 98px;
+            height: 28px;
+            background: #ffffff;
+            border: 1px solid transparent;
+            border-radius: 30px;
+            margin: auto;
+          }
+        }
+      }
+
+      #mobile {
+        display: none;
+        width: 50%;
+        height: 100%;
+        opacity: 0.6;
+
+        @include responsivePro(mobile) {
+          display: block;
+        }
+
+        @include responsivePro(mobile) {
+          display: block;
+        }
+
+        #cards,
+        #cardLast {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: flex-start;
+        }
+
+        #cards {
+          flex-direction: row;
+          justify-content: space-between;
+
+          div {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+
+            h3 {
+              font-weight: 400;
+              font-size: 14px;
+              line-height: 139.52%;
+              color: rgba(255, 255, 255, 0.6);
+            }
+
+            p {
+              font-weight: 400;
+              font-size: 20px;
+              line-height: 139.52%;
+            }
+          }
+
+          button {
+            border: 1px solid transparent;
+            background-color: transparent;
+            color: #fff;
+          }
+        }
+
+        #cardLast {
+          justify-content: right;
+          align-items: flex-end;
+
+          button {
+            width: 98px;
+            height: 28px;
+            background: #ffffff;
+            border: 1px solid transparent;
+            border-radius: 30px;
+            // margin: auto;
+          }
+        }
+      }
     }
 
-    .hero {
+    #buttons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 50%;
+      margin: 20px auto;
+      opacity: 0.6;
+
+      @include responsivePro(mobile) {
         width: 100%;
+      }
+
+      @include responsivePro(exception) {
+        width: 100%;
+      }
+
+      #div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        margin: 10px auto;
+
+        button {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 24px;
+          width: 80px;
+          height: 48px;
+          background: #1c4df0;
+          border-radius: 10px;
+          color: #fff;
+          border: 1px solid transparent;
+          margin-bottom: 10px;
+          font-size: 1rem;
+
+          &:hover {
+            opacity: 0.8;
+          }
+        }
+
+        span {
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 139.52%;
+          text-align: center;
+          color: rgba(255, 255, 255, 0.7);
+        }
+      }
+    }
+  }
+
+  .body {
+    background: linear-gradient(
+      180deg,
+      rgba(205, 207, 255, 0.08) 0%,
+      rgba(205, 207, 255, 0.05) 100%
+    );
+    border-radius: 10px;
+    position: relative;
+    padding-top: 15px;
+    width: 100%;
+    margin: auto;
+    opacity: 0.6;
+
+    @include responsivePro(mobile) {
+      display: none;
+    }
+
+    @include responsivePro(exception) {
+      display: none;
+    }
+
+    .headerTab {
+      display: flex;
+      justify-content: left;
+      align-items: center;
+      padding: 10px;
+      width: 100%;
+      margin: auto;
+      border-radius: 10px;
+      padding: 20px 40px 0px;
+
+      @include responsivePro(mobile) {
+        overflow: scroll;
+        white-space: nowrap;
+        width: 100%;
+      }
+
+      @include responsivePro(exception) {
+        overflow-x: auto;
+        width: 100%;
+      }
+
+      #btnSec {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-
-        #details {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 120px;
-            background: linear-gradient(180deg, rgba(205, 207, 255, 0.08) 0%, rgba(205, 207, 255, 0.05) 100%);
-            border-radius: 10px;
-            padding: 20px;
-
-            @include responsivePro(mobile) {
-                width: 100%;
-            }
-
-            @include responsivePro(exception) {
-                width: 100%;
-            }
-
-            #desktop {
-                width: 100%;
-                height: 100%;
-
-                @include responsivePro(mobile) {
-                    display: none;
-                }
-
-                @include responsivePro(mobile) {
-                    display: none;
-                }
-
-                #cards,
-                #cardsFirst,
-                #cardLast {
-                    width: 100%;
-                    height: 100%;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: flex-start;
-                }
-
-                #cardsFirst {
-                    border-right: 0.5px solid #565656;
-                    padding: 0px 20px;
-                    flex-direction: row;
-                    justify-content: space-between;
-
-                    div {
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: center;
-                        align-items: flex-start;
-
-                        h3 {
-                            font-weight: 400;
-                            font-size: 14px;
-                            line-height: 139.52%;
-                            color: rgba(255, 255, 255, 0.6);
-                        }
-
-                        p {
-                            font-weight: 400;
-                            font-size: 20px;
-                            line-height: 139.52%;
-                        }
-                    }
-
-                    button {
-                        border: 1px solid transparent;
-                        background-color: transparent;
-                        color: #fff;
-                        margin-right: 20px;
-                    }
-
-                }
-
-                #cards {
-                    border-right: 0.5px solid #565656;
-                    padding: 0px 20px;
-
-                    h3 {
-                        font-weight: 400;
-                        font-size: 14px;
-                        line-height: 139.52%;
-                        color: rgba(255, 255, 255, 0.6);
-                    }
-
-                    p {
-                        font-weight: 400;
-                        font-size: 20px;
-                        line-height: 139.52%;
-                    }
-                }
-
-                #cardLast {
-                    button {
-                        width: 98px;
-                        height: 28px;
-                        background: #FFFFFF;
-                        border: 1px solid transparent;
-                        border-radius: 30px;
-                        margin: auto;
-                    }
-                }
-            }
-
-            #mobile {
-                display: none;
-                width: 50%;
-                height: 100%;
-
-                @include responsivePro(mobile) {
-                    display: block;
-                }
-
-                @include responsivePro(mobile) {
-                    display: block;
-                }
-
-                #cards,
-                #cardLast {
-                    width: 100%;
-                    height: 100%;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: flex-start;
-                }
-
-                #cards {
-                    flex-direction: row;
-                    justify-content: space-between;
-
-                    div {
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: center;
-                        align-items: flex-start;
-
-                        h3 {
-                            font-weight: 400;
-                            font-size: 14px;
-                            line-height: 139.52%;
-                            color: rgba(255, 255, 255, 0.6);
-                        }
-    
-                        p {
-                            font-weight: 400;
-                            font-size: 20px;
-                            line-height: 139.52%;
-                        }
-                    }
-
-                    button {
-                        border: 1px solid transparent;
-                        background-color: transparent;
-                        color: #fff;
-                    }
-
-                }
-
-                #cardLast {
-                    justify-content: right;
-                    align-items: flex-end;
-
-                    button {
-                        width: 98px;
-                        height: 28px;
-                        background: #FFFFFF;
-                        border: 1px solid transparent;
-                        border-radius: 30px;
-                        // margin: auto;
-                    }
-                }
-            }
-
-
-        }
-
-        #buttons {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 50%;
-            margin: 20px auto;
-
-            @include responsivePro(mobile) {
-                width: 100%;
-            }
-
-            @include responsivePro(exception) {
-                width: 100%;
-            }
-
-            #div {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-direction: column;
-                margin: 10px auto;
-
-                button {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    padding: 24px;
-                    width: 80px;
-                    height: 48px;
-                    background: #1C4DF0;
-                    border-radius: 10px;
-                    color: #fff;
-                    border: 1px solid transparent;
-                    margin-bottom: 10px;
-                    font-size: 1rem;
-
-                    &:hover {
-                        opacity: 0.8;
-                    }
-                }
-
-                span {
-                    font-weight: 400;
-                    font-size: 14px;
-                    line-height: 139.52%;
-                    text-align: center;
-                    color: rgba(255, 255, 255, 0.7);
-                }
-            }
-        }
-    }
-
-    .body {
-        background: linear-gradient(180deg, rgba(205, 207, 255, 0.08) 0%, rgba(205, 207, 255, 0.05) 100%);
-        border-radius: 10px;
         position: relative;
-        padding-top: 15px;
-        width: 100%;
-        margin: auto;
 
         @include responsivePro(mobile) {
-            display: none;
+          margin: 6px;
         }
+      }
 
-        @include responsivePro(exception) {
-            display: none;
+      button {
+        margin-right: 10px;
+        background-color: transparent;
+        border: 1px solid transparent;
+        font-weight: 400;
+        font-size: 15px;
+        line-height: 139.52%;
+        text-align: center;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.6);
+        padding: 10px 20px;
+
+        @include responsivePro(mobile) {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+          font-size: 1.4rem;
+          width: auto;
+          margin-right: 4px;
+          padding: 10px;
         }
+      }
 
-        .headerTab {
-            display: flex;
-            justify-content: left;
-            align-items: center;
-            padding: 10px;
-            width: 100%;
-            margin: auto;
-            border-radius: 10px;
-            padding: 20px 40px 0px;
+      span {
+        height: 1px;
+        width: 100%;
+        background-color: #1c4df0;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        border-radius: 40px;
+        border: 1px solid #1c4df0;
+        display: none;
+      }
 
-
-            @include responsivePro(mobile) {
-                overflow: scroll;
-                white-space: nowrap;
-                width: 100%;
-            }
-
-            @include responsivePro(exception) {
-                overflow-x: auto;
-                width: 100%;
-            }
-
-            #btnSec {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                position: relative;
-
-                @include responsivePro(mobile) {
-                    margin: 6px;
-                }
-            }
-
-            button {
-                margin-right: 10px;
-                background-color: transparent;
-                border: 1px solid transparent;
-                font-weight: 400;
-                font-size: 15px;
-                line-height: 139.52%;
-                text-align: center;
-                text-transform: uppercase;
-                color: rgba(255, 255, 255, 0.6);
-                padding: 10px 20px;
-
-                @include responsivePro(mobile) {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    text-align: center;
-                    font-size: 1.4rem;
-                    width: auto;
-                    margin-right: 4px;
-                    padding: 10px;
-
-                }
-            }
-
-            span {
-                height: 1px;
-                width: 100%;
-                background-color: #1C4DF0;
-                position: absolute;
-                bottom: 0;
-                right: 0;
-                left: 0;
-                border-radius: 40px;
-                border: 1px solid #1C4DF0;
-                display: none;
-            }
-
-            .active {
-                color: #fff;
-            }
-        }
-
-        .main {
-            // min-height: 80vh;
-            border-radius: 12px;
-
-            .assetsCon {
-                table {
-                    thead {
-                        background: linear-gradient(180deg, rgba(205, 207, 255, 0.08) 0%, rgba(205, 207, 255, 0.05) 100%);
-
-                        tr {
-                            th {
-                                padding: 10px 40px;
-                                font-weight: 400;
-                                font-size: 16px;
-                                text-align: center;
-                                color: rgba(255, 255, 255, 0.7);
-                            }
-
-                            #start {
-                                text-align: left;
-                                padding-left: 60px;
-                            }
-                        }
-                    }
-
-                    tbody {
-                        tr {
-                            border-bottom: 0.5px solid #2D3039;
-
-                            td {
-                                text-align: center;
-                                padding: 10px 50px;
-
-                                #div {
-                                    display: flex;
-                                    justify-content: left;
-                                    align-items: center;
-
-                                    img {
-                                        width: 40px;
-                                        height: 40px;
-                                        border-radius: 50%;
-                                        margin-right: 20px;
-                                    }
-
-                                    div {
-
-                                        h3 {
-                                            font-weight: 400;
-                                            font-size: 16px;
-                                            line-height: 139.52%;
-                                            text-align: left;
-                                            color: #FFFFFF;
-                                        }
-
-                                        h4 {
-                                            font-weight: 400;
-                                            font-size: 16px;
-                                            line-height: 139.52%;
-                                            text-align: left;
-                                            color: rgba(255, 255, 255, 0.6);
-                                        }
-                                    }
-                                }
-
-                                p {
-                                    font-weight: 400;
-                                    font-size: 14px;
-                                    line-height: 139.52%;
-                                    text-align: center;
-                                    color: rgba(255, 255, 255, 0.7);
-                                    margin: 0px;
-                                    margin-top: 20px;
-
-                                    span {
-                                        color: rgba(50, 205, 112, 0.8);
-                                    }
-                                }
-
-                                h2 {
-                                    font-weight: 400;
-                                    font-size: 16px;
-                                    line-height: 139.52%;
-                                    text-align: center;
-                                    color: #FFFFFF;
-                                    margin-top: 20px;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-
-        }
+      .active {
+        color: #fff;
+      }
     }
 
-    .assetConMobile {
-        display: none;
+    .main {
+      // min-height: 80vh;
+      border-radius: 12px;
 
-        @include responsivePro(mobile) {
-            display: block;
-        }
+      .assetsCon {
+        table {
+          thead {
+            background: linear-gradient(
+              180deg,
+              rgba(205, 207, 255, 0.08) 0%,
+              rgba(205, 207, 255, 0.05) 100%
+            );
 
-        @include responsivePro(exception) {
-            display: block;
-        }
+            tr {
+              th {
+                padding: 10px 40px;
+                font-weight: 400;
+                font-size: 16px;
+                text-align: center;
+                color: rgba(255, 255, 255, 0.7);
+              }
 
-        .card {
-            padding: 19px 24px;
-            width: 100%;
-            // height: 88px;
-            background: linear-gradient(180deg, rgba(205, 207, 255, 0.08) 0%, rgba(205, 207, 255, 0.05) 100%);
-            border-radius: 10px;
-            margin: 20px auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            #div1,
-            #div2 {
-                width: 50%;
-                height: 100%;
+              #start {
+                text-align: left;
+                padding-left: 60px;
+              }
             }
+          }
 
-            #div1 {
-                display: flex;
-                justify-content: left;
-                align-items: center;
+          tbody {
+            tr {
+              border-bottom: 0.5px solid #2d3039;
 
-                img {
-                    width: 48px;
-                    height: 48px;
+              td {
+                text-align: center;
+                padding: 10px 50px;
+
+                #div {
+                  display: flex;
+                  justify-content: left;
+                  align-items: center;
+
+                  img {
+                    width: 40px;
+                    height: 40px;
                     border-radius: 50%;
                     margin-right: 20px;
-                }
+                  }
 
-                div {
+                  div {
                     h3 {
-                        font-weight: 400;
-                        font-size: 16px;
-                        line-height: 139.52%;
-                        text-align: left;
+                      font-weight: 400;
+                      font-size: 16px;
+                      line-height: 139.52%;
+                      text-align: left;
+                      color: #ffffff;
                     }
 
-                    p {
-                        font-weight: 400;
-                        font-size: 14px;
-                        line-height: 139.52%;
-                        text-align: left;
-                        color: rgba(255, 255, 255, 0.7);
-
-                        span {
-                            color: rgba(50, 205, 112, 0.8);
-                        }
+                    h4 {
+                      font-weight: 400;
+                      font-size: 16px;
+                      line-height: 139.52%;
+                      text-align: left;
+                      color: rgba(255, 255, 255, 0.6);
                     }
-                }
-            }
-
-            #div2 {
-                display: flex;
-                flex-direction: column;
-                justify-content: right;
-                align-items: flex-end;
-
-                h2 {
-                    font-weight: 400;
-                    font-size: 16px;
-                    line-height: 139.52%;
-                    text-align: right;
+                  }
                 }
 
                 p {
-                    font-weight: 400;
-                    font-size: 14px;
-                    line-height: 139.52%;
-                    text-align: right;
-                    color: rgba(255, 255, 255, 0.7);
+                  font-weight: 400;
+                  font-size: 14px;
+                  line-height: 139.52%;
+                  text-align: center;
+                  color: rgba(255, 255, 255, 0.7);
+                  margin: 0px;
+                  margin-top: 20px;
+
+                  span {
+                    color: rgba(50, 205, 112, 0.8);
+                  }
                 }
+
+                h2 {
+                  font-weight: 400;
+                  font-size: 16px;
+                  line-height: 139.52%;
+                  text-align: center;
+                  color: #ffffff;
+                  margin-top: 20px;
+                }
+              }
             }
+          }
         }
+      }
     }
+  }
+
+  .assetConMobile {
+    display: none;
+    opacity: 0.6;
+
+    @include responsivePro(mobile) {
+      display: block;
+    }
+
+    @include responsivePro(exception) {
+      display: block;
+    }
+
+    .card {
+      padding: 19px 24px;
+      width: 100%;
+      // height: 88px;
+      background: linear-gradient(
+        180deg,
+        rgba(205, 207, 255, 0.08) 0%,
+        rgba(205, 207, 255, 0.05) 100%
+      );
+      border-radius: 10px;
+      margin: 20px auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      #div1,
+      #div2 {
+        width: 50%;
+        height: 100%;
+      }
+
+      #div1 {
+        display: flex;
+        justify-content: left;
+        align-items: center;
+
+        img {
+          width: 48px;
+          height: 48px;
+          border-radius: 50%;
+          margin-right: 20px;
+        }
+
+        div {
+          h3 {
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 139.52%;
+            text-align: left;
+          }
+
+          p {
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 139.52%;
+            text-align: left;
+            color: rgba(255, 255, 255, 0.7);
+
+            span {
+              color: rgba(50, 205, 112, 0.8);
+            }
+          }
+        }
+      }
+
+      #div2 {
+        display: flex;
+        flex-direction: column;
+        justify-content: right;
+        align-items: flex-end;
+
+        h2 {
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 139.52%;
+          text-align: right;
+        }
+
+        p {
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 139.52%;
+          text-align: right;
+          color: rgba(255, 255, 255, 0.7);
+        }
+      }
+    }
+  }
 }

@@ -20,23 +20,23 @@ export const userWalletData = [
 ];
 
 export const buttonsData = {
-    sendData: {
-        icon: <BsIcons.BsArrowUpRight />,
-        title: "Send",
-    },
-    receiveData: {
-        icon: <BsIcons.BsArrowDownLeft />,
-        title: "Receive",
-    },
-    swapData: {
-        icon: <BsIcons.BsArrowRepeat />,
-        title: "Swap",
-    },
-    stakeData: {
-        icon: <GiIcons.GiTwoCoins />,
-        title: "Stake",
-    }
-}
+  sendData: {
+    icon: BsIcons.BsArrowUpRight,
+    title: "Send",
+  },
+  receiveData: {
+    icon: BsIcons.BsArrowDownLeft,
+    title: "Receive",
+  },
+  swapData: {
+    icon: BsIcons.BsArrowRepeat,
+    title: "Swap",
+  },
+  stakeData: {
+    icon: GiIcons.GiTwoCoins,
+    title: "Stake",
+  },
+};
 
 export const tabLinks = [
   {

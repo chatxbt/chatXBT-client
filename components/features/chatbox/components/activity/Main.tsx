@@ -1,10 +1,11 @@
 import React from "react";
-import style from "@styles/chat/activity.module.scss";
 import * as MdIcons from "react-icons/md";
 import * as BsIcons from "react-icons/bs";
-import { activityData } from "./data";
 import Link from "next/link";
+
+import { activityData } from "./data";
 import { activityChecker } from "@chatxbt-sdk/utils";
+import style from "@styles/chat/activity.module.scss";
 
 const Main = () => {
   return (

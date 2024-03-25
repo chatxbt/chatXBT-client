@@ -49,12 +49,12 @@ export const actionsData = [
   },
   {
     title: "Lend",
-    icon: "/images/main/aave.png",
-    name: "Aave",
+    icon: "/images/main/compound.png",
+    name: "Compound",
   },
   {
     title: "Borrow",
-    icon: "/images/main/aave.png",
-    name: "Aave",
+    icon: "/images/main/compound.png",
+    name: "Compound",
   },
 ];
