@@ -94,10 +94,10 @@ export const useChatStore = create<ChatStore>()(
       {
         name: chatStorage,
         storage: createJSONStorage(() => localStorage),
-        // partialize: (state) => ({}),
-        // onRehydrateStorage: () => (state: any) => {
-        //   state?.setHasHydrated(true);
-        // },
+        partialize: (state) => ({}),
+        onRehydrateStorage: () => (state: any) => {
+          state?.setHasHydrated(true);
+        },
       }
     )
   )
