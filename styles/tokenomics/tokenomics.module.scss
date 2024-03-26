@@ -2,7 +2,7 @@
 
 .tokenomicsPage {
   padding: 20px 20px 100px;
-  overflow: hidden;
+  position: relative;
 
   .mathsCon {
     position: absolute;
@@ -23,7 +23,7 @@
 
   #neon {
     position: absolute;
-    width: 1037px;
+    width: 100%;
     height: 149px;
     background: linear-gradient(
       151.71deg,
@@ -35,6 +35,17 @@
     filter: blur(100px);
     z-index: 0;
     margin: auto;
+    top: 100px;
+    left: 0;
+    right: 0;
+
+    @include responsivePro(mobile) {
+      width: 100%;
+    }
+
+    @include responsivePro(exception) {
+      width: 100%;
+    }
   }
 
   .overview {
@@ -78,6 +89,11 @@
       justify-content: right;
       align-items: center;
 
+      @include responsivePro(mobile) {
+        justify-content: center;
+        flex-direction: column;
+      }
+
       button {
         height: 39px;
         border: 1px solid transparent;
@@ -90,10 +106,21 @@
         @include responsivePro(mobile) {
           width: 100%;
           height: 40px;
+          margin: 10px auto;
         }
 
         &:hover {
           opacity: 0.8;
+        }
+      }
+
+      #x {
+        background-color: #fff;
+        color: #000;
+        margin-right: 10px;
+
+        @include responsivePro(mobile) {
+          margin-right: 0px;
         }
       }
     }
