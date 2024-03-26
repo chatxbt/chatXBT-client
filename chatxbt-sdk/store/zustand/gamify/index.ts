@@ -12,7 +12,6 @@ export const useGamifyStore = create<GamifyStore>()(
         gamifyTasks: null,
         gamifyPoints: null,
         gamifyReferrals: null,
-        _hasHydrated: false,
         setGamifyTasks: (tasks: any) => {
           set({ gamifyTasks: tasks })
         },
@@ -22,19 +21,10 @@ export const useGamifyStore = create<GamifyStore>()(
         setGamifyReferrals: (points: any) => {
           set({ gamifyReferrals: points })
         },
-        setHasHydrated: (state: any) => {
-          set({
-            _hasHydrated: state,
-          });
-        },
       }),
       {
         name: storageName,
         storage: createJSONStorage(() => localStorage),
-        partialize: (state) => ({}),
-        onRehydrateStorage: () => (state: any) => {
-          state?.setHasHydrated(true);
-        },
       }
     )
   )

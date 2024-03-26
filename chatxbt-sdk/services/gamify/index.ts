@@ -8,15 +8,13 @@ export const gamify = () => {
         gamifyTasks,
         gamifyPoints,
         gamifyReferrals,
-        _hasHydrated,
         setGamifyTasks,
         setGamifyPoints,
         setGamifyReferrals,
     } = useGamifyStore((state: any) => ({
-        gamifyTasks: state.gamifyPoints,
+        gamifyTasks: state.gamifyTasks,
         gamifyPoints: state.gamifyPoints,
         gamifyReferrals: state.gamifyReferrals,
-        _hasHydrated: state._hasHydrated,
         setGamifyTasks: state.setGamifyTasks,
         setGamifyPoints: state.setGamifyPoints,
         setGamifyReferrals: state.setGamifyReferrals,
@@ -25,7 +23,7 @@ export const gamify = () => {
     const getAllTasks = async () => {
         try {
             const allTasks = await chatxbtApi.allTask();
-            allTasks?.status && setGamifyTasks(allTasks.data);
+            allTasks?.data && setGamifyTasks(allTasks?.data);
         } catch (e) {
             console.log(e);
         }

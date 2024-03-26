@@ -2,10 +2,22 @@ import React, { useState } from "react";
 import style from "@styles/tokenomics/tokenomics.module.scss";
 import { BsArrowUpRight } from "react-icons/bs";
 import ReferralModal from "./ReferralModal";
+import { useGamify } from "@chatxbt-sdk/hooks";
 
 const Overview = () => {
   const [openModal, setOpenModal] = useState(false);
   const handleTaskModal = () => setOpenModal(!openModal);
+  const {
+    store: { gamifyTasks, gamifyReferrals, gamifyPoints },
+    action: {
+      getAllTasks,
+      claimReward,
+      setGamifyTasks,
+      setGamifyReferrals,
+      setGamifyPoints,
+    },
+  } = useGamify();
+
   return (
     <>
       {openModal && <ReferralModal handleTaskModal={handleTaskModal} />}

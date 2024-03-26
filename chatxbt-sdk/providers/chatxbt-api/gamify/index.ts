@@ -4,7 +4,7 @@ export const allTask = async () => {
     try {
         const { data, headers } = await chatxbtUtils
             .privateApiConnect()
-            .get(`gamify/all-task`);
+            .get(`gamify/all-task?page=1&pageSize=10`);
 
         return {
             status: true,
