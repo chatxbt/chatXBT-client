@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import style from "@styles/tokenomics/tokenomics.module.scss";
 import { BsArrowUpRight } from "react-icons/bs";
+import ReferralModal from "./ReferralModal";
 
 const Overview = () => {
+  const [openModal, setOpenModal] = useState(false);
+  const handleTaskModal = () => setOpenModal(!openModal);
   return (
-    <div className={`container ${style.overview}`}>
+    <>
+      {openModal && <ReferralModal handleTaskModal={handleTaskModal} />}
+      
+        <div className={`container ${style.overview}`}>
       <div className="row">
         <div className="col-md-8">
           <div className={style.card}>
@@ -22,9 +28,10 @@ const Overview = () => {
         </div>
       </div>
       <div className={style.share}>
-        <button>Share Referral <BsArrowUpRight /></button>
+        <button onClick={handleTaskModal}>Share Referral <BsArrowUpRight /></button>
       </div>
     </div>
+    </>
   );
 };
 
