@@ -256,7 +256,7 @@ export const auth = (props: any) => {
     //google auth
     const handleGoogleAuth = async (token: any) => {
       try {
-        const response = await chatxbtApi.authWithGoogle(token);
+        const response = await chatxbtApi.authWithSocial({ token, provider: 'google' });
         console.log(response);
 
         // const jwt = response?.data.token;
@@ -268,6 +268,47 @@ export const auth = (props: any) => {
         //     jwt,
         //   );
         // }
+
+
+        // if (!jwt) {
+        //   walletDisconnect();
+        //   throw new chatxbtUtils.Issue(401, response.message);
+        // }
+
+      } catch (error: any) {
+        console.log(error);
+      }
+    }
+
+
+    // twitter auth
+    const getTwitterAccess = async () => {
+      try {
+        const { data } = await chatxbtApi.getTwitterAccessToken();
+        console.log( data.data );
+
+        // history.push(`https://api.twitter.com/oauth/authenticate?oauth_token=${twitter_auth_token?.oauth_token}`)
+
+      } catch (error: any) {
+        console.log(error);
+      }
+    }
+
+    // twitter auth
+    const handleTwitterAuth = async (token: any) => {
+      try {
+        const response = await chatxbtApi.authWithSocial({ token, provider: 'twitter' });
+        console.log(response);
+
+        const jwt = response?.data.token;
+        const user = response?.data;
+
+        if (jwt) {
+          connect(
+            user,
+            jwt,
+          );
+        }
 
 
         // if (!jwt) {
@@ -326,6 +367,8 @@ export const auth = (props: any) => {
         signAndConnectUser,
         signOut,
         handleGoogleAuth,
+        getTwitterAccess,
+        handleTwitterAuth,
         checkUserNetwork,
         connect,
       },

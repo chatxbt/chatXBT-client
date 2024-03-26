@@ -1,8 +1,11 @@
 import TokenomicsPage from "./points";
+import { chatxbtHooks } from "../chatxbt-sdk"
 
-const Home = () => {;
+const Home = ({ action: {
+  
+}}) => {;
   return <TokenomicsPage/>;
 };
 
-export default Home;
+export default (props: any) => <Home {...props} {...chatxbtHooks.useGamifyAppEntry(props)} />;
 

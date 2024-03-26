@@ -55,11 +55,28 @@ export const getWalletJwt = async ({
   }
 };
 
-//google auth
-export const authWithGoogle = async (token: any) => {
+//social auth
+export const authWithSocial = async ({ token, provider }: any) => {
   try {
-    let authProvider = 'google';
-    const { data } = await chatxbtUtils.privateApiConnect().post('auth/sign-in', { token, authProvider });
+    const { data } = await chatxbtUtils.privateApiConnect().post('auth/sign-in', { token, provider });
+    return {
+      status: true,
+      data: data,
+      message: data
+    }
+  } catch (error: any) {
+    return {
+      status: false,
+      message: error.message,
+      error: true,
+    }
+  }
+}
+
+//get twitter access token
+export const getTwitterAccessToken = async () => {
+  try {
+    const { data } = await chatxbtUtils.privateApiConnect().post('auth/get-twitter-auth-token');
     return {
       status: true,
       data: data,

@@ -80,3 +80,36 @@ export const useAppEntry = (props: any) => {
     };
   } catch (error) { }
 };
+
+
+export const useGamifyAppEntry = (props: any) => {
+  try {
+    const authService = chatxbtServices.auth(props);
+    const {
+      store: { _hasHydrated, wagmiData, variables, signMessageData, connected, googleLogin, userInfo },
+      action: {
+        getTwitterAccess,
+        handleTwitterAuth 
+      }
+    } = authService;
+
+    useEffect(() => {
+
+      !connected && getTwitterAccess();
+
+      // get wallet
+      connected && '';
+    }, [connected]);
+
+    return {
+      store: {
+        connected,
+        googleLogin,
+        userInfo
+      },
+      action: {
+        
+      },
+    };
+  } catch (error) { }
+};
