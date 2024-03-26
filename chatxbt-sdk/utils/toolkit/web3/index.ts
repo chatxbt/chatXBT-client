@@ -3,7 +3,7 @@ import { publicApiConnect } from "../../../utils";
 import { supportedTokens, lang } from "../../../config";
 
 export const ellipticAddress = (address: string) => {
-  return `${address.slice(0, 6)}...${address.slice(38)}`;
+  return address ? `${address.slice(0, 6)}...${address.slice(38)}`: null ;
 };
 
 export const makeContract = (address: string, abi: string[], signer: any) => {

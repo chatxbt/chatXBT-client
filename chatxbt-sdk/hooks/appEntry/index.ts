@@ -1,4 +1,5 @@
 import { useAccountEffect } from 'wagmi'
+import { useRouter } from 'next/router'
 import { handleRefs } from "../../utils";
 import { useEffect } from "react";
 import { chatxbtServices, chatxbtConfig } from "../../../chatxbt-sdk";
@@ -84,9 +85,10 @@ export const useAppEntry = (props: any) => {
 
 export const useGamifyAppEntry = (props: any) => {
   try {
+    const router = useRouter();
     const authService = chatxbtServices.auth(props);
     const {
-      store: { _hasHydrated, wagmiData, variables, signMessageData, connected, googleLogin, userInfo },
+      store: { _hasHydrated, twitterAuth, connected, userInfo },
       action: {
         getTwitterAccess,
         handleTwitterAuth 
@@ -95,20 +97,35 @@ export const useGamifyAppEntry = (props: any) => {
 
     useEffect(() => {
 
-      !connected && getTwitterAccess();
+      !connected && '';
 
       // get wallet
       connected && '';
     }, [connected]);
 
+    useEffect(() => {
+      // getTwitterAccess();
+    }, []);
+
+    useEffect(() => {
+
+      const { oauth_verifier, oauth_token }: any = router.query;
+
+      !connected && twitterAuth?.oauth_token_secret && oauth_verifier && handleTwitterAuth(JSON.stringify({
+        oauth_token,
+        oauth_token_secret: twitterAuth?.oauth_token_secret,
+        oauth_verifier,
+      }));
+
+    }, [router.query]);
+
     return {
       store: {
         connected,
-        googleLogin,
         userInfo
       },
       action: {
-        
+        getTwitterAccess
       },
     };
   } catch (error) { }
