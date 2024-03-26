@@ -14,12 +14,16 @@ export const useConnectionStore = create<ConnectionStore>()(
         connected: false,
         address: "",
         token: null,
+        twitterAuth: null,
         userInfo: null,
         provider: '',
         visibleAddress: "",
         _hasHydrated: false,
         signMessage: (signature: string) => {
           set({ signature })
+        },
+        setTwitterAuth: (twitterAuth: any) => {
+          set({ twitterAuth })
         },
         connect: (userInfo: any, token: string, address: string, signature: string, provider: string) => {
           set({ userInfo, token, provider, address, signature, visibleAddress: toolkit.ellipticAddress(address), connected: true })
@@ -40,6 +44,7 @@ export const useConnectionStore = create<ConnectionStore>()(
         partialize: (state: any) => ({
           _hasHydrated: state._hasHydrated,
           token: state.token,
+          twitterAuth: state.twitterAuth,
           userInfo: state.userInfo,
           connected: state.connected,
           provider: state.provider,
