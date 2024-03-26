@@ -8,9 +8,11 @@ import { recoverMessageAddress } from "viem";
 import { chatxbtDataProvider, chatxbtStore, chatxbtUtils } from "../..";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
+import { useRouter } from 'next/router'
 
 export const auth = (props: any) => {
   try {
+    const router = useRouter()
     const { disconnect: walletDisconnect } = useDisconnect();
     const wagmiData = useAccount();
     const {
@@ -33,22 +35,26 @@ export const auth = (props: any) => {
     const {
       signature,
       connected,
+      twitterAuth,
       address,
       provider,
       visibleAddress,
       _hasHydrated,
       signMessage,
+      setTwitterAuth,
       connect,
       disconnect,
       userInfo,
     } = useConnectionStore((state: any) => ({
       signature: state.signature,
       connected: state.connected,
+      twitterAuth: state.twitterAuth,
       address: state.address,
       provider: state.provider,
       visibleAddress: state.visibleAddress,
       _hasHydrated: state._hasHydrated,
       signMessage: state.signMessage,
+      setTwitterAuth: state.setTwitterAuth,
       connect: state.connect,
       disconnect: state.disconnect,
       userInfo: state.userInfo,
@@ -259,8 +265,10 @@ export const auth = (props: any) => {
         const response = await chatxbtApi.authWithSocial({ token, provider: 'google' });
         console.log(response);
 
-        // const jwt = response?.data.token;
-        // const user = response?.data;
+        const jwt = response?.data.token;
+        const user = response?.data;
+
+        console.log('twitter auth complete', response);
 
         // if (jwt) {
         //   connect(
@@ -285,9 +293,11 @@ export const auth = (props: any) => {
     const getTwitterAccess = async () => {
       try {
         const { data } = await chatxbtApi.getTwitterAccessToken();
+        const twitter_auth = data.data;
+        setTwitterAuth(twitter_auth);
         console.log( data.data );
 
-        // history.push(`https://api.twitter.com/oauth/authenticate?oauth_token=${twitter_auth_token?.oauth_token}`)
+        router.push(`https://api.twitter.com/oauth/authenticate?oauth_token=${twitter_auth?.oauth_token}`)
 
       } catch (error: any) {
         console.log(error);
@@ -298,16 +308,17 @@ export const auth = (props: any) => {
     const handleTwitterAuth = async (token: any) => {
       try {
         const response = await chatxbtApi.authWithSocial({ token, provider: 'twitter' });
-        console.log(response);
 
-        const jwt = response?.data.token;
-        const user = response?.data;
+        const jwt = response?.data.data.token;
+        const user = response?.data.data;
 
         if (jwt) {
+          console.log('yearrr')
           connect(
             user,
             jwt,
           );
+          router.push(`/`)
         }
 
 
@@ -343,6 +354,7 @@ export const auth = (props: any) => {
         _hasHydrated,
         signature,
         connected,
+        twitterAuth,
         address,
         wagmiData,
         provider,
