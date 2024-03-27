@@ -37,14 +37,14 @@ const Overview = () => {
             <div className={style.card}>
               <h3>ChatXBT Points</h3>
               <h1>
-                {inAppWallet?.assets?.pt ? inAppWallet?.assets?.pt?.availableBalance : 0} <span>points</span>
+                {inAppWallet?.assets?.pt ? inAppWallet?.assets?.pt?.availableBalance.toLocaleString() : 0} <span>points</span>
               </h1>
             </div>
           </div>
           <div className="col-md-4">
             <div className={style.card}>
               <h3>Referrals</h3>
-              <h1>{userRefferals === null ? 0 : userRefferals}</h1>
+              <h1>{userRefferals === null ? 0 : userRefferals.toLocaleString()}</h1>
             </div>
           </div>
         </div>
