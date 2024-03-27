@@ -294,11 +294,11 @@ export const auth = (props: any) => {
 
 
     // twitter auth
-    const getTwitterAccess = async () => {
+    const getTwitterAccess = async ( why: string = 'social_auth', entity: any = null ) => {
       try {
         const { data } = await chatxbtApi.getTwitterAccessToken();
         const twitter_auth = data.data;
-        setTwitterAuth(twitter_auth);
+        setTwitterAuth({ ...twitter_auth, why, entity });
         console.log( data.data );
 
         router.push(`https://api.twitter.com/oauth/authenticate?oauth_token=${twitter_auth?.oauth_token}`)
@@ -322,7 +322,6 @@ export const auth = (props: any) => {
             jwt,
           );
           setTwitterAuth2(JSON.parse(token));
-          router.push(`/`)
         }
 
 
