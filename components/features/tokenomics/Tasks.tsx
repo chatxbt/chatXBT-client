@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import style from "@styles/tokenomics/tokenomics.module.scss";
 import TasksModal from "./TasksModal";
 import { useGamify } from "@chatxbt-sdk/hooks";
+import { chatxbtServices } from "../../../chatxbt-sdk"
 
 const Tasks = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -16,6 +17,12 @@ const Tasks = () => {
     store: { gamifyTasks, gamifyReferrals, gamifyPoints },
     action: { claimReward },
   } = useGamify();
+
+  const {
+    action: {
+      getTwitterAccess
+    }
+  } = chatxbtServices.auth({})
 
   return (
     <>
@@ -32,7 +39,7 @@ const Tasks = () => {
                     <TasksModal
                       handleTaskModal={changeModalState}
                       taskData={taskData}
-                      claimReward={claimReward}
+                      claimReward={getTwitterAccess}
                       index={index}
                     />
                   )}

@@ -17,7 +17,7 @@ const TasksModal = ({ handleTaskModal, taskData, claimReward, index }: any) => {
         </div>
         <div className={style.button}>
           <button><Link rel="noopener noreferrer" target="_blank" href={taskData?.url}>Execute</Link></button>
-          <button onClick={() => claimReward(taskData?.id)}>Claim Reward</button>
+          <button onClick={() => claimReward('claim_reward', taskData?.id)}>Claim Reward</button>
         </div>
       </div>
     </div>
