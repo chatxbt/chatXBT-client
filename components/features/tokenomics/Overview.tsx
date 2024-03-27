@@ -13,14 +13,14 @@ const Overview = () => {
   } = useGamify();
 
   const {
-    store: { inAppWallet, userInfo, userRefferals },
+    store: { connected, inAppWallet, userInfo, userRefferals },
   } = chatxbtServices.user({});
 
   const [openModal, setOpenModal] = useState(false);
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const handleTaskModal = () => {
-    userInfo?.username && setOpenModal(!openModal);
-    !userInfo?.username && setOpenLoginModal(!openLoginModal);
+    connected && setOpenModal(!openModal);
+    !connected && setOpenLoginModal(!openLoginModal);
   };
 
   return (

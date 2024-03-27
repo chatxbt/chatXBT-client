@@ -11,7 +11,7 @@ const Tasks = () => {
   } = useGamify();
 
   const {
-    store: { userInfo },
+    store: { connected },
     action: { getTwitterAccess },
   } = chatxbtServices.auth({});
 
@@ -19,8 +19,8 @@ const Tasks = () => {
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const [taskIndex, setTaskIndex] = useState("");
   const changeModalState = () => {
-    userInfo?.username && setOpenModal(!openModal);
-    !userInfo?.username && setOpenLoginModal(!openLoginModal);
+    connected && setOpenModal(!openModal);
+    !connected && setOpenLoginModal(!openLoginModal);
   };
   const handleTaskModal = (index: any) => {
     changeModalState();
