@@ -11,7 +11,6 @@ const GetStartedNavPoints = ({
   store: { connected, userInfo },
   action: { getTwitterAccess, signOut },
 }: any) => {
-  console.log(userInfo);
   const placeholderImage = "/images/dashboard/user.png";
   const [dropdown, setDropdown] = useState(false);
   const handleDropdown = () => {

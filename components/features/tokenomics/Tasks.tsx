@@ -11,7 +11,7 @@ const Tasks = () => {
   } = useGamify();
 
   const {
-    store: { connected },
+    store: { connected, twitterAuth},
     action: { getTwitterAccess },
   } = chatxbtServices.auth({});
 
@@ -49,7 +49,10 @@ const Tasks = () => {
                   )}
 
                   {openLoginModal && (
-                    <LoginAlertModal openLoginModal={openLoginModal} handleTaskModal={handleTaskModal} />
+                    <LoginAlertModal
+                      openLoginModal={openLoginModal}
+                      handleTaskModal={handleTaskModal}
+                    />
                   )}
                   <div className="col-md-4" key={index} id={style.col}>
                     <div

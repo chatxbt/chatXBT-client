@@ -15,6 +15,7 @@ const TasksModal = ({
     visible: { opacity: 1, transition: { staggerChildren: 0.3 } },
     hidden: { opacity: 0 },
   };
+
   return (
     <div className={style.modal}>
       <motion.div
