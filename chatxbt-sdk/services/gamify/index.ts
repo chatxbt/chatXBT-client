@@ -1,6 +1,8 @@
+import { useRouter } from 'next/router'
 import { chatxbtDataProvider, chatxbtStore } from "@chatxbt-sdk/index";
 
 export const gamify = () => {
+    const router = useRouter()
     const { chatxbtApi } = chatxbtDataProvider;
     const { useGamifyStore, useConnectionStore } = chatxbtStore.zustandStore;
 
@@ -8,9 +10,11 @@ export const gamify = () => {
     const {
         twitterAuth,
         twitterAuth2,
+        setInAppWallet,
       } = useConnectionStore((state: any) => ({
         twitterAuth: state.twitterAuth,
         twitterAuth2: state.twitterAuth2,
+        setInAppWallet: state.setInAppWallet
       }));
 
     const {
@@ -38,15 +42,22 @@ export const gamify = () => {
         }
     };
 
-    const claimReward = async (taskId: string) => {
+    const claimReward = async (taskId: string, auth: any = null) => {
         try {
             console.log('twitterAuth2', twitterAuth2)
             console.log('twitterAuth', twitterAuth)
+
             const reward = await chatxbtApi.claimTaskReward({
                 taskId,
-                thirdpartyAuthPayload: twitterAuth2
+                thirdpartyAuthPayload: auth || twitterAuth2
             });
+            // update wallet
             console.log('reward collected', reward);
+            const wallet = reward?.data;
+
+            if (wallet) {
+              setInAppWallet(wallet);
+            }
             // reward?.status && console.log(reward)
         } catch (e) {
             console.log(e);

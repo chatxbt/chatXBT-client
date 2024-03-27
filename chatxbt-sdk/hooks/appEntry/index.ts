@@ -90,6 +90,7 @@ export const useGamifyAppEntry = (props: any) => {
     const { referral_code } = router.query;
     const authService = chatxbtServices.auth(props);
     const userService = chatxbtServices.user(props);
+    const gamifyServices = chatxbtServices.gamify();
 
     const {
       store: { _hasHydrated, twitterAuth, connected, userInfo },
@@ -110,6 +111,12 @@ export const useGamifyAppEntry = (props: any) => {
       }
     } = userService;
 
+    const {
+      action: {
+        claimReward
+      }
+  } = gamifyServices;
+
     useEffect(() => {
       // get wallet
       connected && !inAppWallet?.assets && getWallet();
@@ -126,11 +133,27 @@ export const useGamifyAppEntry = (props: any) => {
 
       const { oauth_verifier, oauth_token }: any = router.query;
 
-      !connected && twitterAuth?.oauth_token_secret && oauth_verifier && handleTwitterAuth(JSON.stringify({
+      twitterAuth?.why && 
+      twitterAuth?.why === 'social_auth' &&
+      !connected && 
+      twitterAuth?.oauth_token_secret && 
+      oauth_verifier && handleTwitterAuth(JSON.stringify({
         oauth_token,
         oauth_token_secret: twitterAuth?.oauth_token_secret,
         oauth_verifier,
       }));
+
+      twitterAuth?.why && 
+      twitterAuth?.why === 'claim_reward' &&
+      connected && 
+      twitterAuth?.oauth_token_secret && 
+      oauth_verifier && claimReward(twitterAuth?.entity, {
+        oauth_token,
+        oauth_token_secret: twitterAuth?.oauth_token_secret,
+        oauth_verifier,
+      });
+
+      oauth_verifier && router.replace(`/`);
 
     }, [router.query]);
 
