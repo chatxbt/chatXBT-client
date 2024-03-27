@@ -49,9 +49,6 @@ const Overview = () => {
           </div>
         </div>
         <div className={style.share}>
-          <button onClick={handleTaskModal} id={style.x}>
-            Connect X
-          </button>
           <button onClick={handleTaskModal}>
             Share Referral <BsArrowUpRight />
           </button>

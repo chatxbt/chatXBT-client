@@ -56,9 +56,9 @@ export const getWalletJwt = async ({
 };
 
 //social auth
-export const authWithSocial = async ({ token, provider }: any) => {
+export const authWithSocial = async ({ token, provider, referer_code }: any) => {
   try {
-    const { data } = await chatxbtUtils.privateApiConnect().post('auth/sign-in', { token, authProvider: provider });
+    const { data } = await chatxbtUtils.privateApiConnect().post('auth/sign-in', { token, authProvider: provider, referer_code });
     return {
       status: true,
       data: data,

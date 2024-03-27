@@ -86,6 +86,8 @@ export const useAppEntry = (props: any) => {
 export const useGamifyAppEntry = (props: any) => {
   try {
     const router = useRouter();
+
+    const { referral_code } = router.query;
     const authService = chatxbtServices.auth(props);
     const userService = chatxbtServices.user(props);
 
@@ -93,7 +95,7 @@ export const useGamifyAppEntry = (props: any) => {
       store: { _hasHydrated, twitterAuth, connected, userInfo },
       action: {
         getTwitterAccess,
-        handleTwitterAuth 
+        handleTwitterAuth
       }
     } = authService;
 
@@ -116,8 +118,9 @@ export const useGamifyAppEntry = (props: any) => {
     }, [connected]);
 
     useEffect(() => {
-      // getTwitterAccess();
-    }, []);
+      let ref_code: any = referral_code;
+      ref_code && localStorage.setItem("referral_code", ref_code)
+    }, [referral_code]);
 
     useEffect(() => {
 
