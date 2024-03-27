@@ -3,33 +3,32 @@ import style from "@styles/tokenomics/tokenomics.module.scss";
 import { BsArrowUpRight } from "react-icons/bs";
 import ReferralModal from "./ReferralModal";
 import { useGamify } from "@chatxbt-sdk/hooks";
-import { chatxbtServices } from "../../../chatxbt-sdk"
+import { chatxbtServices } from "../../../chatxbt-sdk";
+import LoginAlertModal from "./LoginAlertModal";
 
 const Overview = () => {
-  const [openModal, setOpenModal] = useState(false);
-  const handleTaskModal = () => setOpenModal(!openModal);
   const {
-    store: { gamifyTasks, gamifyReferrals, gamifyPoints },
-    action: {
-      getAllTasks,
-      claimReward,
-      setGamifyTasks,
-      setGamifyReferrals,
-      setGamifyPoints,
-    },
+    store: {},
+    action: {},
   } = useGamify();
 
   const {
-    store: {         
-      inAppWallet,
-      userInfo,
-      userRefferals
-    }
-  } = chatxbtServices.user({})
+    store: { inAppWallet, userInfo, userRefferals },
+  } = chatxbtServices.user({});
+
+  const [openModal, setOpenModal] = useState(false);
+  const [openLoginModal, setOpenLoginModal] = useState(false);
+  const handleTaskModal = () => {
+    userInfo?.username && setOpenModal(!openModal);
+    !userInfo?.username && setOpenLoginModal(!openLoginModal);
+  };
 
   return (
     <>
-      {openModal && <ReferralModal userInfo={userInfo} handleTaskModal={handleTaskModal} />}
+      {openModal && (
+        <ReferralModal userInfo={userInfo} handleTaskModal={handleTaskModal} />
+      )}
+      {openLoginModal && <LoginAlertModal handleTaskModal={handleTaskModal} />}
 
       <div className={`container ${style.overview}`}>
         <div className="row">
@@ -37,14 +36,19 @@ const Overview = () => {
             <div className={style.card}>
               <h3>ChatXBT Points</h3>
               <h1>
-                {inAppWallet?.assets?.pt ? inAppWallet?.assets?.pt?.availableBalance.toLocaleString() : 0} <span>points</span>
+                {inAppWallet?.assets?.pt
+                  ? inAppWallet?.assets?.pt?.availableBalance.toLocaleString()
+                  : 0}{" "}
+                <span>points</span>
               </h1>
             </div>
           </div>
           <div className="col-md-4">
             <div className={style.card}>
               <h3>Referrals</h3>
-              <h1>{userRefferals === null ? 0 : userRefferals.toLocaleString()}</h1>
+              <h1>
+                {userRefferals === null ? 0 : userRefferals.toLocaleString()}
+              </h1>
             </div>
           </div>
         </div>

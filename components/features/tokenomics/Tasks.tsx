@@ -2,27 +2,30 @@ import React, { useState } from "react";
 import style from "@styles/tokenomics/tokenomics.module.scss";
 import TasksModal from "./TasksModal";
 import { useGamify } from "@chatxbt-sdk/hooks";
-import { chatxbtServices } from "../../../chatxbt-sdk"
+import { chatxbtServices } from "../../../chatxbt-sdk";
+import LoginAlertModal from "./LoginAlertModal";
 
 const Tasks = () => {
+  const {
+    store: { gamifyTasks },
+  } = useGamify();
+
+  const {
+    store: { userInfo },
+    action: { getTwitterAccess },
+  } = chatxbtServices.auth({});
+
   const [openModal, setOpenModal] = useState(false);
+  const [openLoginModal, setOpenLoginModal] = useState(false);
   const [taskIndex, setTaskIndex] = useState("");
-  const changeModalState = () => setOpenModal(!openModal);
+  const changeModalState = () => {
+    userInfo?.username && setOpenModal(!openModal);
+    !userInfo?.username && setOpenLoginModal(!openLoginModal);
+  };
   const handleTaskModal = (index: any) => {
     changeModalState();
     setTaskIndex(index);
   };
-
-  const {
-    store: { gamifyTasks, gamifyReferrals, gamifyPoints },
-    action: { claimReward },
-  } = useGamify();
-
-  const {
-    action: {
-      getTwitterAccess
-    }
-  } = chatxbtServices.auth({})
 
   return (
     <>
@@ -42,6 +45,10 @@ const Tasks = () => {
                       claimReward={getTwitterAccess}
                       index={index}
                     />
+                  )}
+
+                  {openLoginModal && (
+                    <LoginAlertModal handleTaskModal={handleTaskModal} />
                   )}
                   <div className="col-md-4" key={index} id={style.col}>
                     <div
