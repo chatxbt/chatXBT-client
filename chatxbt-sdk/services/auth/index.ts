@@ -311,7 +311,7 @@ export const auth = (props: any) => {
     // twitter auth
     const handleTwitterAuth = async (token: any) => {
       try {
-        const ref_code = localStorage.ref_code;
+        const ref_code = localStorage.referral_code;
 
         const response = await chatxbtApi.authWithSocial({ token, provider: 'twitter', referer_code: ref_code ? ref_code : null });
         const jwt = response?.data.data.token;
