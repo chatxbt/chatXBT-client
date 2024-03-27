@@ -10,7 +10,7 @@ interface SEOProps {
 
 const AppSeo = ({ title, description, image }: SEOProps) => {
   const router = useRouter();
-  const domain = "https://www.chatxbt.com";
+  const domain = "https://missions.chatxbt.com";
   const url = router && router.asPath ? router.asPath : undefined;
   // const canonical = url && url === "/" ? domain : domain + url;
   const canonical = domain + url;
