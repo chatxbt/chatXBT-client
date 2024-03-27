@@ -101,3 +101,87 @@
         }
     }
 }
+
+.footerGamify {
+    padding: 100px 20px 40px;
+    // background: #01040D;
+    border-top: 1px solid #04133f;
+
+    #con {
+        height: 100%;
+    }
+
+    h4{
+        font-weight: 400;
+        font-size: 16px;
+        color: #CDC9C9;
+        margin-top: 20px; 
+    }
+
+    
+    h5{
+        font-weight: 400;
+        font-size: 16px;
+        color: #898787;
+        margin-top: 20px; 
+    }
+
+
+    #col2 {
+        display: flex;
+        justify-content: right;
+        align-items: flex-start;
+
+        a {
+            color: #fff;
+        }
+    }
+
+    #bottom {
+        width: 100%;
+        display: flex;
+        justify-content: right;
+        align-items: flex-end;
+        flex-direction: column;
+
+        @include responsivePro(mobile) {
+            justify-content: left;
+            align-items: flex-start;
+          }
+      
+          @include responsivePro(exception) {
+            width: 100%;
+          }
+
+        #socials {
+            height: 50px;
+            width: 200px;
+            display: flex;
+            justify-content: right;
+            align-items: center;
+
+            @include responsivePro(mobile) {
+                justify-content: left;
+              }
+
+
+            a {
+                color: #fff;
+
+                i {
+                    font-size: 1.4rem;
+                    margin-right: 10px;
+                }
+            }
+        }
+
+
+        p {
+            margin: 0px;
+            text-align: right;
+            font-weight: 400;
+            font-size: 16px;
+            color: rgb(35, 35, 146);
+        }
+    }
+}

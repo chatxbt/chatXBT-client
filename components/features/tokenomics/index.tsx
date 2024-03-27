@@ -14,7 +14,7 @@ const TokenomicsComponent = () => {
         <Overview />
         <Tasks />
       </div>
-      {/* <Footer /> */}
+      <Footer />
     </>
   );
 };
