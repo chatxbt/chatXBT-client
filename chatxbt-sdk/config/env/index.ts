@@ -20,4 +20,4 @@ export const env = value.ENV;
 export const debug = env === 'development' || value.DEBUG;
 export const chatXbtApiBaseUrl = value.NEXT_PUBLIC_BASE_URL;
 export const aiChatBotUrl = value.NEXT_PUBLIC_CHATXBT_BASE_URL;
-export const referralUrl = 'http://localhost:3000?referral_code='
+export const referralUrl = 'https://missions.chatxbt.com?referral_code='
