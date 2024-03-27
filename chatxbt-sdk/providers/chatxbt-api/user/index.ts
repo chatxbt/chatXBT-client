@@ -19,3 +19,23 @@ export const getWallet = async () => {
       };
     }
   };
+
+  // get wallet
+export const getRefferals = async () => {
+    try {
+      const { data, headers } = await chatxbtUtils
+        .privateApiConnect()
+        .get('user/my-refferals');
+      return {
+        status: true,
+        data: data.data,
+        message: data.message,
+      };
+    } catch (error: any) {
+      return {
+        status: false,
+        message: error.message,
+        error: true,
+      };
+    }
+  };

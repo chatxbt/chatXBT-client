@@ -100,16 +100,19 @@ export const useGamifyAppEntry = (props: any) => {
     const {
       store: {
         inAppWallet,
+        userRefferals,
       },
       action: {
-        getWallet
+        getWallet,
+        getMyReferrals
       }
     } = userService;
 
     useEffect(() => {
-      console.log('inAppWallet?.assets', inAppWallet?.assets);
       // get wallet
       connected && !inAppWallet?.assets && getWallet();
+      // get referalls 
+      connected && userRefferals === null && getMyReferrals();
     }, [connected]);
 
     useEffect(() => {

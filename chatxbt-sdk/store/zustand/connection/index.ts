@@ -17,6 +17,7 @@ export const useConnectionStore = create<ConnectionStore>()(
         twitterAuth: null,
         twitterAuth2: null,
         userInfo: null,
+        userRefferals: null,
         inAppWallet: null,
         provider: '',
         visibleAddress: "",
@@ -35,6 +36,9 @@ export const useConnectionStore = create<ConnectionStore>()(
         },
         setInAppWallet: (wallet: any) => {
           set({ inAppWallet: wallet })
+        },
+        setUserRefferal: (refferals: number) => {
+          set({ userRefferals: refferals })
         },
         disconnect: () => {
           set({ provider: '', address: "", token: "", signature: null, visibleAddress: "", twitterAuth: null, twitterAuth2: null, inAppWallet: null,  connected: false });

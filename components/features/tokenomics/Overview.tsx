@@ -22,7 +22,8 @@ const Overview = () => {
   const {
     store: {         
       inAppWallet,
-      userInfo 
+      userInfo,
+      userRefferals
     }
   } = chatxbtServices.user({})
 
@@ -43,7 +44,7 @@ const Overview = () => {
           <div className="col-md-4">
             <div className={style.card}>
               <h3>Referrals</h3>
-              <h1>0</h1>
+              <h1>{userRefferals === null ? 0 : userRefferals}</h1>
             </div>
           </div>
         </div>

@@ -19,11 +19,15 @@ export const user = (props: any) => {
       connected,
       setInAppWallet,
       userInfo,
+      userRefferals,
+      setUserRefferal,
     } = useConnectionStore((state: any) => ({
       inAppWallet: state.inAppWallet,
       connected: state.connected,
       setInAppWallet: state.setInAppWallet,
       userInfo: state.userInfo,
+      userRefferals: state.userRefferals,
+      setUserRefferal: state.setUserRefferal,
     }));
 
     // get user wallet
@@ -41,14 +45,31 @@ export const user = (props: any) => {
       }
     }
 
+        // get user wallet
+        const getMyReferrals = async () => {
+            try {
+              const response = await chatxbtApi.getRefferals();
+              const refferals = response?.data;
+      
+              if (refferals !== null) {
+                setUserRefferal(refferals);
+              }
+      
+            } catch (error: any) {
+              console.log(error);
+            }
+          }
+
 
     return {
       store: {
         connected,
         inAppWallet,
         userInfo,
+        userRefferals
       },
       action: {
+        getMyReferrals,
         getWallet,
         setInAppWallet
       },
