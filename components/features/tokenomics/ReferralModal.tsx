@@ -4,15 +4,27 @@ import { MdClose } from "react-icons/md";
 import useCopyToClipboard from "@chatxbt-sdk/utils/copy-clipboard";
 import * as IoIcons2 from "react-icons/io5";
 import { chatxbtConfig } from "@chatxbt-sdk/index";
+import { motion } from "framer-motion";
 
-const ReferralModal = ({ userInfo, handleTaskModal }: any) => {
+const ReferralModal = ({ userInfo, openModal, handleTaskModal }: any) => {
   const { isCopied, handleCopy, copiedData } = useCopyToClipboard();
   const referral_code =
     chatxbtConfig.envConfig.referralUrl + userInfo?.username;
 
+  const listTwo = {
+    visible: { opacity: 1, transition: { staggerChildren: 0.3 } },
+    hidden: { opacity: 0 },
+  };
+
   return (
     <div className={style.modal}>
-      <div className={style.taskModal}>
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        transition={{ type: "linear" }}
+        variants={listTwo}
+        className={`${style.taskModal} ${openModal ? style.show : style.hide}`}
+      >
         <i onClick={handleTaskModal} id={style.close}>
           <MdClose />
         </i>
@@ -45,7 +57,7 @@ const ReferralModal = ({ userInfo, handleTaskModal }: any) => {
             </>
           )}
         </button>
-      </div>
+      </motion.div>
     </div>
   );
 };

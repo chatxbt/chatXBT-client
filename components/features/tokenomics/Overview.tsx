@@ -26,9 +26,18 @@ const Overview = () => {
   return (
     <>
       {openModal && (
-        <ReferralModal userInfo={userInfo} handleTaskModal={handleTaskModal} />
+        <ReferralModal
+          userInfo={userInfo}
+          openModal={openModal}
+          handleTaskModal={handleTaskModal}
+        />
       )}
-      {openLoginModal && <LoginAlertModal handleTaskModal={handleTaskModal} />}
+      {openLoginModal && (
+        <LoginAlertModal
+          openLoginModal={openLoginModal}
+          handleTaskModal={handleTaskModal}
+        />
+      )}
 
       <div className={`container ${style.overview}`}>
         <div className="row">

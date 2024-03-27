@@ -2,11 +2,28 @@ import React from "react";
 import Link from "next/link";
 import style from "@styles/tokenomics/tokenomics.module.scss";
 import { MdClose } from "react-icons/md";
+import { motion } from "framer-motion";
 
-const TasksModal = ({ handleTaskModal, taskData, claimReward, index }: any) => {
+const TasksModal = ({
+  handleTaskModal,
+  openModal,
+  taskData,
+  claimReward,
+  index,
+}: any) => {
+  const listTwo = {
+    visible: { opacity: 1, transition: { staggerChildren: 0.3 } },
+    hidden: { opacity: 0 },
+  };
   return (
     <div className={style.modal}>
-      <div className={style.taskModal}>
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        transition={{ type: "linear" }}
+        variants={listTwo}
+        className={`${style.taskModal} ${openModal ? style.show : style.hide}`}
+      >
         <i onClick={handleTaskModal} id={style.close}>
           <MdClose />
         </i>
@@ -16,10 +33,20 @@ const TasksModal = ({ handleTaskModal, taskData, claimReward, index }: any) => {
           <p>{taskData?.description}</p>
         </div>
         <div className={style.button}>
-          <button><Link rel="noopener noreferrer" target="_blank" href={taskData?.url}>Execute</Link></button>
-          <button onClick={() => claimReward('claim_reward', taskData?.id)}>Claim Reward</button>
+          <button>
+            <Link
+              rel="noopener noreferrer"
+              target="_blank"
+              href={taskData?.url}
+            >
+              Execute
+            </Link>
+          </button>
+          <button onClick={() => claimReward("claim_reward", taskData?.id)}>
+            Claim Reward
+          </button>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

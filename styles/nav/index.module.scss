@@ -101,6 +101,168 @@
     justify-content: space-between;
     align-items: center;
 
+    .googleProfileDiv {
+      margin-left: 10px;
+      position: relative;
+
+      .profile {
+        display: flex;
+        justify-content: right;
+        align-items: center;
+        margin-left: 10px;
+
+        p {
+          margin: 0px;
+          font-size: 14px;
+          font-weight: 600;
+        }
+
+        div {
+          height: 40px;
+          width: 40px;
+          border-radius: 50%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+          overflow: hidden;
+          margin-left: 10px;
+          cursor: pointer;
+          border: 1px solid transparent;
+
+          &:hover {
+            border: 1px solid #1c4df0;
+          }
+
+          img {
+            height: 100%;
+            width: 100%;
+          }
+        }
+      }
+
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+          transform: translateY(2rem);
+        }
+
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeOut {
+        0% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        100% {
+          opacity: 0;
+          transform: translateY(2rem);
+        }
+      }
+
+      .dropdown {
+        display: none;
+        position: absolute;
+        padding: 20px;
+        border-radius: 20px;
+        z-index: 3;
+        background: #0b0f1f;
+        box-shadow: 7px 20px 40px rgba(0, 0, 0, 0.1);
+        width: 250px;
+        margin-top: 0px;
+        right: 0;
+        // top: 80%;
+
+        @include responsivePro(mobile) {
+          width: 300px;
+          padding: 40px 20px;
+        }
+
+        @include responsivePro(exception) {
+          position: absolute;
+          padding: 40px 30px;
+          border-radius: 10px;
+          z-index: 3;
+          box-shadow: 7px 20px 40px rgba(0, 0, 0, 0.1);
+          width: 350px;
+          margin-top: 4px;
+        }
+
+        #header {
+          margin: 10px auto;
+          padding-bottom: 10px;
+
+          h1 {
+            font-size: 12px;
+            font-weight: 900;
+            color: #6f6f76;
+          }
+
+          #user {
+            display: flex;
+            margin-top: 15px;
+
+            img {
+              height: 50px;
+              width: 50px;
+              border-radius: 50%;
+            }
+
+            div {
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: flex-start;
+              padding-left: 10px;
+
+              h3 {
+                margin: 0px;
+                font-size: 14px;
+              }
+
+              p {
+                margin: 0px;
+                font-size: 12px;
+              }
+            }
+          }
+        }
+
+        #btn {
+          width: 100%;
+          height: 40px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-radius: 20px;
+          border: 1px solid transparent;
+          padding: 0px 10px;
+          font-size: 14px;
+          background: #1c4df0;
+          color: #fff;
+
+          &:hover {
+            background: #efecec;
+            color: #000;
+          }
+        }
+      }
+
+      .show {
+        display: block;
+        animation: fadeIn 0.2s ease-in-out;
+      }
+
+      .hide {
+        animation: fadeOut 0.2s ease-in-out;
+      }
+    }
+
     button {
       background-color: #fff;
       color: #000;

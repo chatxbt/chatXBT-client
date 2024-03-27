@@ -44,11 +44,12 @@ const Tasks = () => {
                       taskData={taskData}
                       claimReward={getTwitterAccess}
                       index={index}
+                      openModal={openModal}
                     />
                   )}
 
                   {openLoginModal && (
-                    <LoginAlertModal handleTaskModal={handleTaskModal} />
+                    <LoginAlertModal openLoginModal={openLoginModal} handleTaskModal={handleTaskModal} />
                   )}
                   <div className="col-md-4" key={index} id={style.col}>
                     <div

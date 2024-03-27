@@ -1,11 +1,24 @@
 import React from "react";
 import style from "@styles/tokenomics/tokenomics.module.scss";
 import { MdClose } from "react-icons/md";
+import { motion } from "framer-motion";
 
-const LoginAlertModal = ({ handleTaskModal }: any) => {
+const LoginAlertModal = ({ handleTaskModal, openLoginModal }: any) => {
+  const listTwo = {
+    visible: { opacity: 1, transition: { staggerChildren: 0.3 } },
+    hidden: { opacity: 0 },
+  };
   return (
     <div className={style.modal}>
-      <div className={style.taskModal}>
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        transition={{ type: "linear" }}
+        variants={listTwo}
+        className={`${style.taskModal} ${
+          openLoginModal ? style.show : style.hide
+        }`}
+      >
         <i onClick={handleTaskModal} id={style.close}>
           <MdClose />
         </i>
@@ -17,7 +30,7 @@ const LoginAlertModal = ({ handleTaskModal }: any) => {
             opportunities – log in now and start exploring!`}
           </p>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

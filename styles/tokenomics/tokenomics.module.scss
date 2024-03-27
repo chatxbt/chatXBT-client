@@ -134,7 +134,7 @@
       font-size: 22px;
     }
 
-    #col{
+    #col {
       @include responsivePro(exception) {
         width: 50%;
       }
@@ -255,7 +255,7 @@
           padding: 10px 0px;
           border: 1px solid transparent;
 
-          a{
+          a {
             color: #000;
             text-decoration: none;
           }
@@ -272,7 +272,7 @@
         padding: 10px 0px;
         border: 1px solid transparent;
 
-        .iconCopy{
+        .iconCopy {
           margin-bottom: 3px;
         }
 
@@ -281,5 +281,38 @@
         }
       }
     }
+  }
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(2rem);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeOut {
+    0% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    100% {
+      opacity: 0;
+      transform: translateY(2rem);
+    }
+  }
+
+  .show {
+    display: block;
+    animation: fadeIn 0.2s ease-in-out;
+  }
+
+  .hide {
+    animation: fadeOut 0.2s ease-in-out;
   }
 }
