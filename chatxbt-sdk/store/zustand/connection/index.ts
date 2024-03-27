@@ -15,7 +15,9 @@ export const useConnectionStore = create<ConnectionStore>()(
         address: "",
         token: null,
         twitterAuth: null,
+        twitterAuth2: null,
         userInfo: null,
+        inAppWallet: null,
         provider: '',
         visibleAddress: "",
         _hasHydrated: false,
@@ -25,11 +27,17 @@ export const useConnectionStore = create<ConnectionStore>()(
         setTwitterAuth: (twitterAuth: any) => {
           set({ twitterAuth })
         },
+        setTwitterAuth2: (twitterAuth2: any) => {
+          set({ twitterAuth2 })
+        },
         connect: (userInfo: any, token: string, address: string, signature: string, provider: string) => {
           set({ userInfo, token, provider, address, signature, visibleAddress: toolkit.ellipticAddress(address), connected: true })
         },
+        setInAppWallet: (wallet: any) => {
+          set({ inAppWallet: wallet })
+        },
         disconnect: () => {
-          set({ provider: '', address: "", token: "", signature: null, visibleAddress: "", connected: false });
+          set({ provider: '', address: "", token: "", signature: null, visibleAddress: "", twitterAuth: null, twitterAuth2: null, inAppWallet: null,  connected: false });
           // window.localStorage.removeItem(storageName);
         },
         setHasHydrated: (state: any) => {
@@ -45,7 +53,9 @@ export const useConnectionStore = create<ConnectionStore>()(
           _hasHydrated: state._hasHydrated,
           token: state.token,
           twitterAuth: state.twitterAuth,
+          twitterAuth2: state.twitterAuth2,
           userInfo: state.userInfo,
+          inAppWallet: state.inAppWallet,
           connected: state.connected,
           provider: state.provider,
           address: state.address,

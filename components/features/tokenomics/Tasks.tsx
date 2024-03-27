@@ -23,7 +23,7 @@ const Tasks = () => {
         <h1>ChatXBT Tasks</h1>
 
         <div className="row">
-          {gamifyTasks.length > 0 &&
+          {gamifyTasks?.length > 0 &&
             gamifyTasks.map((data: any, index: any) => {
               let taskData = taskIndex === index && data;
               return (

@@ -2,7 +2,16 @@ import { chatxbtDataProvider, chatxbtStore } from "@chatxbt-sdk/index";
 
 export const gamify = () => {
     const { chatxbtApi } = chatxbtDataProvider;
-    const { useGamifyStore } = chatxbtStore.zustandStore;
+    const { useGamifyStore, useConnectionStore } = chatxbtStore.zustandStore;
+
+    // connection store
+    const {
+        twitterAuth,
+        twitterAuth2,
+      } = useConnectionStore((state: any) => ({
+        twitterAuth: state.twitterAuth,
+        twitterAuth2: state.twitterAuth2,
+      }));
 
     const {
         gamifyTasks,
@@ -29,10 +38,16 @@ export const gamify = () => {
         }
     };
 
-    const claimReward = async (taskData: any) => {
+    const claimReward = async (taskId: string) => {
         try {
-            const reward = await chatxbtApi.claimTaskReward(taskData);
-            reward?.status && console.log(reward)
+            console.log('twitterAuth2', twitterAuth2)
+            console.log('twitterAuth', twitterAuth)
+            const reward = await chatxbtApi.claimTaskReward({
+                taskId,
+                thirdpartyAuthPayload: twitterAuth2
+            });
+            console.log('reward collected', reward);
+            // reward?.status && console.log(reward)
         } catch (e) {
             console.log(e);
         }

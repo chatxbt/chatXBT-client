@@ -3,6 +3,7 @@ import style from "@styles/tokenomics/tokenomics.module.scss";
 import { BsArrowUpRight } from "react-icons/bs";
 import ReferralModal from "./ReferralModal";
 import { useGamify } from "@chatxbt-sdk/hooks";
+import { chatxbtServices } from "../../../chatxbt-sdk"
 
 const Overview = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -18,9 +19,16 @@ const Overview = () => {
     },
   } = useGamify();
 
+  const {
+    store: {         
+      inAppWallet,
+      userInfo 
+    }
+  } = chatxbtServices.user({})
+
   return (
     <>
-      {openModal && <ReferralModal handleTaskModal={handleTaskModal} />}
+      {openModal && <ReferralModal userInfo={userInfo} handleTaskModal={handleTaskModal} />}
 
       <div className={`container ${style.overview}`}>
         <div className="row">
@@ -28,7 +36,7 @@ const Overview = () => {
             <div className={style.card}>
               <h3>ChatXBT Points</h3>
               <h1>
-                0 <span>points</span>
+                {inAppWallet?.assets?.pt ? inAppWallet?.assets?.pt?.availableBalance : 0} <span>points</span>
               </h1>
             </div>
           </div>

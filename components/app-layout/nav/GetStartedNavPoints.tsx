@@ -6,7 +6,7 @@ import Logo from "@components/shared/logo/Logo";
 import LogoTwo from "@components/shared/logo/LogoTwo";
 import { chatxbtServices } from "../../../chatxbt-sdk"
 
-const GetStartedNavPoints = ({ store: { connected }, action: { getTwitterAccess } }: any) => {
+const GetStartedNavPoints = ({ store: { connected }, action: { getTwitterAccess, signOut } }: any) => {
   return (
     <div className={style.getStartedNav}>
       <div className="container" id={style.con}>
@@ -16,6 +16,14 @@ const GetStartedNavPoints = ({ store: { connected }, action: { getTwitterAccess 
           <span>
             <h2 id={style.h2}>
               Connect Twitter <BsIcons.BsArrowRight id={style.icon} />
+            </h2>
+          </span>
+        </div>}
+        {connected && <div id={style.details} onClick={() => signOut()}>
+          {/* <h2>new to chatFi? </h2> */}
+          <span>
+            <h2 id={style.h2}>
+              SignOut <BsIcons.BsArrowRight id={style.icon} />
             </h2>
           </span>
         </div>}

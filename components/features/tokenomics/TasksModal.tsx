@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import style from "@styles/tokenomics/tokenomics.module.scss";
 import { MdClose } from "react-icons/md";
 
@@ -15,8 +16,8 @@ const TasksModal = ({ handleTaskModal, taskData, claimReward, index }: any) => {
           <p>{taskData?.description}</p>
         </div>
         <div className={style.button}>
-          <button>Execute</button>
-          <button onClick={claimReward}>Claim Reward</button>
+          <button><Link rel="noopener noreferrer" target="_blank" href={taskData?.url}>Execute</Link></button>
+          <button onClick={() => claimReward(taskData?.id)}>Claim Reward</button>
         </div>
       </div>
     </div>

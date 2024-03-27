@@ -2,7 +2,7 @@ import React from "react";
 import style from "@styles/tokenomics/tokenomics.module.scss";
 import { MdClose } from "react-icons/md";
 
-const ReferralModal = ({ handleTaskModal }: any) => {
+const ReferralModal = ({ userInfo, handleTaskModal }: any) => {
   return (
     <div className={style.modal}>
       <div className={style.taskModal}>
@@ -25,7 +25,7 @@ const ReferralModal = ({ handleTaskModal }: any) => {
             </li>
           </ul>
         </div>
-          <button id={style.copy}>Copy Referral Link</button>
+          <button id={style.copy}>Copy Referral Link @{userInfo?.username}</button>
       </div>
     </div>
   );

@@ -87,6 +87,8 @@ export const useGamifyAppEntry = (props: any) => {
   try {
     const router = useRouter();
     const authService = chatxbtServices.auth(props);
+    const userService = chatxbtServices.user(props);
+
     const {
       store: { _hasHydrated, twitterAuth, connected, userInfo },
       action: {
@@ -95,12 +97,19 @@ export const useGamifyAppEntry = (props: any) => {
       }
     } = authService;
 
+    const {
+      store: {
+        inAppWallet,
+      },
+      action: {
+        getWallet
+      }
+    } = userService;
+
     useEffect(() => {
-
-      !connected && '';
-
+      console.log('inAppWallet?.assets', inAppWallet?.assets);
       // get wallet
-      connected && '';
+      connected && !inAppWallet?.assets && getWallet();
     }, [connected]);
 
     useEffect(() => {

@@ -36,12 +36,14 @@ export const auth = (props: any) => {
       signature,
       connected,
       twitterAuth,
+      twitterAuth2,
       address,
       provider,
       visibleAddress,
       _hasHydrated,
       signMessage,
       setTwitterAuth,
+      setTwitterAuth2,
       connect,
       disconnect,
       userInfo,
@@ -49,12 +51,14 @@ export const auth = (props: any) => {
       signature: state.signature,
       connected: state.connected,
       twitterAuth: state.twitterAuth,
+      twitterAuth2: state.twitterAuth2,
       address: state.address,
       provider: state.provider,
       visibleAddress: state.visibleAddress,
       _hasHydrated: state._hasHydrated,
       signMessage: state.signMessage,
       setTwitterAuth: state.setTwitterAuth,
+      setTwitterAuth2: state.setTwitterAuth2,
       connect: state.connect,
       disconnect: state.disconnect,
       userInfo: state.userInfo,
@@ -313,11 +317,11 @@ export const auth = (props: any) => {
         const user = response?.data.data;
 
         if (jwt) {
-          console.log('yearrr')
           connect(
             user,
             jwt,
           );
+          setTwitterAuth2(JSON.parse(token));
           router.push(`/`)
         }
 
