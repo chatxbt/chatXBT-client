@@ -254,6 +254,11 @@
           padding: 10px 0px;
           border: 1px solid transparent;
 
+          a{
+            color: #000;
+            text-decoration: none;
+          }
+
           &:hover {
             opacity: 0.9;
           }
@@ -265,6 +270,10 @@
         margin: 10px auto;
         padding: 10px 0px;
         border: 1px solid transparent;
+
+        .iconCopy{
+          margin-bottom: 3px;
+        }
 
         &:hover {
           opacity: 0.9;

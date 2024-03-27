@@ -226,24 +226,24 @@ export const auth = (props: any) => {
       }
     };
 
-        const checkUserNetwork = async () => {
+    const checkUserNetwork = async () => {
 
-        if (window.ethereum) {
-  
-          const networkId = await window.ethereum.request({ method: 'net_version' });
-  
-          if (networkId !== '5') {
-  
-            console.log('Please switch to the Goerli network in MetaMask to use this application.');
-  
-          };
-  
-        } else {
-  
-          console.log('Please install and enable MetaMask to use this application.');
-  
-        }
+      if (window.ethereum) {
+
+        const networkId = await window.ethereum.request({ method: 'net_version' });
+
+        if (networkId !== '5') {
+
+          console.log('Please switch to the Goerli network in MetaMask to use this application.');
+
+        };
+
+      } else {
+
+        console.log('Please install and enable MetaMask to use this application.');
+
       }
+    }
 
     const googleLogin = useGoogleLogin({
       onSuccess: async (tokenResponse: any) => {
@@ -256,7 +256,7 @@ export const auth = (props: any) => {
         }).then(res => res);
 
         console.log(userInfo);
-      //   // handleGoogleAuth(tokenResponse.access_token);
+        //   // handleGoogleAuth(tokenResponse.access_token);
       },
       onError: () => {
         console.log("[Google authentication failed]");
@@ -311,8 +311,9 @@ export const auth = (props: any) => {
     // twitter auth
     const handleTwitterAuth = async (token: any) => {
       try {
-        const response = await chatxbtApi.authWithSocial({ token, provider: 'twitter' });
+        const ref_code = localStorage.ref_code;
 
+        const response = await chatxbtApi.authWithSocial({ token, provider: 'twitter', referer_code: ref_code ? ref_code : null });
         const jwt = response?.data.data.token;
         const user = response?.data.data;
 
