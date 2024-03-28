@@ -30,7 +30,7 @@ const Tasks = () => {
   return (
     <>
       <div className={`container ${style.tasksCon}`}>
-        <h1>ChatXBT Tasks</h1>
+        <h1>ChatXBT Missions</h1>
 
         <div className="row">
           {gamifyTasks?.length > 0 &&

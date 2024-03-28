@@ -61,7 +61,7 @@ const GetStartedNavPoints = ({
                   />
                   <div>
                     <h3>{`${userInfo?.firstname}`}</h3>
-                    <p>{userInfo?.email}</p>
+                    {/* <p>{userInfo?.email}</p> */}
                   </div>
                 </div>
               </div>
